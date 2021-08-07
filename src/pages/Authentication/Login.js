@@ -96,8 +96,8 @@ class Login extends Component {
                     <Row>
                       <Col className="col-7">
                         <div className="text-primary p-4">
-                          <h5 className="text-primary">Welcome Back !</h5>
-                          <p>Sign in to continue to Skote.</p>
+                          <h5 className="text-primary">Welcome Back!</h5>
+                          <p>Sign in to continue to Stellar.</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">
@@ -145,7 +145,7 @@ class Login extends Component {
                           <AvField
                             name="email"
                             label="Email"
-                            value="admin@themesbrand.com"
+                            value="mark@stellarapp.com"
                             className="form-control"
                             placeholder="Enter email"
                             type="email"
@@ -187,7 +187,9 @@ class Login extends Component {
                           </button>
                         </div>
 
+                        {/* 
                         <div className="mt-4 text-center">
+
                           <h5 className="font-size-14 mb-3">Sign in with</h5>
 
                           <ul className="list-inline">
@@ -225,6 +227,7 @@ class Login extends Component {
                             </li>
                           </ul>
                         </div>
+                        */}
 
                         <div className="mt-4 text-center">
                           <Link to="/forgot-password" className="text-muted">
@@ -269,6 +272,7 @@ Login.propTypes = {
   socialLogin: PropTypes.func
 }
 
+
 const mapStateToProps = state => {
   const { error } = state.Login
   return { error }
@@ -277,3 +281,4 @@ const mapStateToProps = state => {
 export default withRouter(
   connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login)
 )
+

@@ -3,6 +3,8 @@ import {
   GET_CART_DATA_SUCCESS,
   GET_CUSTOMERS_FAIL,
   GET_CUSTOMERS_SUCCESS,
+  GET_LOADS_SUCCESS,
+  GET_LOADS_FAIL,
   GET_ORDERS_FAIL,
   GET_ORDERS_SUCCESS,
   ADD_ORDER_SUCCESS,
@@ -25,16 +27,23 @@ import {
   DELETE_CUSTOMER_FAIL,
 } from "./actionTypes"
 
+//This is where you initalize the state. 
+//You must include every table you pull data from.
+
 const INIT_STATE = {
   products: [],
   product: {},
   orders: [],
+  loads: [],
   cartData: {},
   customers: [],
   shops: [],
   error: {},
 }
 
+//Setting the state after you make request
+//This is very important for pulling data!
+//This has to be updated for every new table
 const Ecommerce = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_PRODUCTS_SUCCESS:
@@ -56,6 +65,18 @@ const Ecommerce = (state = INIT_STATE, action) => {
       }
 
     case GET_PRODUCT_DETAIL_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+    
+    case GET_LOADS_SUCCESS:
+      return {
+        ...state,
+        loads: action.payload,
+      }
+
+    case GET_LOADS_FAIL:
       return {
         ...state,
         error: action.payload,

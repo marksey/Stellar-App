@@ -9,6 +9,9 @@ import {
   Card,
   CardBody,
   CardTitle,
+  Form,
+  FormGroup,
+  Label,
   Modal,
   ModalHeader,
   ModalBody,
@@ -18,6 +21,9 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
+
+// availity-reactstrap-validation
+import { AvField, AvForm } from "availity-reactstrap-validation"
 
 //import Charts
 import StackedColumnChart from "./StackedColumnChart"
@@ -34,7 +40,7 @@ import MonthlyEarning from "./MonthlyEarning"
 import SocialSource from "./SocialSource"
 import ActivityComp from "./ActivityComp"
 import TopCities from "./TopCities"
-import LatestTranaction from "./LatestTranaction"
+import LatestTransaction from "./LatestTransaction"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -46,20 +52,25 @@ import classNames from "classnames";
 class Dashboard extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       reports: [
-        { title: "Orders", 
-          iconClass: "bx-copy-alt", 
-          description: "1,235" },
-        {
-          title: "Revenue",
-          iconClass: "bx-archive-in",
-          description: "$35,723",
+        { title: "Trucks Schedule", 
+          iconClass: "bx bxs-truck", 
+          description: "19" ,
+          url: "/trucks-schedule",
         },
         {
-          title: "Average Price",
-          iconClass: "bx-purchase-tag-alt",
-          description: "$16.2",
+          title: "In Transit",
+          iconClass: "bx bx-transfer",
+          description: "77",
+          url: "/in-transit",
+        },
+        {
+          title: "Completed",
+          iconClass: "bx bxs-calendar-heart",
+          description: "365",
+          url: "/completed",
         },
       ],
       email: [
@@ -75,6 +86,11 @@ class Dashboard extends Component {
 
     this.togglemodal.bind(this)
     this.togglesubscribemodal.bind(this)
+  }
+
+  
+  handleClick(){
+    console.log("Clicked!!!!");
   }
 
   componentDidMount() {
@@ -107,131 +123,70 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Dashboard | Skote - React Admin & Dashboard Template</title>
+            <title>Dashboard | Stellar - A Beautiful Trucking App</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
+
             <Breadcrumbs
               title={this.props.t("Dashboards")}
               breadcrumbItem={this.props.t("Dashboard")}
             />
+
+            
             <Row>
+
               <Col xl="4">
                 <WelcomeComp />
-                <MonthlyEarning />
+                
               </Col>
               <Col xl="8">
+                
                 <Row>
                   {/* Reports Render */}
                   {this.state.reports.map((report, key) => (
                     <Col md="4" key={"_col_" + key}>
-                      <Card className="mini-stats-wid">
-                        <CardBody>
-                          <div className="d-flex">
-                            <div className="flex-grow-1">
-                              <p className="text-muted fw-medium">
-                                {report.title}
-                              </p>
-                              <h4 className="mb-0">{report.description}</h4>
+                      {/*This is where reports menu is clickable*/}
+                      <a href={report.url}>
+                        <Card className="mini-stats-wid"  >
+                          <CardBody>
+                            <div className="d-flex">
+                              <div className="flex-grow-1">
+                                <p className="text-muted fw-medium">
+                                  {report.title}
+                                </p>
+                                <h4 className="mb-0">{report.description}</h4>
+                              </div>
+                              <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                <span className="avatar-title">
+                                  <i
+                                    className={
+                                      "bx " + report.iconClass + " font-size-24"
+                                    }
+                                  />
+                                </span>
+                              </div>
                             </div>
-                            <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                              <span className="avatar-title">
-                                <i
-                                  className={
-                                    "bx " + report.iconClass + " font-size-24"
-                                  }
-                                />
-                              </span>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
+                          </CardBody>
+                        </Card>
+                      </a>
                     </Col>
                   ))}
                 </Row>
 
-                <Card>
-                  <CardBody>
-                    <div className="d-sm-flex flex-wrap">
-                      <CardTitle className="card-title mb-4 h4">
-                        Email Sent
-                      </CardTitle>
-                      <div className="ms-auto">
-                        <ul className="nav nav-pills">
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { "active": this.state.periodType === "weekly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                this.setState({ ...this.state, periodType: "weekly" });
-                                this.props.onGetChartsData("weekly")
-                              }}
-                              id="one_month"
-                            >
-                              Week
-                            </Link>{" "}
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { "active": this.state.periodType === "monthly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                this.setState({ ...this.state, periodType: "monthly" });
-                                this.props.onGetChartsData("monthly")
-                              }}
-                              id="one_month"
-                            >
-                              Month
-                            </Link>
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { "active": this.state.periodType === "yearly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                this.setState({ ...this.state, periodType: "yearly" });
-                                this.props.onGetChartsData("yearly")
-                              }}
-                              id="one_month"
-                            >
-                              Year
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="clearfix" />
-                    <StackedColumnChart chartSeries={this.state.chartSeries} />
-                  </CardBody>
-                </Card>
+                
               </Col>
             </Row>
 
-            <Row>
-              <Col xl="4">
-                <SocialSource />
-              </Col>
-              <Col xl="4">
-                <ActivityComp />
-              </Col>
-              <Col xl="4">
-                <TopCities />
-              </Col>
-            </Row>
+            
+           
+            
             <Row>
               <Col lg="12">
-                <LatestTranaction />
+                <LatestTransaction />
               </Col>
             </Row>
+
           </Container>
         </div>
 
@@ -254,25 +209,130 @@ class Dashboard extends Component {
 
                 <div className="avatar-md mx-auto mb-4">
                   <div className="avatar-title bg-light  rounded-circle text-primary h1">
-                    <i className="mdi mdi-email-open"></i>
+                    <i className="bx bx-buildings"></i>
                   </div>
                 </div>
 
                 <div className="row justify-content-center">
                   <div className="col-xl-10">
-                    <h4 className="text-primary">Subscribe !</h4>
-                    <p className="text-muted font-size-14 mb-4">Subscribe our newletter and get notification to stay update.</p>
+                    <h4 className="text-primary">Welcome Admin!</h4>
+                    <p className="text-muted font-size-14 mb-4">
+                      Please enter your company information below. This information
+                      will be shared with all users.
+                    </p>
 
-                    <div className="input-group  rounded bg-light"  >
-                      <Input type="email" className="form-control bg-transparent border-0" placeholder="Enter Email address" />
-                      <Button color="primary" type="button" id="button-addon2">
-                        <i className="bx bxs-paper-plane"></i>
-                      </Button>
+                    <Form>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-firstname-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          Company
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="horizontal-firstname-Input"
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-email-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          Street
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="email"
+                            className="form-control"
+                            id="horizontal-email-Input"
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-password-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          City
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="horizontal-password-Input"
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-password-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          State
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="horizontal-text-Input"
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-text-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          Zip Code
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="horizontal-text-Input"
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup className="row mb-4">
+                        <Label
+                          htmlFor="horizontal-text-Input"
+                          className="col-sm-3 col-form-label"
+                        >
+                          Phone
+                        </Label>
+                        <Col sm={9}>
+                          <Input
+                            type="tel"
+                            className="form-control"
+                            id="horizontal-password-Input"
+                          />
+                        </Col>
+                      </FormGroup>
 
-                    </div>
+                      <FormGroup className="row justify-content-end">
+                        <Col sm={9}>
+                          
+
+                          <div>
+                            <Button
+                              type="submit"
+                              color="primary"
+                              className="w-md"
+                            >
+                              Submit
+                            </Button>
+                          </div>
+                        </Col>
+                      </FormGroup>
+                    </Form>
 
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

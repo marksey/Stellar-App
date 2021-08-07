@@ -105,6 +105,66 @@ class SidebarContent extends Component {
   render() {
     return (
       <React.Fragment>
+
+        <SimpleBar  style={{ maxHeight: "100%" }} ref={this.refDiv}>
+
+          <div id="sidebar-menu">
+            <ul className="metismenu list-unstyled" id="side-menu">
+              <li className="menu-title">{this.props.t("Menu")}</li>
+
+              <li>
+                <Link to="/#">
+                  <i className="bx bx-home-circle" />
+                  <span className="badge rounded-pill bg-info float-end">
+                    New
+                  </span>
+                  <span>{this.props.t("Dashboard")}</span>
+                </Link>
+              </li>
+
+              <li className="menu-title">{this.props.t("Apps")}</li>
+
+              <li>
+                <Link to="/loads" className="">
+                  <i className="bx bx-package" />
+                  <span>{this.props.t("Loads")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/trucks" className="">
+                  <i className="bx bxs-truck" />
+                  <span>{this.props.t("Trucks")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/shippers" className="">
+                  <i className="bx bxs-user-detail" />
+                  <span>{this.props.t("Shippers")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/drivers" className="">
+                  <i className="bx bx-id-card" />
+                  <span>{this.props.t("Drivers")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/customers" className="">
+                  <i className="bx bx-credit-card" />
+                  <span>{this.props.t("Customers")}</span>
+                </Link>
+              </li>
+
+            </ul>
+          </div>
+
+        </SimpleBar>
+
+        {/*
         <SimpleBar style={{ maxHeight: "100%" }} ref={this.refDiv}>
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu">
@@ -819,6 +879,8 @@ class SidebarContent extends Component {
             </ul>
           </div>
         </SimpleBar>
+        */}
+
       </React.Fragment>
     )
   }

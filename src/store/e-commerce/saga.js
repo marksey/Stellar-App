@@ -4,6 +4,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 import {
   GET_CART_DATA,
   GET_CUSTOMERS,
+  GET_LOADS,
   GET_ORDERS,
   GET_PRODUCT_DETAIL,
   GET_PRODUCTS,
@@ -20,6 +21,8 @@ import {
   getCartDataSuccess,
   getCustomersFail,
   getCustomersSuccess,
+  getLoadsSuccess,
+  getLoadsFail,
   getOrdersFail,
   getOrdersSuccess,
   addOrderFail,
@@ -47,6 +50,7 @@ import {
   getCartData,
   getCustomers,
   getOrders,
+  getLoads,
   addNewOrder,
   updateOrder,
   deleteOrder,
@@ -82,6 +86,15 @@ function* fetchOrders() {
     yield put(getOrdersSuccess(response))
   } catch (error) {
     yield put(getOrdersFail(error))
+  }
+}
+
+function* fetchLoads() {
+  try {
+    const response = yield call(getLoads)
+    yield put(getLoadsSuccess(response))
+  } catch (error) {
+    yield put(getLoadsFail(error))
   }
 }
 
@@ -172,6 +185,7 @@ function* ecommerceSaga() {
   yield takeEvery(GET_PRODUCTS, fetchProducts)
   yield takeEvery(GET_PRODUCT_DETAIL, fetchProductDetail)
   yield takeEvery(GET_ORDERS, fetchOrders)
+  yield takeEvery(GET_LOADS, fetchLoads)
   yield takeEvery(ADD_NEW_ORDER, onAddNewOrder)
   yield takeEvery(UPDATE_ORDER, onUpdateOrder)
   yield takeEvery(DELETE_ORDER, onDeleteOrder)

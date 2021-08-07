@@ -1487,7 +1487,9 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .container-fluid, body[
     position: relative; }
 
 .input-group-text {
-  margin-bottom: 0px; }
+  margin-bottom: 0px; 
+}
+
 
 .mini-stats-wid .mini-stat-icon {
   overflow: hidden;

@@ -2,6 +2,9 @@ import {
   GET_CART_DATA,
   GET_CART_DATA_FAIL,
   GET_CART_DATA_SUCCESS,
+  GET_LOADS,
+  GET_LOADS_SUCCESS,
+  GET_LOADS_FAIL,
   GET_ORDERS,
   GET_ORDERS_FAIL,
   GET_ORDERS_SUCCESS,
@@ -66,6 +69,19 @@ export const getProductDetailFail = error => ({
   payload: error,
 })
 
+export const getLoads = () => ({
+  type: GET_LOADS,
+})
+
+export const getLoadsSuccess = loads => ({
+  type: GET_LOADS_SUCCESS,
+  payload: loads,
+})
+
+export const getLoadsFail = error => ({
+  type: GET_LOADS_FAIL,
+  payload: error,
+})
 export const getOrders = () => ({
   type: GET_ORDERS,
 })

@@ -7,8 +7,8 @@ import { Col, Container, Form, FormGroup, Input, Label, Row, Button } from "reac
 import { AvField, AvForm } from "availity-reactstrap-validation"
 
 // import ReactDOM from 'react-dom';
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 import CarouselPage from "./CarouselPage"
 
 export default class Recoverpw2 extends Component {

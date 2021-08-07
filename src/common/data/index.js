@@ -9,6 +9,7 @@ import {
   customerData,
   discountData,
   orders,
+  loads,
   productsData,
   recentProducts,
   shops,
@@ -16,7 +17,7 @@ import {
 import { chats, contacts, groups, messages } from "./chat";
 import { inboxmails, starredmails, importantmails, draftmails, sentmails, trashmails } from "./mails";
 import { calenderDefaultCategories, events } from "./calender";
-import { users, userProfile } from "./contacts";
+import { drivers, userProfile } from "./contacts";
 import { yearData, monthData, weekData } from './dashboard';
 import {
   janTopSellingData,
@@ -40,6 +41,7 @@ export {
   contacts,
   messages,
   orders,
+  loads,
   cartData,
   customerData,
   shops,
@@ -56,7 +58,7 @@ export {
   invoiceList,
   projects,
   tasks,
-  users,
+  drivers,
   userProfile,
   yearData,
   monthData,

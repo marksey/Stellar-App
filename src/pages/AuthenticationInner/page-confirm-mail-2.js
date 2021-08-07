@@ -3,8 +3,8 @@ import CarouselPage from "./CarouselPage"
 import MetaTags from 'react-meta-tags';
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 import { Col, Container, Row } from "reactstrap"
 import { Link } from "react-router-dom"
 

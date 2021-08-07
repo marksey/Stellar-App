@@ -7,9 +7,9 @@ import { Container, Row, Col } from "reactstrap"
 import Countdown from "react-countdown"
 
 //Import Images
-import logo from "../../assets/images/logo-dark.png"
+import logo from "../../assets/images/stellar-logo-dark.png"
 import maintanence from "../../assets/images/coming-soon.svg"
-import lightlogo from "../../assets/images/logo-light.png"
+import lightlogo from "../../assets/images/stellar-logo-white.png"
 
 class PagesComingsoon extends Component {
   constructor() {

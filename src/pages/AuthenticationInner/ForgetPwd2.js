@@ -7,8 +7,8 @@ import { Col, Container,Row  } from "reactstrap"
 import { AvField, AvForm } from "availity-reactstrap-validation"
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 import CarouselPage from "./CarouselPage"
 
 export default class ForgetPwd2 extends Component {

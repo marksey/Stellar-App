@@ -26,6 +26,8 @@ console.log("Before backend firing!");
 // Activating fake backend
 fakeBackend()
 
+
+//This is a new comment
 console.log("After backend firing!");
 
 // Activating fake firebase

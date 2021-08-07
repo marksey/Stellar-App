@@ -42,6 +42,9 @@ export const DELETE_ORDER = "/delete/order"
 //CART DATA
 export const GET_CART_DATA = "/cart"
 
+//LOADS
+export const GET_LOADS = "/loads"
+
 //CUSTOMERS
 export const GET_CUSTOMERS = "/customers"
 export const ADD_NEW_CUSTOMER = "/add/customer"
@@ -65,6 +68,9 @@ export const GET_PROJECT_DETAIL = "/project"
 
 //TASKS
 export const GET_TASKS = "/tasks"
+
+//CONTACTS
+export const GET_DRIVERS = "/drivers"
 
 //CONTACTS
 export const GET_USERS = "/users"

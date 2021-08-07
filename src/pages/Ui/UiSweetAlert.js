@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap"
 import MetaTags from 'react-meta-tags';
-import logolight from "../../assets/images/logo-light.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"

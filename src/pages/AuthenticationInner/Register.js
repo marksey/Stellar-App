@@ -9,7 +9,8 @@ import { Row, Col, CardBody, Card, Container } from "reactstrap"
 
 // import images
 import profileImg from "../../assets/images/profile-img.png"
-import logoImg from "../../assets/images/logo.svg"
+import logoImg from "../../assets/images/stellar-logo-abbrv.png"
+//import logoImg from "../../assets/images/logo.svg"
 
 class Register extends Component {
   constructor(props) {

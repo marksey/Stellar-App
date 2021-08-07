@@ -136,6 +136,9 @@ export const getMessages = (roomId = "") =>
 // post messages
 export const addMessage = message => post(url.ADD_MESSAGE, message)
 
+// get loads
+export const getLoads = () => get(url.GET_LOADS)
+
 // get orders
 export const getOrders = () => get(url.GET_ORDERS)
 
@@ -154,6 +157,7 @@ export const getCartData = () => get(url.GET_CART_DATA)
 
 // get customers
 export const getCustomers = () => get(url.GET_CUSTOMERS)
+
 
 // add customer
 export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer)
@@ -200,6 +204,9 @@ export const deleteProject = project =>
 
 // get tasks
 export const getTasks = () => get(url.GET_TASKS)
+
+// get drivers
+export const getDrivers = () => get(url.GET_DRIVERS)
 
 // get contacts
 export const getUsers = () => get(url.GET_USERS)

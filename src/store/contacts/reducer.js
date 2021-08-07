@@ -1,4 +1,6 @@
 import {
+  GET_DRIVERS_SUCCESS,
+  GET_DRIVERS_FAIL,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
   ADD_USER_SUCCESS,
@@ -15,10 +17,27 @@ const INIT_STATE = {
   users: [],
   userProfile: {},
   error: {},
+  drivers: [],
 }
+
+//This is where you set the state with data 
+//after making the get requests for data
 
 const contacts = (state = INIT_STATE, action) => {
   switch (action.type) {
+
+    case GET_DRIVERS_SUCCESS:
+      return {
+        ...state,
+        drivers: action.payload,
+      }
+
+    case GET_DRIVERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
     case GET_USERS_SUCCESS:
       return {
         ...state,

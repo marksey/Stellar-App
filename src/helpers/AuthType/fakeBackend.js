@@ -15,6 +15,7 @@ import {
   invoiceList,
   messages,
   orders,
+  loads,
   productsData,
   projects,
   recentProducts,
@@ -27,7 +28,7 @@ import {
   draftmails,
   sentmails,
   trashmails,
-  users as members,
+  drivers,
   wallet,
   yearData,
   monthData,
@@ -45,10 +46,10 @@ import {
 let users = [
   {
     uid: 1,
-    username: "admin",
+    username: "David K.",
     role: "admin",
     password: "123456",
-    email: "admin@themesbrand.com",
+    email: "mark@stellarapp.com",
   },
 ]
 
@@ -501,6 +502,19 @@ const fakeBackend = () => {
     })
   })
 
+  mock.onGet(url.GET_LOADS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (loads) {
+          // Passing fake JSON data as response
+          resolve([200, loads])
+        } else {
+          reject([400, "Cannot get load data"])
+        }
+      })
+    })
+  })
+
   mock.onGet(url.GET_CUSTOMERS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -805,6 +819,20 @@ const fakeBackend = () => {
     })
   })
 
+  mock.onGet(url.GET_DRIVERS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (drivers) {
+          // Passing fake JSON data as response
+          resolve([200, drivers])
+        } else {
+          reject([400, "Cannot get drivers"])
+        }
+      })
+    })
+  })
+
+  /*
   mock.onGet(url.GET_USERS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -830,6 +858,8 @@ const fakeBackend = () => {
       })
     })
   });
+
+  */
 
   mock.onGet(url.GET_WEEKLY_DATA).reply(() => {
     return new Promise((resolve, reject) => {

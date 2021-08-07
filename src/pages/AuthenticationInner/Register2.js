@@ -7,8 +7,8 @@ import { Col, Container, Row } from "reactstrap"
 import { AvField, AvForm } from "availity-reactstrap-validation"
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 import CarouselPage from "./CarouselPage"
 
 export default class Register2 extends Component {
@@ -45,9 +45,9 @@ export default class Register2 extends Component {
                       </div>
                       <div className="my-auto">
                         <div>
-                          <h5 className="text-primary">Register account</h5>
+                          <h5 className="text-primary">Sign Up</h5>
                           <p className="text-muted">
-                            Get your free Skote account now.
+                            Get your free Stellar account now.
                           </p>
                         </div>
 

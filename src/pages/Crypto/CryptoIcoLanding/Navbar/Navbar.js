@@ -14,8 +14,8 @@ import { Link } from "react-router-dom"
 import ScrollspyNav from "./scrollSpy"
 
 //Import Images
-import logodark from "../../../../assets/images/logo-dark.png"
-import logolight from "../../../../assets/images/logo-light.png"
+import logodark from "../../../../assets/images/stellar-logo-dark.png"
+import logolight from "../../../../assets/images/stellar-logo-white.png"
 
 class Navbar_Page extends Component {
   constructor(props) {

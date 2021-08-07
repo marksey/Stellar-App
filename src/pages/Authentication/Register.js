@@ -14,7 +14,9 @@ import { Link } from "react-router-dom"
 
 // import images
 import profileImg from "../../assets/images/profile-img.png"
-import logoImg from "../../assets/images/logo.svg"
+
+import logoImg from "../../assets/images/stellar-logo-abbrv.png"
+//import logoImg from "../../assets/images/logo.svg"
 
 class Register extends Component {
   constructor(props) {
@@ -52,8 +54,8 @@ class Register extends Component {
                     <Row>
                       <Col className="col-7">
                         <div className="text-primary p-4">
-                          <h5 className="text-primary">Free Register</h5>
-                          <p>Get your free Skote account now.</p>
+                          <h5 className="text-primary">Sign Up</h5>
+                          <p>Get your free Stellar account now.</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">

@@ -167,7 +167,7 @@ class Chat extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Skote" breadcrumbItem="Chat" />
+            <Breadcrumbs title="Stellar" breadcrumbItem="Chat" />
 
             <Row>
               <Col lg="12">

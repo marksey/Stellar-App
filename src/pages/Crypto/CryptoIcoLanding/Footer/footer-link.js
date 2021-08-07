@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Row, Col } from "reactstrap"
 
 //Import Images
-import logolight from "../../../../assets/images/logo-light.png"
+import logolight from "../../../../assets/images/stellar-logo-white.png"
 
 class FooterLink extends Component {
   render() {
@@ -15,7 +15,8 @@ class FooterLink extends Component {
             </div>
 
             <p className="mb-2">
-              2021 © Skote. Design & Develop by Themesbrand
+              2021 © Stellar. Designed & Developed with{" "}
+                    <i className="mdi mdi-heart text-danger" /> by Mark & Tanya
             </p>
             <p>
               It will be as simple as occidental in fact, it will be to an

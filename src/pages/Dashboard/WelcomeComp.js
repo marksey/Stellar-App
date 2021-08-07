@@ -20,8 +20,8 @@ class WelcomeComp extends Component {
             <Row>
               <Col xs="7">
                 <div className="text-primary p-3">
-                  <h5 className="text-primary">Welcome Back !</h5>
-                  <p>Skote Dashboard</p>
+                  <h5 className="text-primary">Welcome David!</h5>
+                  <p>Stellar Dispatcher</p>
                 </div>
               </Col>
               <Col xs="5" className="align-self-end">
@@ -29,6 +29,7 @@ class WelcomeComp extends Component {
               </Col>
             </Row>
           </div>
+          {/*
           <CardBody className="pt-0">
             <Row>
               <Col sm="4">
@@ -39,8 +40,8 @@ class WelcomeComp extends Component {
                     className="img-thumbnail rounded-circle"
                   />
                 </div>
-                <h5 className="font-size-15 text-truncate">Henry Price</h5>
-                <p className="text-muted mb-0 text-truncate">UI/UX Designer</p>
+                <h5 className="font-size-15 text-truncate">David K.</h5>
+                <p className="text-muted mb-0">Stellar Dispatcher</p>
               </Col>
 
               <Col sm="8">
@@ -55,18 +56,22 @@ class WelcomeComp extends Component {
                       <p className="text-muted mb-0">Revenue</p>
                     </Col>
                   </Row>
+                  {/*
                   <div className="mt-4">
                     <Link
                       to=""
                       className="btn btn-primary btn-sm"
                     >
+                 
                       View Profile {" "}<i className="mdi mdi-arrow-right ms-1"/>
                     </Link>
                   </div>
+                  
                 </div>
               </Col>
             </Row>
           </CardBody>
+          */}
         </Card>
       </React.Fragment>
     )

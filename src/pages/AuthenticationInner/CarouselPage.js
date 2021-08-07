@@ -18,8 +18,7 @@ export default class CarouselPage extends Component {
                       <div className="text-center">
                         <h4 className="mb-3">
                           <i className="bx bxs-quote-alt-left text-primary h1 align-middle me-3"></i>
-                          <span className="text-primary">5k</span>+ Satisfied
-                          clients
+                          <span className="text-primary">The only </span>trucking app you need
                         </h4>
                         <div dir="ltr">
                           <Carousel showThumbs={false} className="slider_css">
@@ -27,20 +26,19 @@ export default class CarouselPage extends Component {
                               <div className="item">
                                 <div className="py-3">
                                   <p className="font-size-16 mb-4">
-                                    " Fantastic theme with a ton of options. If
-                                    you just want the HTML to integrate with your
-                                    project, then this is the package. You can
-                                    find the files in the 'dist' folder...no need
-                                    to install git and all the other stuff the
-                                    documentation talks about. "
+                                    " Stellar is a trucking app that allows you 
+                                    to be a more effective dispatcher. Boost productivity
+                                    and easily keep track of what's happening with
+                                    your fleet. Find out why this app is taking the
+                                    market by storm!"
                                 </p>
 
                                   <div>
                                     <h4 className="font-size-16 text-primary">
-                                      Abs1981
+                                      David K.
                                   </h4>
                                     <p className="font-size-14 mb-0">
-                                      - Skote User
+                                      - Dispatcher & Stellar User
                                   </p>
                                   </div>
                                 </div>
@@ -50,18 +48,16 @@ export default class CarouselPage extends Component {
                               <div className="item">
                                 <div className="py-3">
                                   <p className="font-size-16 mb-4">
-                                    "If Every Vendor on Envato are as supportive
-                                    as Themesbrand, Development with be a nice
-                                    experience. You guys are Wonderful. Keep us
-                                    the good work. "
+                                    "If every trucking company used Stellar, 
+                                    they would benefit enormously. "
                                 </p>
 
                                   <div>
                                     <h4 className="font-size-16 text-primary">
-                                      Abs1981
+                                      Vasya K.
                                   </h4>
                                     <p className="font-size-14 mb-0">
-                                      - Skote User
+                                      - Owner-Op
                                   </p>
                                   </div>
                                 </div>

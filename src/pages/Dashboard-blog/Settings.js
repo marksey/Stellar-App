@@ -161,7 +161,7 @@ export default class Settings extends Component {
 
                 <Row className="justify-content-center">
                   <Col xl={10}>
-                    <h4 className="text-primary">Subscribe !</h4>
+                    <h4 className="text-primary">Welcome Admin!</h4>
                     <p className="text-muted font-size-14 mb-4">
                       Subscribe our newletter and get notification to stay
                       update.

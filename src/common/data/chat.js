@@ -8,7 +8,7 @@ const chats = [
     status: "offline",
     image: "avatar2",
     name: "Steven Franklin",
-    description: "Hey! there I'm available",
+    description: "Hey there I'm available!",
     time: "05 min",
   },
   {

@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 
 // Crypto Redux States
 import {
+  GET_DRIVERS,
   GET_USERS,
   GET_USER_PROFILE,
   ADD_NEW_USER,
@@ -10,6 +11,8 @@ import {
 } from "./actionTypes"
 
 import {
+  getDriversSuccess,
+  getDriversFail,
   getUsersSuccess,
   getUsersFail,
   getUserProfileSuccess,
@@ -24,12 +27,22 @@ import {
 
 //Include Both Helper File with needed methods
 import {
+  getDrivers,
   getUsers,
   getUserProfile,
   addNewUser,
   updateUser,
   deleteUser
 } from "../../helpers/fakebackend_helper"
+
+function* fetchDrivers() {
+  try {
+    const response = yield call(getDrivers)
+    yield put(getDriversSuccess(response))
+  } catch (error) {
+    yield put(getDriversFail(error))
+  }
+}
 
 function* fetchUsers() {
   try {
@@ -78,6 +91,7 @@ function* onDeleteUser({ payload: user }) {
 }
 
 function* contactsSaga() {
+  yield takeEvery(GET_DRIVERS, fetchDrivers)
   yield takeEvery(GET_USERS, fetchUsers)
   yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
   yield takeEvery(ADD_NEW_USER, onAddNewUser)

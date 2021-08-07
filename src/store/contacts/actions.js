@@ -2,6 +2,9 @@ import {
   GET_USER_PROFILE,
   GET_USER_PROFILE_FAIL,
   GET_USER_PROFILE_SUCCESS,
+  GET_DRIVERS,
+  GET_DRIVERS_FAIL,
+  GET_DRIVERS_SUCCESS,
   GET_USERS,
   GET_USERS_FAIL,
   GET_USERS_SUCCESS,
@@ -15,6 +18,20 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
 } from "./actionTypes"
+
+export const getDrivers = () => ({
+  type: GET_DRIVERS,
+})
+
+export const getDriversSuccess = drivers => ({
+  type: GET_DRIVERS_SUCCESS,
+  payload: drivers,
+})
+
+export const getDriversFail = error => ({
+  type: GET_DRIVERS_FAIL,
+  payload: error,
+})
 
 export const getUsers = () => ({
   type: GET_USERS,

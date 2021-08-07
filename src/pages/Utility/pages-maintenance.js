@@ -8,8 +8,8 @@ import CardMaintenance from "./card-maintenance"
 
 //Import Images
 import maintenance from "../../assets/images/maintenance.svg"
-import logo from "../../assets/images/logo-dark.png"
-import lightlogo from "../../assets/images/logo-light.png"
+import logo from "../../assets/images/stellar-logo-dark.png"
+import lightlogo from "../../assets/images/stellar-logo-white.png"
 
 class PagesMaintenance extends Component {
   render() {

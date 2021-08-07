@@ -28,7 +28,7 @@ class ProfileMenu extends Component {
     super(props)
     this.state = {
       menu: false,
-      name: "Admin",
+      name: "David. K",
     }
     this.toggle = this.toggle.bind(this)
   }

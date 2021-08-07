@@ -16,8 +16,8 @@ import {
 } from "reactstrap"
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 
 export default class TwostepVerification extends Component {
   constructor(props) {

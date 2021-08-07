@@ -69,6 +69,16 @@ import EmailVerification2 from "../pages/AuthenticationInner/auth-email-verifica
 import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-verification"
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2"
 
+//List pages
+import Loads from "../pages/Lists/Loads/index"
+import DriversList from "../pages/Lists/Drivers/index"
+
+//AddNew pages
+import NewLoad from "../pages/New-Load/index"
+import NewUnit from "../pages/New-Unit/index"
+import NewDriver from "../pages/New-Driver/index"
+import NewBroker from "../pages/New-Broker/index"
+
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
 import DashboardSaas from "../pages/Dashboard-saas/index"
@@ -170,6 +180,18 @@ import BlogGrid from "../pages/Blog/BlogGrid/index"
 import BlogDetails from "../pages/Blog/BlogDetails"
 
 const authProtectedRoutes = [
+
+  //Lists
+
+  { path: "/drivers", component: DriversList},
+  { path: "/loads", component: Loads},
+
+  //Add screens
+  { path: "/new-load", component: NewLoad },
+  { path: "/new-unit", component: NewUnit },
+  { path: "/new-driver", component: NewDriver },
+  { path: "/new-broker", component: NewBroker },
+  
   { path: "/dashboard", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },

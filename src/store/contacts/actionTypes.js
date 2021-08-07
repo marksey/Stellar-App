@@ -1,3 +1,8 @@
+/* DRIVERS */
+export const GET_DRIVERS = "GET_DRIVERS"
+export const GET_DRIVERS_SUCCESS = "GET_DRIVERS_SUCCESS"
+export const GET_DRIVERS_FAIL = "GET_DRIVERS_FAIL"
+
 /* USERS */
 export const GET_USERS = "GET_USERS"
 export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS"

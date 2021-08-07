@@ -11,9 +11,9 @@ import { withTranslation } from "react-i18next"
 import SidebarContent from "./SidebarContent"
 
 import logo from "../../assets/images/logo.svg"
-import logoLightPng from "../../assets/images/logo-light.png"
+import logoLightPng from "../../assets/images/stellar-logo-white.png"
 import logoLightSvg from "../../assets/images/logo-light.svg"
-import logoDark from "../../assets/images/logo-dark.png"
+import logoDark from "../../assets/images/stellar-logo-dark.png"
 
 class Sidebar extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class Sidebar extends Component {
                 <img src={logoLightSvg} alt="" height="22" />
               </span>
               <span className="logo-lg">
-                <img src={logoLightPng} alt="" height="19" />
+                <img src={logoLightPng} alt="" height="25" />
               </span>
             </Link>
           </div>

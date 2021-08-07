@@ -1,23 +1,47 @@
 import React, { Component } from "react"
+import PropTypes from 'prop-types'
 import MetaTags from 'react-meta-tags';
-import { Link } from "react-router-dom"
+
+//Redux
+import { connect } from "react-redux"
+import { Link, withRouter } from "react-router-dom"
+
 import { Col, Container,Row  } from "reactstrap"
 
 // availity-reactstrap-validation
 import { AvField, AvForm } from "availity-reactstrap-validation"
 
+// actions
+import { apiError, loginUser, socialLogin } from "../../store/actions"
+
+
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/stellar-logo-dark.png"
+import logolight from "../../assets/images/stellar-logo-white.png"
 import CarouselPage from "./CarouselPage"
 
-export default class Login2 extends Component {
+class Login2 extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+
+    // handleValidSubmit
+    this.handleValidSubmit = this.handleValidSubmit.bind(this)
+  }
+
+  // handleValidSubmit
+  handleValidSubmit(event, values) {
+    {console.log("Trying to login user!!!!", values)}
+    this.props.loginUser(values, this.props.history)
+  }
+
   render() {
     return (
       <React.Fragment>
         <div>
         <MetaTags>
-            <title>Login 2 | Skote - React Admin & Dashboard Template</title>
+            <title>Login 2 | Stellar - React Admin & Dashboard Template</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
@@ -32,13 +56,14 @@ export default class Login2 extends Component {
                           <img
                             src={logodark}
                             alt=""
-                            height="18"
-                            className="auth-logo-dark"
+                            height="30"
+                            className="center auth-logo-dark"
+                            style={{marginLeft:'auto', marginRight:'auto'}}
                           />
                           <img
                             src={logolight}
                             alt=""
-                            height="18"
+                            height="25"
                             className="auth-logo-light"
                           />
                         </Link>
@@ -46,13 +71,16 @@ export default class Login2 extends Component {
 
                                     <div className="my-auto">
                                         <div>
-                                            <h5 className="text-primary">Welcome Back !</h5>
-                                            <p className="text-muted">Sign in to continue to Skote.</p>
+                                            <h5 className="text-primary">Welcome Back!</h5>
+                                            <p className="text-muted">Sign in to continue to Stellar.</p>
                                         </div>
             
                                         <div className="mt-4">
 
-                                        <AvForm className="form-horizontal">
+                                        <AvForm 
+                                          className="form-horizontal"
+                                          onValidSubmit={this.handleValidSubmit}
+                                        >
                                         {this.props.error && this.props.error ? (
                                           <Alert color="danger">{this.props.error}</Alert>
                                         ) : null}
@@ -73,10 +101,10 @@ export default class Login2 extends Component {
                                            <Link to="/pages-forgot-pwd-2" className="text-muted">Forgot password?</Link>
                                       </div>
                                       <AvField  name="password"    
-                                                label="password"
+                                                label="Password"
                                                 value=""
                                                 className="form-control"
-                                                placeholder="Enter Password"
+                                                placeholder="Enter password"
                                                 type="password"
                                                 required
                                                 />
@@ -92,30 +120,9 @@ export default class Login2 extends Component {
                                           <button className="btn btn-primary btn-block" type="submit" > Log In </button>
                                         </div>
 
-                                                <div className="mt-4 text-center">
-                                                    <h5 className="font-size-14 mb-3">Sign in with</h5>
-                    
-                                                    <ul className="list-inline">
-                                                        <li className="list-inline-item">
-                                                            <Link to="#" className="social-list-item bg-primary text-white border-primary">
-                                                                <i className="mdi mdi-facebook"></i>
-                                                            </Link>
-                                                        </li>
-                                                        <li className="list-inline-item">
-                                                            <Link to="#" className="social-list-item bg-info text-white border-info">
-                                                                <i className="mdi mdi-twitter"></i>
-                                                            </Link>
-                                                        </li>
-                                                        <li className="list-inline-item">
-                                                            <Link to="#" className="social-list-item bg-danger text-white border-danger">
-                                                                <i className="mdi mdi-google"></i>
-                                                            </Link>
-                                                        </li>
-                                                    </ul>
-                                                </div>
                                        </AvForm>
                                             <div className="mt-5 text-center">
-                                                <p>Don't have an account ? <a href="pages-register-2" className="fw-medium text-primary"> Signup now </a> </p>
+                                                <p>Don't have an account? <a href="pages-register-2" className="fw-medium text-primary"> Signup now </a> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -123,9 +130,9 @@ export default class Login2 extends Component {
 
                       <div className="mt-4 mt-md-5 text-center">
                         <p className="mb-0">
-                          © {new Date().getFullYear()} Skote. Crafted with{" "}
+                          © {new Date().getFullYear()} Stellar.<br></br><br></br> Crafted with{" "}
                           <i className="mdi mdi-heart text-danger"></i> by
-                          Themesbrand
+                          Mark & Tanya
                         </p>
                       </div>
                     </div>
@@ -139,3 +146,21 @@ export default class Login2 extends Component {
     )
   }
 }
+
+Login2.propTypes = {
+  apiError: PropTypes.any,
+  error: PropTypes.any,
+  history: PropTypes.object,
+  loginUser: PropTypes.func,
+  socialLogin: PropTypes.func
+}
+
+
+const mapStateToProps = state => {
+  const { error } = state.Login
+  return { error }
+}
+
+export default withRouter(
+  connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login2)
+)
