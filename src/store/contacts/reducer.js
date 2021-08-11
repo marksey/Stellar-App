@@ -1,6 +1,10 @@
 import {
   GET_DRIVERS_SUCCESS,
   GET_DRIVERS_FAIL,
+  GET_SHIPPERS_SUCCESS,
+  GET_SHIPPERS_FAIL,
+  GET_TRUCKING_CUSTOMERS_SUCCESS,
+  GET_TRUCKING_CUSTOMERS_FAIL,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
   ADD_USER_SUCCESS,
@@ -11,6 +15,8 @@ import {
   DELETE_USER_FAIL,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_FAIL,
+  GET_TRUCKS_SUCCESS,
+  GET_TRUCKS_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -18,6 +24,9 @@ const INIT_STATE = {
   userProfile: {},
   error: {},
   drivers: [],
+  shippers: [],
+  truckingCustomers: [],
+  trucks: [],
 }
 
 //This is where you set the state with data 
@@ -33,6 +42,42 @@ const contacts = (state = INIT_STATE, action) => {
       }
 
     case GET_DRIVERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_SHIPPERS_SUCCESS:
+      return {
+        ...state,
+        shippers: action.payload,
+      }
+
+    case GET_SHIPPERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_TRUCKING_CUSTOMERS_SUCCESS:
+      return {
+        ...state,
+        truckingCustomers: action.payload,
+      }
+
+    case GET_TRUCKING_CUSTOMERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_TRUCKS_SUCCESS:
+      return {
+        ...state,
+        trucks: action.payload,
+      }
+
+    case GET_TRUCKS_FAIL:
       return {
         ...state,
         error: action.payload,

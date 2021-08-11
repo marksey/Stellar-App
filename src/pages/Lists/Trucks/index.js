@@ -11,8 +11,6 @@ import BootstrapTable from "react-bootstrap-table-next"
 
 import images from "assets/images"
 
-import Dropzone from "react-dropzone"
-
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 //Import Breadcrumb
@@ -20,6 +18,8 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
   getDrivers,
+  getShippers,
+  getTrucks,
   addNewUser,
   updateUser,
   deleteUser
@@ -28,13 +28,13 @@ import {
 import { isEmpty, size, map } from "lodash"
 import { roundWithPrecision } from "chartist";
 
-class DriversList extends Component {
+class Trucks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      drivers: [],
+      trucks: [],
       modal: false,
-      driverListColumns: [
+      shipperListColumns: [
         {
           text: "id",
           dataField: "id",
@@ -47,74 +47,59 @@ class DriversList extends Component {
           ),
         },
         {
-          dataField: "img",
-          text: "",
-          formatter: (cellContent, driver) => (
+            text: "Age",
+            dataField: "age",
+        },
+        {
+            text: "Carrier",
+            dataField: "carrier",
+        },
+        {
+            text: "Truck #",
+            dataField: "truckNum",
+        },
+        {
+          text: "Owner",
+          dataField: "owner",
+          formatter: (cellContent, truck) => (
             <>
-              {!driver.img ? (
-                <div className="avatar-xs">
-                  <span className="avatar-title rounded-circle">
-                    {driver.name.charAt(0)}
-                  </span>
-                </div>
-              ) : (
-                <div>
-                  <img
-                    className="rounded-circle avatar-xs"
-                    src={images[driver.img]}
-                    alt=""
-                  />
-                </div>
-              )}
+              {truck.owner}
             </>
           ),
         },
         {
-          text: "Full Name",
-          dataField: "name",
-          sort: true,
-          formatter: (cellContent, driver) => (
-            <>
-              <h5 className="font-size-14 mb-1">
-                <Link to="#" className="text-dark">
-                  {driver.name}
-                </Link>
-              </h5>
-              <p className="text-muted mb-0">{driver.designation}</p>
-            </>
-          ),
+          text: "Make",  
+          dataField: "make",
         },
         {
-          text: "Truck #",
-          dataField: "truckNum",
+            text: "Plate #",  
+            dataField: "plateNum",
         },
         {
-          text: "Pull Notice",
-          dataField: "pullNotice",
-          formatter: (cellContent, driver) => (
-            <>
-              {driver.pullNotice}
-            </>
-          ),
-        },
+            text: "State",  
+            dataField: "state",
+        }, 
         {
-          text: "Cell #",  
-          dataField: "cellNum",
-        },
+            text: "VIN #",  
+            dataField: "vinNum",
+        },  
         {
-          text: "Trailer #",
-          dataField: "trailerNum",
-          editable: false,          
-        },
+            text: "Year",  
+            dataField: "year",
+        }, 
+        {
+            text: "Location",  
+            dataField: "location",
+        }, 
         {
             text: "Actions",
             dataField: "actions",
             isDummyField: true,
             editable: false,
-            formatter: (cellContent, driver) => (
+            formatter: (cellContent, shipper) => (
               <div className="d-flex gap-3">
-                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(driver)}></i></Link>
-                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(driver)}></i></Link>
+                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
+                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
               </div>
             ),
         }
@@ -128,12 +113,13 @@ class DriversList extends Component {
 
   componentDidMount() {
 
-    const { drivers, onGetDrivers } = this.props
-    if (drivers && !drivers.length) {
-      onGetDrivers(); 
+    const { trucks, onGetTrucks } = this.props
+    if (trucks && !trucks.length) {
+      console.log('getting trucks!!!!!!')
+      onGetTrucks(); 
     }
 
-    this.setState({ drivers })
+    this.setState({ trucks })
 
   }
 
@@ -144,37 +130,37 @@ class DriversList extends Component {
   }
 
   handleUserClicks = arg => {
-    this.setState({ drivers: '', isEdit: false })
+    this.setState({ trucks: '', isEdit: false })
     this.toggle()
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { drivers } = this.props
-    if (!isEmpty(drivers) && size(prevProps.drivers) !== size(drivers)) {
-      this.setState({ drivers: {}, isEdit: false })
+    const { trucks } = this.props
+    if (!isEmpty(trucks) && size(prevProps.trucks) !== size(trucks)) {
+      this.setState({ trucks: {}, isEdit: false })
     }
   }
 
   /* Insert,Update Delete data */
 
-  handleDeleteUser = (driver) => {
+  handleDeleteUser = (shipper) => {
     const { onDeleteUser } = this.props
-    onDeleteUser(driver)
+    onDeleteUser(shipper)
   }
 
   handleUserClick = arg => {
-    const driver = arg
+    const shipper = arg
 
     this.setState({
         
-      drivers: {
-        id: driver.id,
-        name: driver.name,
-        designation: driver.designation,
-        email: driver.email,
-        tags: driver.tags,
-        projects: driver.projects
+      trucks: {
+        id: shipper.id,
+        name: shipper.name,
+        designation: shipper.designation,
+        email: shipper.email,
+        tags: shipper.tags,
+        projects: shipper.projects
       },
       isEdit: true,
     })
@@ -183,15 +169,15 @@ class DriversList extends Component {
   }
 
   /**
-   * Handling submit driver on driver form
+   * Handling submit shipper on shipper form
    */
   handleValidUserSubmit = (e, values) => {
     const { onAddNewUser, onUpdateUser } = this.props
-    const { isEdit, drivers, selectedUser } = this.state
+    const { isEdit, trucks, selectedUser } = this.state
 
     if (isEdit) {
       const updateUser = {
-        id: drivers.id,
+        id: trucks.id,
         name: values.name,
         designation: values.designation,
         tags: values.tags,
@@ -199,7 +185,7 @@ class DriversList extends Component {
         projects: values.projects
       }
 
-      // update driver
+      // update shipper
       onUpdateUser(updateUser)
     } else {
 
@@ -211,7 +197,7 @@ class DriversList extends Component {
         tags: values["tags"],
         projects: values["projects"]
       }
-      // save new driver
+      // save new shipper
       onAddNewUser(newUser)
     }
     this.setState({ selectedUser: null })
@@ -221,16 +207,16 @@ class DriversList extends Component {
   /* Insert,Update Delete data */
 
   render() {
-    // const { drivers } = this.state
+    // const { trucks } = this.state
     const { SearchBar } = Search;
 
-    const { drivers } = this.props
+    const { trucks } = this.props
 
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 7,
-      totalSize: drivers.length, // replace later with size(drivers),
+      sizePerPage: 10,
+      totalSize: trucks.length, // replace later with size(trucks),
       custom: true,
     }
 
@@ -247,11 +233,11 @@ class DriversList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Drivers List | Stellar</title>
+            <title>Trucks List | Stellar</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Drivers" breadcrumbItem="Drivers List" />
+            <Breadcrumbs title="Trucks" breadcrumbItem="Trucks List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -260,8 +246,8 @@ class DriversList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField='id'
-                      columns={this.state.driverListColumns}
-                      data={drivers}
+                      columns={this.state.shipperListColumns}
+                      data={trucks}
                     >
                       {
                         ({
@@ -270,8 +256,8 @@ class DriversList extends Component {
                         }) => (
                           <ToolkitProvider
                             keyField='id'
-                            columns={this.state.driverListColumns}
-                            data={drivers}
+                            columns={this.state.shipperListColumns}
+                            data={trucks}
                             search
                           >
                             {
@@ -294,7 +280,7 @@ class DriversList extends Component {
                                           onClick={this.handleUserClicks}
                                         >
                                           <i className="mdi mdi-plus-circle-outline me-1" />
-                                          Add Driver
+                                          Add Truck
                                         </Button>
                                       </div>
                                     </Col>
@@ -308,7 +294,7 @@ class DriversList extends Component {
                                           selectRow={selectRow}
                                           defaultSorted={defaultSorted}
                                           classes={
-                                            "table align-middle table-nowrap table-hover"
+                                            "table align-middle table-nowrap table-hover "
                                           }
                                           bordered={false}
                                           striped={false}
@@ -317,10 +303,11 @@ class DriversList extends Component {
 
                                         <Modal
                                           isOpen={this.state.modal}
-                                          className={this.props.className}
+                                          className = 'modal-dialog modal-dialog-scrollable'
+                                          //className={this.props.className}
                                         >
                                           <ModalHeader toggle={this.toggle} tag="h4">
-                                            {!!isEdit ? "Edit driver" : "Add driver"}
+                                            {!!isEdit ? "Edit truck" : "Add Truck"}
                                           </ModalHeader>
                                           <ModalBody>
                                             <AvForm
@@ -333,96 +320,130 @@ class DriversList extends Component {
                                                   <div className="mb-3">
 
                                                     <AvField
-                                                      name="fullName"
-                                                      label="Full Name"
+                                                      name="age"
+                                                      label="Age"
                                                       type="text"
-                                                      errorMessage="Invalid name"
+                                                      errorMessage="Invalid age"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.name || ""}
+                                                      value={this.state.trucks.age || ""}
                                                     />
                                                   </div>
-                                                 
-                                                  <div className="mb-3">
-
-                                                    
-                                                    <Dropzone
-                                                      onDrop={acceptedFiles =>
-                                                        this.handleAcceptedFiles(acceptedFiles)
-                                                      }
-                                                    >
-                                                      {({ getRootProps, getInputProps }) => (
-                                                        <div className="dropzone" style={{minHeight: '100px', maxHeight: '100px'}}>
-                                                          <div
-                                                            className="dz-message needsclick"
-                                                            {...getRootProps()}
-                                                            style={{minHeight: '100px', maxHeight: '100px'}}
-                                                            //min and max height makes dropzone smaller
-                                                          >
-                                                            <input {...getInputProps()} />
-                                                            
-                                                              {/*/Margin top makes the text fit in the DropZone. May need to code better*/}
-                                                              <div className="mb-3" style={{marginTop: '-8%'}}>
-                                                                <i className="display-4 text-muted bx bxs-cloud-upload" />
-                                                                <h5>Drop driver image here or click to upload.</h5>
-                                                              </div>
-                                                            
-                                                          </div>
-                                                        </div>
-                                                      )}
-                                                    </Dropzone>
-                                                  </div>
-
                                                   <div className="mb-3">
 
                                                     <AvField
-                                                      name="designation"
+                                                      name="carrier"
+                                                      label="Carrier"
+                                                      type="text"
+                                                      errorMessage="Invalid Carrier Name"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.designation || ""}
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="truckNum"
                                                       label="Truck #"
                                                       type="text"
                                                       errorMessage="Invalid Truck #"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.designation || ""}
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <AvField
-                                                      name="pullNotice"
-                                                      label="Pull Notice"
-                                                      type="email"
-                                                      errorMessage="Invalid Pull"
-                                                      validate={{
-                                                        required: { value: true },
-                                                      }}
-                                                      value={this.state.drivers.email || ""}
+                                                      value={this.state.trucks.email || ""}
                                                     />
                                                   </div>
                                                   
                                                   <div className="mb-3">
                                                     <AvField
-                                                      name="cellNum"
-                                                      label="Cell #"
+                                                      name="owner"
+                                                      label="Owner"
                                                       type="text"
-                                                      errorMessage="Invalid Cell #"
+                                                      errorMessage="Invalid Owner"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.trucks.projects || ""}
                                                     />
                                                   </div>
 
                                                   <div className="mb-3">
                                                     <AvField
-                                                      name="truckNum"
-                                                      label="Trailer #"
+                                                      name="make"
+                                                      label="Make"
                                                       type="text"
-                                                      errorMessage="Invalid Trailer #"
+                                                      errorMessage="Invalid Make"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.trucks.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="plateNum"
+                                                      label="Plate #"
+                                                      type="text"
+                                                      errorMessage="Invalid Plate #"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="state"
+                                                      label="State"
+                                                      type="text"
+                                                      errorMessage="Invalid State"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="vinNum"
+                                                      label="Vin #"
+                                                      type="text"
+                                                      errorMessage="Invalid Vin #"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="year"
+                                                      label="Year"
+                                                      type="text"
+                                                      errorMessage="Invalid Year"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="location"
+                                                      label="Location"
+                                                      type="text"
+                                                      errorMessage="Invalid Location"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.projects || ""}
                                                     />
                                                   </div>
 
@@ -437,7 +458,7 @@ class DriversList extends Component {
                                                       type="submit"
                                                       className="btn btn-success save-user"
                                                     >
-                                                      Save
+                                                      Add Truck
                                                     </button>
                                                   </div>
                                                 </Col>
@@ -448,21 +469,24 @@ class DriversList extends Component {
                                       </div>
                                     </Col>
                                   </Row>
-                                  <Row className="align-items-md-center mt-30">
+
+
+                                <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
-                                          <div className="d-inline">
-                                              <SizePerPageDropdownStandalone
-                                                  {...paginationProps}
-                                              />
-                                          </div>
-                                      
-                                          <div className="pagination pagination-rounded text-md-right ms-auto">
-                                              <PaginationListStandalone
-                                                  {...paginationProps}
-                                              />
-                                          </div>
-                                      </Col>
-                                  </Row>
+                                        <div className="d-inline">
+                                            <SizePerPageDropdownStandalone
+                                                {...paginationProps}
+                                            />
+                                        </div>
+                                    
+                                        <div className="pagination pagination-rounded text-md-right ms-auto">
+                                            <PaginationListStandalone
+                                                {...paginationProps}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+
                                 </React.Fragment>
                               )}
                           </ToolkitProvider>
@@ -472,6 +496,9 @@ class DriversList extends Component {
                 </Card>
               </Col>
             </Row>
+
+            
+
           </Container>
         </div>
       </React.Fragment>
@@ -479,27 +506,27 @@ class DriversList extends Component {
   }
 }
 
-DriversList.propTypes = {
-  drivers: PropTypes.array,
-  onGetDrivers: PropTypes.func,
+Trucks.propTypes = {
+  trucks: PropTypes.array,
+  onGetTrucks: PropTypes.func,
   onAddNewUser: PropTypes.func,
   onDeleteUser: PropTypes.func,
   onUpdateUser: PropTypes.func
 }
 
 function mapStateToProps(state) {
-    const props = { drivers: state.contacts.drivers };
+    const props = { trucks: state.contacts.trucks };
     return props;
   }
 
 {/*
 const mapStateToProps = state => ({
-  drivers: state.contacts.drivers,
+  shippers: state.contacts.shippers,
 })
 */}
 
 const mapDispatchToProps = dispatch => ({
-  onGetDrivers: () => dispatch(getDrivers()),
+  onGetTrucks: () => dispatch(getTrucks()),
   onAddNewUser: driver => dispatch(addNewUser(driver)),
   onUpdateUser: driver => dispatch(updateUser(driver)),
   onDeleteUser: driver => dispatch(deleteUser(driver)),
@@ -508,4 +535,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(DriversList))
+)(withRouter(Trucks))

@@ -58,19 +58,19 @@ class Dashboard extends Component {
         { title: "Trucks Schedule", 
           iconClass: "bx bxs-truck", 
           description: "19" ,
-          url: "/trucks-schedule",
+          url: "/trucks",
         },
         {
           title: "In Transit",
           iconClass: "bx bx-transfer",
           description: "77",
-          url: "/in-transit",
+          url: "/loads",
         },
         {
           title: "Completed",
           iconClass: "bx bxs-calendar-heart",
           description: "365",
-          url: "/completed",
+          url: "/loads",
         },
       ],
       email: [

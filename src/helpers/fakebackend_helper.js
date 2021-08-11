@@ -208,6 +208,15 @@ export const getTasks = () => get(url.GET_TASKS)
 // get drivers
 export const getDrivers = () => get(url.GET_DRIVERS)
 
+// get shippers
+export const getShippers = () => get(url.GET_SHIPPERS)
+
+// get trucks
+export const getTrucks = () => get(url.GET_TRUCKS)
+
+// get trucking customers
+export const getTruckingCustomers = () => get(url.GET_TRUCKING_CUSTOMERS)
+
 // get contacts
 export const getUsers = () => get(url.GET_USERS)
 

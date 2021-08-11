@@ -72,6 +72,9 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 //List pages
 import Loads from "../pages/Lists/Loads/index"
 import DriversList from "../pages/Lists/Drivers/index"
+import Shippers from "../pages/Lists/Shippers/index"
+import Trucks from "../pages/Lists/Trucks/index"
+import Customers from "../pages/Lists/Customers/index"
 
 //AddNew pages
 import NewLoad from "../pages/New-Load/index"
@@ -185,6 +188,9 @@ const authProtectedRoutes = [
 
   { path: "/drivers", component: DriversList},
   { path: "/loads", component: Loads},
+  { path: "/shippers", component: Shippers},
+  { path: "/trucks", component: Trucks},
+  { path: "/customers", component: Customers},
 
   //Add screens
   { path: "/new-load", component: NewLoad },

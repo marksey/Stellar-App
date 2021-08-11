@@ -18,6 +18,9 @@ import { chats, contacts, groups, messages } from "./chat";
 import { inboxmails, starredmails, importantmails, draftmails, sentmails, trashmails } from "./mails";
 import { calenderDefaultCategories, events } from "./calender";
 import { drivers, userProfile } from "./contacts";
+import { shippers } from "./shippers";
+import { truckingCustomers } from "./trucking-customers";
+import { trucks } from "./trucks";
 import { yearData, monthData, weekData } from './dashboard';
 import {
   janTopSellingData,
@@ -42,6 +45,9 @@ export {
   messages,
   orders,
   loads,
+  shippers,
+  truckingCustomers,
+  trucks,
   cartData,
   customerData,
   shops,

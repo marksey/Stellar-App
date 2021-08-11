@@ -7,12 +7,13 @@ import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
+  SizePerPageDropdownStandalone,
 } from "react-bootstrap-table2-paginator"
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
 import { Link } from "react-router-dom"
 import * as moment from 'moment';
 
-import { Button, Card, CardBody, Badge, Modal } from "reactstrap"
+import { Button, Card, CardBody, Row, Col, Badge, Modal } from "reactstrap"
 
 //Import data
 import { discountData, productsData } from "common/data"
@@ -286,11 +287,25 @@ class LoadsList extends Component {
                           headerWrapperClasses={"table-light"}
                         />
                       </div>
-                      <div className="pagination pagination-rounded justify-content-end">
-                        <PaginationListStandalone
-                          {...paginationProps}
-                        />
-                      </div>
+
+                    
+                  
+                      <Row className="align-items-md-center mt-30">
+                        <Col className="inner-custom-pagination d-flex">
+                            <div className="d-inline">
+                                <SizePerPageDropdownStandalone
+                                    {...paginationProps}
+                                />
+                            </div>
+                        
+                            <div className="pagination pagination-rounded text-md-right ms-auto">
+                                <PaginationListStandalone
+                                    {...paginationProps}
+                                />
+                            </div>
+                        </Col>
+                      </Row>
+                      
                     </React.Fragment>
                   )}
                 </ToolkitProvider>

@@ -11,8 +11,6 @@ import BootstrapTable from "react-bootstrap-table-next"
 
 import images from "assets/images"
 
-import Dropzone from "react-dropzone"
-
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 //Import Breadcrumb
@@ -20,6 +18,8 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
   getDrivers,
+  getShippers,
+  getTruckingCustomers,
   addNewUser,
   updateUser,
   deleteUser
@@ -28,93 +28,71 @@ import {
 import { isEmpty, size, map } from "lodash"
 import { roundWithPrecision } from "chartist";
 
-class DriversList extends Component {
+class Customers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      drivers: [],
+      customers: [],
       modal: false,
-      driverListColumns: [
+      customerListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, row) => (
+          formatter: (cellContent, customer) => (
             <>
-              {row.id}
+              {customer.id}
             </>
           ),
         },
         {
-          dataField: "img",
-          text: "",
-          formatter: (cellContent, driver) => (
-            <>
-              {!driver.img ? (
-                <div className="avatar-xs">
-                  <span className="avatar-title rounded-circle">
-                    {driver.name.charAt(0)}
-                  </span>
-                </div>
-              ) : (
-                <div>
-                  <img
-                    className="rounded-circle avatar-xs"
-                    src={images[driver.img]}
-                    alt=""
-                  />
-                </div>
-              )}
-            </>
-          ),
-        },
-        {
-          text: "Full Name",
+          text: "Name",
           dataField: "name",
-          sort: true,
-          formatter: (cellContent, driver) => (
+        },
+        {
+          text: "Contact Name",
+          dataField: "contactName",
+        },
+        {
+          text: "MC #",
+          dataField: "mcNum",
+        },
+        {
+            text: "City, State",
+            dataField: "city",
+        },
+        {
+          text: "Local Phone",
+          dataField: "localPhone",
+          formatter: (cellContent, customer) => (
             <>
-              <h5 className="font-size-14 mb-1">
-                <Link to="#" className="text-dark">
-                  {driver.name}
-                </Link>
-              </h5>
-              <p className="text-muted mb-0">{driver.designation}</p>
+              {customer.localPhone}
             </>
           ),
         },
         {
-          text: "Truck #",
-          dataField: "truckNum",
+          text: "Dispatch Fax",  
+          dataField: "dispatchFax",
         },
         {
-          text: "Pull Notice",
-          dataField: "pullNotice",
-          formatter: (cellContent, driver) => (
-            <>
-              {driver.pullNotice}
-            </>
-          ),
-        },
-        {
-          text: "Cell #",  
-          dataField: "cellNum",
-        },
-        {
-          text: "Trailer #",
-          dataField: "trailerNum",
-          editable: false,          
+            text: "Credit Limit",  
+            dataField: "creditLimit",
+            formatter: (cellContent, customer) => (
+                <>
+                  <h6 class="mb-0 text-success">{customer.creditLimit}</h6>  
+                </>
+            ),
         },
         {
             text: "Actions",
             dataField: "actions",
             isDummyField: true,
             editable: false,
-            formatter: (cellContent, driver) => (
+            formatter: (cellContent, shipper) => (
               <div className="d-flex gap-3">
-                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(driver)}></i></Link>
-                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(driver)}></i></Link>
+                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
+                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
               </div>
             ),
         }
@@ -128,12 +106,13 @@ class DriversList extends Component {
 
   componentDidMount() {
 
-    const { drivers, onGetDrivers } = this.props
-    if (drivers && !drivers.length) {
-      onGetDrivers(); 
+    const { customers, onGetCustomers } = this.props
+    if (customers && !customers.length) {
+      console.log('getting customers!!!!!!')
+      onGetCustomers(); 
     }
 
-    this.setState({ drivers })
+    this.setState({ customers })
 
   }
 
@@ -144,37 +123,37 @@ class DriversList extends Component {
   }
 
   handleUserClicks = arg => {
-    this.setState({ drivers: '', isEdit: false })
+    this.setState({ customers: '', isEdit: false })
     this.toggle()
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { drivers } = this.props
-    if (!isEmpty(drivers) && size(prevProps.drivers) !== size(drivers)) {
-      this.setState({ drivers: {}, isEdit: false })
+    const { customers } = this.props
+    if (!isEmpty(customers) && size(prevProps.customers) !== size(customers)) {
+      this.setState({ customers: {}, isEdit: false })
     }
   }
 
   /* Insert,Update Delete data */
 
-  handleDeleteUser = (driver) => {
+  handleDeleteUser = (shipper) => {
     const { onDeleteUser } = this.props
-    onDeleteUser(driver)
+    onDeleteUser(shipper)
   }
 
   handleUserClick = arg => {
-    const driver = arg
+    const shipper = arg
 
     this.setState({
         
-      drivers: {
-        id: driver.id,
-        name: driver.name,
-        designation: driver.designation,
-        email: driver.email,
-        tags: driver.tags,
-        projects: driver.projects
+      customer: {
+        id: shipper.id,
+        name: shipper.name,
+        designation: shipper.designation,
+        email: shipper.email,
+        tags: shipper.tags,
+        projects: shipper.projects
       },
       isEdit: true,
     })
@@ -183,15 +162,15 @@ class DriversList extends Component {
   }
 
   /**
-   * Handling submit driver on driver form
+   * Handling submit shipper on shipper form
    */
   handleValidUserSubmit = (e, values) => {
     const { onAddNewUser, onUpdateUser } = this.props
-    const { isEdit, drivers, selectedUser } = this.state
+    const { isEdit, customers, selectedUser } = this.state
 
     if (isEdit) {
       const updateUser = {
-        id: drivers.id,
+        id: values.id,
         name: values.name,
         designation: values.designation,
         tags: values.tags,
@@ -199,7 +178,7 @@ class DriversList extends Component {
         projects: values.projects
       }
 
-      // update driver
+      // update shipper
       onUpdateUser(updateUser)
     } else {
 
@@ -211,7 +190,7 @@ class DriversList extends Component {
         tags: values["tags"],
         projects: values["projects"]
       }
-      // save new driver
+      // save new shipper
       onAddNewUser(newUser)
     }
     this.setState({ selectedUser: null })
@@ -221,16 +200,16 @@ class DriversList extends Component {
   /* Insert,Update Delete data */
 
   render() {
-    // const { drivers } = this.state
+    // const { customers } = this.state
     const { SearchBar } = Search;
 
-    const { drivers } = this.props
+    const { customers } = this.props
 
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 7,
-      totalSize: drivers.length, // replace later with size(drivers),
+      sizePerPage: 10,
+      totalSize: customers.length, // replace later with size(customers),
       custom: true,
     }
 
@@ -247,11 +226,11 @@ class DriversList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Drivers List | Stellar</title>
+            <title>customers List | Stellar</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Drivers" breadcrumbItem="Drivers List" />
+            <Breadcrumbs title="customers" breadcrumbItem="customers List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -260,8 +239,8 @@ class DriversList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField='id'
-                      columns={this.state.driverListColumns}
-                      data={drivers}
+                      columns={this.state.customerListColumns}
+                      data={customers}
                     >
                       {
                         ({
@@ -270,8 +249,8 @@ class DriversList extends Component {
                         }) => (
                           <ToolkitProvider
                             keyField='id'
-                            columns={this.state.driverListColumns}
-                            data={drivers}
+                            columns={this.state.customerListColumns}
+                            data={customers}
                             search
                           >
                             {
@@ -294,7 +273,7 @@ class DriversList extends Component {
                                           onClick={this.handleUserClicks}
                                         >
                                           <i className="mdi mdi-plus-circle-outline me-1" />
-                                          Add Driver
+                                          Add Customer
                                         </Button>
                                       </div>
                                     </Col>
@@ -308,7 +287,7 @@ class DriversList extends Component {
                                           selectRow={selectRow}
                                           defaultSorted={defaultSorted}
                                           classes={
-                                            "table align-middle table-nowrap table-hover"
+                                            "table align-middle table-nowrap table-hover "
                                           }
                                           bordered={false}
                                           striped={false}
@@ -320,7 +299,7 @@ class DriversList extends Component {
                                           className={this.props.className}
                                         >
                                           <ModalHeader toggle={this.toggle} tag="h4">
-                                            {!!isEdit ? "Edit driver" : "Add driver"}
+                                            {!!isEdit ? "Edit customer" : "Add customer"}
                                           </ModalHeader>
                                           <ModalBody>
                                             <AvForm
@@ -333,99 +312,93 @@ class DriversList extends Component {
                                                   <div className="mb-3">
 
                                                     <AvField
-                                                      name="fullName"
-                                                      label="Full Name"
+                                                      name="name"
+                                                      label="Name"
                                                       type="text"
                                                       errorMessage="Invalid name"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.name || ""}
+                                                      value={this.state.customers.name || ""}
                                                     />
                                                   </div>
-                                                 
-                                                  <div className="mb-3">
-
-                                                    
-                                                    <Dropzone
-                                                      onDrop={acceptedFiles =>
-                                                        this.handleAcceptedFiles(acceptedFiles)
-                                                      }
-                                                    >
-                                                      {({ getRootProps, getInputProps }) => (
-                                                        <div className="dropzone" style={{minHeight: '100px', maxHeight: '100px'}}>
-                                                          <div
-                                                            className="dz-message needsclick"
-                                                            {...getRootProps()}
-                                                            style={{minHeight: '100px', maxHeight: '100px'}}
-                                                            //min and max height makes dropzone smaller
-                                                          >
-                                                            <input {...getInputProps()} />
-                                                            
-                                                              {/*/Margin top makes the text fit in the DropZone. May need to code better*/}
-                                                              <div className="mb-3" style={{marginTop: '-8%'}}>
-                                                                <i className="display-4 text-muted bx bxs-cloud-upload" />
-                                                                <h5>Drop driver image here or click to upload.</h5>
-                                                              </div>
-                                                            
-                                                          </div>
-                                                        </div>
-                                                      )}
-                                                    </Dropzone>
-                                                  </div>
-
                                                   <div className="mb-3">
 
                                                     <AvField
-                                                      name="designation"
-                                                      label="Truck #"
+                                                      name="contactName"
+                                                      label="Contact Name"
                                                       type="text"
-                                                      errorMessage="Invalid Truck #"
+                                                      errorMessage="Invalid Contact Name"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.designation || ""}
+                                                      value={this.state.customers.designation || ""}
                                                     />
                                                   </div>
                                                   <div className="mb-3">
                                                     <AvField
-                                                      name="pullNotice"
-                                                      label="Pull Notice"
+                                                      name="email"
+                                                      label="MC #"
                                                       type="email"
-                                                      errorMessage="Invalid Pull"
+                                                      errorMessage="Invalid MC #"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.email || ""}
+                                                      value={this.state.customers.email || ""}
                                                     />
                                                   </div>
                                                   
                                                   <div className="mb-3">
                                                     <AvField
-                                                      name="cellNum"
-                                                      label="Cell #"
+                                                      name="cityState"
+                                                      label="City, State"
                                                       type="text"
-                                                      errorMessage="Invalid Cell #"
+                                                      errorMessage="Invalid City, State"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.customers.projects || ""}
                                                     />
                                                   </div>
 
                                                   <div className="mb-3">
                                                     <AvField
-                                                      name="truckNum"
-                                                      label="Trailer #"
+                                                      name="localPhone"
+                                                      label="Local Phone"
                                                       type="text"
-                                                      errorMessage="Invalid Trailer #"
+                                                      errorMessage="Invalid Local Phone"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.customers.projects || ""}
                                                     />
                                                   </div>
 
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="dispatchFax"
+                                                      label="Dispatch Fax"
+                                                      type="text"
+                                                      errorMessage="Invalid Dispatch Fax"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.customers.projects || ""}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <AvField
+                                                      name="creditLimit"
+                                                      label="Credit Limit"
+                                                      type="text"
+                                                      errorMessage="Invalid Credit Limit"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.customers.projects || ""}
+                                                    />
+                                                  </div>
                                                 </Col>
 
                                               </Row>
@@ -448,21 +421,24 @@ class DriversList extends Component {
                                       </div>
                                     </Col>
                                   </Row>
-                                  <Row className="align-items-md-center mt-30">
+
+
+                                <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
-                                          <div className="d-inline">
-                                              <SizePerPageDropdownStandalone
-                                                  {...paginationProps}
-                                              />
-                                          </div>
-                                      
-                                          <div className="pagination pagination-rounded text-md-right ms-auto">
-                                              <PaginationListStandalone
-                                                  {...paginationProps}
-                                              />
-                                          </div>
-                                      </Col>
-                                  </Row>
+                                        <div className="d-inline">
+                                            <SizePerPageDropdownStandalone
+                                                {...paginationProps}
+                                            />
+                                        </div>
+                                    
+                                        <div className="pagination pagination-rounded text-md-right ms-auto">
+                                            <PaginationListStandalone
+                                                {...paginationProps}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+
                                 </React.Fragment>
                               )}
                           </ToolkitProvider>
@@ -472,6 +448,9 @@ class DriversList extends Component {
                 </Card>
               </Col>
             </Row>
+
+            
+
           </Container>
         </div>
       </React.Fragment>
@@ -479,27 +458,27 @@ class DriversList extends Component {
   }
 }
 
-DriversList.propTypes = {
-  drivers: PropTypes.array,
-  onGetDrivers: PropTypes.func,
+Customers.propTypes = {
+  customers: PropTypes.array,
+  onGetCustomers: PropTypes.func,
   onAddNewUser: PropTypes.func,
   onDeleteUser: PropTypes.func,
   onUpdateUser: PropTypes.func
 }
 
 function mapStateToProps(state) {
-    const props = { drivers: state.contacts.drivers };
+    const props = { customers: state.contacts.truckingCustomers };
     return props;
   }
 
 {/*
 const mapStateToProps = state => ({
-  drivers: state.contacts.drivers,
+  shippers: state.contacts.shippers,
 })
 */}
 
 const mapDispatchToProps = dispatch => ({
-  onGetDrivers: () => dispatch(getDrivers()),
+  onGetCustomers: () => dispatch(getTruckingCustomers()),
   onAddNewUser: driver => dispatch(addNewUser(driver)),
   onUpdateUser: driver => dispatch(updateUser(driver)),
   onDeleteUser: driver => dispatch(deleteUser(driver)),
@@ -508,4 +487,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(DriversList))
+)(withRouter(Customers))

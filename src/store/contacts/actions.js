@@ -5,6 +5,15 @@ import {
   GET_DRIVERS,
   GET_DRIVERS_FAIL,
   GET_DRIVERS_SUCCESS,
+  GET_SHIPPERS,
+  GET_SHIPPERS_FAIL,
+  GET_SHIPPERS_SUCCESS,
+  GET_TRUCKING_CUSTOMERS,
+  GET_TRUCKING_CUSTOMERS_FAIL,
+  GET_TRUCKING_CUSTOMERS_SUCCESS,
+  GET_TRUCKS,
+  GET_TRUCKS_SUCCESS,
+  GET_TRUCKS_FAIL,
   GET_USERS,
   GET_USERS_FAIL,
   GET_USERS_SUCCESS,
@@ -18,6 +27,48 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
 } from "./actionTypes"
+
+export const getShippers = () => ({
+  type: GET_SHIPPERS,
+})
+
+export const getShippersSuccess = shippers => ({
+  type: GET_SHIPPERS_SUCCESS,
+  payload: shippers,
+})
+
+export const getShippersFail = error => ({
+  type: GET_SHIPPERS_FAIL,
+  payload: error,
+})
+
+export const getTruckingCustomers = () => ({
+  type: GET_TRUCKING_CUSTOMERS,
+})
+
+export const getTruckingCustomersSuccess = truckingCustomers => ({
+  type: GET_TRUCKING_CUSTOMERS_SUCCESS,
+  payload: truckingCustomers,
+})
+
+export const getTruckingCustomersFail = error => ({
+  type: GET_TRUCKING_CUSTOMERS_FAIL,
+  payload: error,
+})
+
+export const getTrucks = () => ({
+  type: GET_TRUCKS,
+})
+
+export const getTrucksSuccess = trucks => ({
+  type: GET_TRUCKS_SUCCESS,
+  payload: trucks,
+})
+
+export const getTrucksFail = error => ({
+  type: GET_TRUCKS_FAIL,
+  payload: error,
+})
 
 export const getDrivers = () => ({
   type: GET_DRIVERS,

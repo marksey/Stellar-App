@@ -45,6 +45,15 @@ export const GET_CART_DATA = "/cart"
 //LOADS
 export const GET_LOADS = "/loads"
 
+//SHIPPERS
+export const GET_SHIPPERS = "/shippers"
+
+//TRUCKING CUSTOMERS
+export const GET_TRUCKING_CUSTOMERS = "/trucking-customers"
+
+//TRUCKS
+export const GET_TRUCKS = "/trucks"
+
 //CUSTOMERS
 export const GET_CUSTOMERS = "/customers"
 export const ADD_NEW_CUSTOMER = "/add/customer"

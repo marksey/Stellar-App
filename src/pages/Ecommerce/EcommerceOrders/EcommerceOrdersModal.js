@@ -31,11 +31,6 @@ const EcommerceOrdersModal = props => {
             Are you sure you want to complete this load? 
           </p>
 
-          <p className="mb-2">
-            Doing so will complete the load.
-          </p>
-          
-
           
         </ModalBody>
         <ModalFooter>

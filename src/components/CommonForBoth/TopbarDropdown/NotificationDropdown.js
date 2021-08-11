@@ -5,8 +5,9 @@ import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap"
 import SimpleBar from "simplebar-react"
 
 //Import images
+import avatar2 from "../../../assets/images/users/avatar-2.jpg"
 import avatar3 from "../../../assets/images/users/avatar-3.jpg"
-import avatar4 from "../../../assets/images/users/avatar-4.jpg"
+
 
 //i18n
 import { withTranslation } from "react-i18next"
@@ -59,21 +60,24 @@ class NotificationDropdown extends Component {
             </div>
 
             <SimpleBar style={{ height: "230px" }}>
+
               <Link to="" className="text-reset notification-item">
+                
                 <div className="media">
                   <div className="avatar-xs me-3">
                     <span className="avatar-title bg-primary rounded-circle font-size-16">
-                      <i className="bx bx-cart" />
+                      <i className="bx bxs-truck" />
                     </span>
                   </div>
+
                   <div className="media-body">
                     <h6 className="mt-0 mb-1">
-                      {this.props.t("Your order is placed")}
+                      {this.props.t("One hour until delivery.")}
                     </h6>
                     <div className="font-size-12 text-muted">
                       <p className="mb-1">
                         {this.props.t(
-                          "If several languages coalesce the grammar"
+                          "Load # SK87231"
                         )}
                       </p>
                       <p className="mb-0">
@@ -84,6 +88,7 @@ class NotificationDropdown extends Component {
                   </div>
                 </div>
               </Link>
+
               <Link to="" className="text-reset notification-item">
                 <div className="media">
                   <img
@@ -92,15 +97,14 @@ class NotificationDropdown extends Component {
                     alt="user-pic"
                   />
                   <div className="media-body">
-                    <h6 className="mt-0 mb-1">James Lemire</h6>
+                    <h6 className="mt-0 mb-1">Vasya Kishchenko</h6>
                     <div className="font-size-12 text-muted">
                       <p className="mb-1">
-                        {this.props.t("It will seem like simplified English") +
-                          "."}
+                        {this.props.t('"Yo! Comchek received."')}
                       </p>
                       <p className="mb-0">
-                        <i className="mdi mdi-clock-outline" />
-                        {this.props.t("1 hours ago")}{" "}
+                        <i className="mdi mdi-clock-outline" />{" "}
+                        {this.props.t("30 mins ago")}{" "}
                       </p>
                     </div>
                   </div>
@@ -109,23 +113,51 @@ class NotificationDropdown extends Component {
               <Link to="" className="text-reset notification-item">
                 <div className="media">
                   <div className="avatar-xs me-3">
-                    <span className="avatar-title bg-success rounded-circle font-size-16">
-                      <i className="bx bx-badge-check" />
-                    </span>
+                  <img
+                    src={avatar2}
+                    className="me-3 rounded-circle avatar-xs"
+                    alt="user-pic"
+                  />
                   </div>
                   <div className="media-body">
                     <h6 className="mt-0 mb-1">
-                      {this.props.t("Your item is shipped")}
+                      {this.props.t("Michael Todd")}
+                    </h6>
+                    <div className="font-size-12 text-muted">
+                      <p className="mb-1">
+                        {this.props.t('"Picked up the load. Omw to Tulsa, OK."')}
+                      </p>
+                      <p className="mb-0">
+                        <i className="mdi mdi-clock-outline" />{" "}
+                        {this.props.t("45 min ago")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              <Link to="" className="text-reset notification-item">
+                
+                <div className="media">
+                  <div className="avatar-xs me-3">
+                    <span className="avatar-title bg-primary rounded-circle font-size-16">
+                      <i className="bx bxs-truck" />
+                    </span>
+                  </div>
+
+                  <div className="media-body">
+                    <h6 className="mt-0 mb-1">
+                      {this.props.t("One hour until delivery.")}
                     </h6>
                     <div className="font-size-12 text-muted">
                       <p className="mb-1">
                         {this.props.t(
-                          "If several languages coalesce the grammar"
+                          "Load # SK53239"
                         )}
                       </p>
                       <p className="mb-0">
                         <i className="mdi mdi-clock-outline" />{" "}
-                        {this.props.t("3 min ago")}
+                        {this.props.t("50 mins ago")}
                       </p>
                     </div>
                   </div>
@@ -135,26 +167,25 @@ class NotificationDropdown extends Component {
               <Link to="" className="text-reset notification-item">
                 <div className="media">
                   <img
-                    src={avatar4}
+                    src={avatar3}
                     className="me-3 rounded-circle avatar-xs"
                     alt="user-pic"
                   />
                   <div className="media-body">
-                    <h6 className="mt-0 mb-1">Salena Layfield</h6>
+                    <h6 className="mt-0 mb-1">Vasya Kishchenko</h6>
                     <div className="font-size-12 text-muted">
                       <p className="mb-1">
-                        {this.props.t(
-                          "As a skeptical Cambridge friend of mine occidental"
-                        ) + "."}
+                        {this.props.t('"Tipa. I\'m going to have to cancel this load."') }
                       </p>
                       <p className="mb-0">
-                        <i className="mdi mdi-clock-outline" />
-                        {this.props.t("1 hours ago")}{" "}
+                        <i className="mdi mdi-clock-outline" />{" "}
+                        {this.props.t("2 hrs ago")}
                       </p>
                     </div>
                   </div>
                 </div>
               </Link>
+
             </SimpleBar>
             <div className="p-2 border-top d-grid">
               <Link className="btn btn-sm btn-link font-size-14 text-center" to="#">

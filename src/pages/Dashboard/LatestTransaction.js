@@ -97,6 +97,8 @@ class LatestTransaction extends Component {
           isDummyField: true,
           text: "Complete Load",
           sort: true,
+          style: {textAlign: 'center'},
+          headerStyle: {textAlign: 'center'},
           formatter: (cellContent, row) => (
 
             <Button
@@ -107,7 +109,7 @@ class LatestTransaction extends Component {
               data-toggle="modal"
               data-target="#myModalLabel"
             >
-              Complete Load
+              Complete
             </Button>
           ),
             /* 
@@ -127,6 +129,8 @@ class LatestTransaction extends Component {
           isDummyField: true,
           text: "View Details",
           sort: true,
+          style: {textAlign: 'center'},
+          headerStyle: {textAlign: 'center'},
           formatter: () => (
             <Button
               type="button"
@@ -213,7 +217,8 @@ class LatestTransaction extends Component {
               Delivering Today
               <a href="new-load">
                 <button class="btn btn-success" style={{float:'right'}}>
-                  Add New Load
+                  <i className="mdi mdi-plus-circle-outline me-1" />
+                  Add Load
                   </button>
               </a>
             </div>

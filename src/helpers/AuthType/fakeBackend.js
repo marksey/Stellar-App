@@ -16,6 +16,9 @@ import {
   messages,
   orders,
   loads,
+  shippers,
+  truckingCustomers,
+  trucks,
   productsData,
   projects,
   recentProducts,
@@ -42,6 +45,8 @@ import {
   novEarningData,
   octEarningData
 } from "../../common/data"
+import Shippers from "pages/Lists/Shippers"
+import Trucks from "pages/Lists/Trucks"
 
 let users = [
   {
@@ -832,6 +837,46 @@ const fakeBackend = () => {
     })
   })
 
+  mock.onGet(url.GET_SHIPPERS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (shippers) {
+          // Passing fake JSON data as response
+          resolve([200, shippers])
+        } else {
+          reject([400, "Cannot get shippers"])
+        }
+      })
+    })
+  })
+
+  mock.onGet(url.GET_TRUCKING_CUSTOMERS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (truckingCustomers) {
+          // Passing fake JSON data as response
+          resolve([200, truckingCustomers])
+        } else {
+          reject([400, "Cannot get shippers"])
+        }
+      })
+    })
+  })
+
+  mock.onGet(url.GET_TRUCKS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (trucks) {
+          // Passing fake JSON data as response
+          resolve([200, trucks])
+        } else {
+          reject([400, "Cannot get trucks"])
+        }
+      })
+    })
+  })
+
+  
   /*
   mock.onGet(url.GET_USERS).reply(() => {
     return new Promise((resolve, reject) => {
