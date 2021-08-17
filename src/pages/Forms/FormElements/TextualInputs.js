@@ -1,8 +1,15 @@
 import React, { Component } from "react"
 import {
+  Button,
   Card,
   CardBody,
   CardTitle,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row,
 } from "reactstrap";
 
 //Import Images
@@ -15,9 +22,10 @@ export default class TextualInputs extends Component {
       <div style={{width:'60%', marginLeft: 'auto', marginRight: 'auto'}}>
         <Card>
           <CardBody>
-            <CardTitle className="h4">Load Info</CardTitle>
+
+          <CardTitle className="h4">Customer Info</CardTitle>
             <p className="card-title-desc">
-              Please enter the load info below.
+              Please enter the customer info below.
             </p>
 
             <div className="mb-3 row">
@@ -25,7 +33,26 @@ export default class TextualInputs extends Component {
                 htmlFor="example-text-input"
                 className="col-md-2 col-form-label"
               >
-                Load #
+                Broker Name
+              </label>
+              <div className="col-md-10">
+                <input className="form-control" list="brokerListOptions" id="exampleDataList" placeholder="Type to search..." />
+                <datalist id="brokerListOptions">
+                  <option value="Acme Brokers Inc" />
+                  <option value="Beta Brokers Ltd" />
+                  <option value="Gamma Brokers Company" />
+                  <option value="Theta Brokerage Firm" />
+                  <option value="Rho Trucks Brokers" />
+                </datalist>
+              </div>
+            </div>
+
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-text-input"
+                className="col-md-2 col-form-label"
+              >
+                Rate
               </label>
               <div className="col-md-10">
                 <input
@@ -35,33 +62,28 @@ export default class TextualInputs extends Component {
                 />
               </div>
             </div>
+
+            <br></br>
+
+            <CardTitle className="h4">Load Info</CardTitle>
+            <p className="card-title-desc">
+              Please enter the load info below.
+            </p>
+
+            
+
             <div className="mb-3 row">
               <label
-                htmlFor="example-search-input"
+                htmlFor="example-text-input"
                 className="col-md-2 col-form-label"
               >
-                Truck #
+                Ref #
               </label>
               <div className="col-md-10">
                 <input
                   className="form-control"
                   type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-email-input"
-                className="col-md-2 col-form-label"
-              >
-                Trailer #
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
+                  defaultValue="1337"
                 />
               </div>
             </div>
@@ -94,10 +116,45 @@ export default class TextualInputs extends Component {
                 <input
                   className="form-control"
                   type="tel"
-                  defaultValue="1-(555)-555-5555"
+                  placeholder="1-(555)-555-5555"
                 />
               </div>
             </div>
+
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-search-input"
+                className="col-md-2 col-form-label"
+              >
+                Truck #
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="text"
+                  defaultValue=""
+                />
+              </div>
+            </div>
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-email-input"
+                className="col-md-2 col-form-label"
+              >
+                Trailer #
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="text"
+                  defaultValue=""
+                />
+              </div>
+            </div>
+
+            
+
+            {/*
             <div className="mb-3 row">
               <label
                 htmlFor="example-password-input"
@@ -109,6 +166,7 @@ export default class TextualInputs extends Component {
                 <img alt="" src={images.avatar2} class=" avatar-sm"></img>
               </div>
             </div>
+            */}
 
             <br></br>
 
@@ -117,23 +175,22 @@ export default class TextualInputs extends Component {
               Please enter the pickup info below.
             </p>
           
+            
             <div className="mb-3 row">
               <label
-                htmlFor="example-datetime-local-input"
+                htmlFor="example-url-input"
                 className="col-md-2 col-form-label"
               >
-                Date & Time
+                Company 
               </label>
               <div className="col-md-10">
                 <input
                   className="form-control"
-                  type="datetime-local"
-                  defaultValue="2019-08-19T13:45:00"
-                  id="example-datetime-local-input"
+                  type="text"
+                  defaultValue=""
                 />
               </div>
             </div>
-            
             
             <div className="mb-3 row">
               <label
@@ -147,49 +204,58 @@ export default class TextualInputs extends Component {
                   className="form-control"
                   type="text"
                   defaultValue=""
-                />
-              </div>
-            </div>
-            
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-text-input"
-                className="col-md-2 col-form-label"
-              >
-                City
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
+                  placeholder="Street Name"
                 />
               </div>
             </div>
 
             <div className="mb-3 row">
-              <label className="col-md-2 col-form-label">State</label>
-              <div className="col-md-10">
-                <select className="form-select">
-                  <option>Alaska</option>
-                  <option>Alabama</option>
-                  <option>California</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="row">
               <label
-                htmlFor="example-text-input"
+                htmlFor="example-url-input"
                 className="col-md-2 col-form-label"
               >
-                Zip Code
+                Address 2
               </label>
               <div className="col-md-10">
                 <input
                   className="form-control"
                   type="text"
                   defaultValue=""
+                  placeholder="City, State ZIP"
+                />
+              </div>
+            </div>
+
+
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-tel-input"
+                className="col-md-2 col-form-label"
+              >
+                Phone
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="tel"
+                  placeholder="1-(555)-555-5555"
+                />
+              </div>
+            </div>
+
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-datetime-local-input"
+                className="col-md-2 col-form-label"
+              >
+                Date & Time
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="datetime-local"
+                  defaultValue="2019-08-19T13:45:00"
+                  id="example-datetime-local-input"
                 />
               </div>
             </div>
@@ -202,6 +268,44 @@ export default class TextualInputs extends Component {
               Please enter the delivery info below.
             </p>
 
+            
+            
+            
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-url-input"
+                className="col-md-2 col-form-label"
+              >
+                Address
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="text"
+                  defaultValue=""
+                  placeholder="Street Name"
+                />
+              </div>
+            </div>
+            
+            <div className="mb-3 row">
+              <label
+                htmlFor="example-url-input"
+                className="col-md-2 col-form-label"
+              >
+                Address 2
+              </label>
+              <div className="col-md-10">
+                <input
+                  className="form-control"
+                  type="text"
+                  defaultValue=""
+                  placeholder="City, State ZIP"
+                />
+              </div>
+            </div>
+          
+
             <div className="mb-3 row">
               <label
                 htmlFor="example-datetime-local-input"
@@ -218,111 +322,22 @@ export default class TextualInputs extends Component {
                 />
               </div>
             </div>
-            
-            
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-url-input"
-                className="col-md-2 col-form-label"
-              >
-                Address
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
-            
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-text-input"
-                className="col-md-2 col-form-label"
-              >
-                City
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
-
-            <div className="mb-3 row">
-              <label className="col-md-2 col-form-label">State</label>
-              <div className="col-md-10">
-                <select className="form-select">
-                  <option>Alaska</option>
-                  <option>Alabama</option>
-                  <option>California</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="row">
-              <label
-                htmlFor="example-text-input"
-                className="col-md-2 col-form-label"
-              >
-                Zip Code
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
-            
-            <br></br>
-            <br></br>
-
-            <CardTitle className="h4">Customer Info</CardTitle>
-            <p className="card-title-desc">
-              Please enter the customer info below.
-            </p>
-
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-text-input"
-                className="col-md-2 col-form-label"
-              >
-                Broker Name
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
-
-            <div className="mb-3 row">
-              <label
-                htmlFor="example-text-input"
-                className="col-md-2 col-form-label"
-              >
-                Rate
-              </label>
-              <div className="col-md-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  defaultValue=""
-                />
-              </div>
-            </div>
 
             <br></br>
+
+            <div>
+              <Label className="form-label">Attach Rate Confirmation</Label>
+              <div className="input-group mb-3">
+                <Input className="form-control" type="file" id="formFile" />
+              </div>
+            </div>
+
+            
+
             <div style={{float: 'right'}}>
               <button class="btn btn-success" >Submit</button>
             </div>
+            
           </CardBody>
         </Card>
       </div>

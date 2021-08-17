@@ -7,6 +7,7 @@ import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalB
 import paginationFactory, { PaginationProvider, PaginationListStandalone, SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next"
 
 import images from "assets/images"
@@ -49,22 +50,27 @@ class Customers extends Component {
         {
           text: "Name",
           dataField: "name",
+          filter: textFilter(),
         },
         {
           text: "Contact Name",
           dataField: "contactName",
+          filter: textFilter(),
         },
         {
           text: "MC #",
           dataField: "mcNum",
+          filter: textFilter(),
         },
         {
-            text: "City, State",
-            dataField: "city",
+          text: "City, State",
+          dataField: "city",
+          filter: textFilter(),
         },
         {
           text: "Local Phone",
           dataField: "localPhone",
+          filter: textFilter(),
           formatter: (cellContent, customer) => (
             <>
               {customer.localPhone}
@@ -74,27 +80,29 @@ class Customers extends Component {
         {
           text: "Dispatch Fax",  
           dataField: "dispatchFax",
+          filter: textFilter(),
         },
         {
-            text: "Credit Limit",  
-            dataField: "creditLimit",
-            formatter: (cellContent, customer) => (
-                <>
-                  <h6 class="mb-0 text-success">{customer.creditLimit}</h6>  
-                </>
-            ),
+          text: "Credit Limit",  
+          dataField: "creditLimit",
+          filter: textFilter(),
+          formatter: (cellContent, customer) => (
+              <>
+                <h6 class="mb-0 text-success">{customer.creditLimit}</h6>  
+              </>
+          ),
         },
         {
-            text: "Actions",
-            dataField: "actions",
-            isDummyField: true,
-            editable: false,
-            formatter: (cellContent, shipper) => (
-              <div className="d-flex gap-3">
-                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
-                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
-              </div>
-            ),
+          text: "Actions",
+          dataField: "actions",
+          isDummyField: true,
+          editable: false,
+          formatter: (cellContent, shipper) => (
+            <div className="d-flex gap-3">
+              <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
+              <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
+            </div>
+          ),
         }
       ]
     }
@@ -290,6 +298,8 @@ class Customers extends Component {
                                             "table align-middle table-nowrap table-hover "
                                           }
                                           bordered={false}
+                                          filter={ filterFactory() }
+                                          filterPosition="top"
                                           striped={false}
                                           responsive
                                         />

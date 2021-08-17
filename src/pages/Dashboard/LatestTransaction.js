@@ -9,6 +9,7 @@ import paginationFactory, {
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator"
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { Link } from "react-router-dom"
 import * as moment from 'moment';
 
@@ -45,8 +46,9 @@ class LatestTransaction extends Component {
         },
         {
           dataField: "orderId",
-          text: "Load Number",
+          text: "Ref Number",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, row) => (
             <Link to="#" className="text-body fw-bold">
               {row.orderId}
@@ -54,9 +56,20 @@ class LatestTransaction extends Component {
           ),
         },
         {
+          text: "Truck #",
+          dataField: "truckNum",
+          filter: textFilter(),
+        },
+        {
+          text: "Trailer #",
+          dataField: "trailerNum",
+          filter: textFilter(),
+        },
+        {
           dataField: "driver",
           text: "Driver",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "total",
@@ -188,6 +201,8 @@ class LatestTransaction extends Component {
   render() {
     const { orders } = this.props
 
+    const { SearchBar } = Search;
+
     //pagination customization
     const pageOptions = {
       sizePerPage: 7,
@@ -249,6 +264,8 @@ class LatestTransaction extends Component {
                           responsive
                           defaultSorted={defaultSorted}
                           bordered={true}
+                          filter={ filterFactory() }
+                          filterPosition="top"
                           striped={true}
                           selectRow={selectRow}
                           classes={

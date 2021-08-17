@@ -7,6 +7,7 @@ import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalB
 import paginationFactory, { PaginationProvider, PaginationListStandalone, SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next"
 
 import images from "assets/images"
@@ -48,18 +49,22 @@ class Shippers extends Component {
         {
           dataField: "name",
           text: "Name",
+          filter: textFilter(),
         },
         {
           text: "Contact Name",
           dataField: "contactName",
+          filter: textFilter(),
         },
         {
           text: "City, State",
           dataField: "city",
+          filter: textFilter(),
         },
         {
           text: "Phone",
           dataField: "phone",
+          filter: textFilter(),
           formatter: (cellContent, shipper) => (
             <>
               {shipper.phone}
@@ -69,6 +74,7 @@ class Shippers extends Component {
         {
           text: "Fax",  
           dataField: "fax",
+          filter: textFilter(),
         },
         {
             text: "Actions",
@@ -276,6 +282,8 @@ class Shippers extends Component {
                                             "table align-middle table-nowrap table-hover table-sm"
                                           }
                                           bordered={false}
+                                          filter={ filterFactory() }
+                                          filterPosition="top"
                                           striped={false}
                                           responsive
                                         />

@@ -426,6 +426,8 @@ const orders = [
   {
     id: "1",
     orderId: "#SK2547",
+    truckNum: "1312",
+    trailerNum: "92321",
     driver: "Justin Moser",
     total: "Salt Lake City, UT",
     pickupTime: "07/25 08:00",
@@ -437,6 +439,8 @@ const orders = [
   },{
     id: "2",
     orderId: "#SK2547",
+    truckNum: "3412",
+    trailerNum: "43232",
     driver: "Michael Todd",
     total: "Akron, OH",
     pickupTime: "07/26 14:00",
@@ -449,6 +453,8 @@ const orders = [
   {
     id: "8",
     orderId: "#SK2547",
+    truckNum: "9123",
+    trailerNum: "82321",
     driver: "Justin Moser",
     total: "Salt Lake City, UT",
     pickupTime: "07/25 08:00",
@@ -461,6 +467,8 @@ const orders = [
   {
     id: "9",
     orderId: "#SK2548",
+    truckNum: "2923",
+    trailerNum: "64342",
     driver: "Vasya Kishchenko",
     total: "San Diego, CA",
     pickupTime: "07/23 16:00",
@@ -473,6 +481,8 @@ const orders = [
   {
     id: "10",
     orderId: "#SK2540",
+    truckNum: "8723",
+    trailerNum: "72323",
     driver: "Oleg Sivorsky",
     total: "Portland, OR",
     pickupTime:  "07/23 15:30",
@@ -485,6 +495,8 @@ const orders = [
   {
     id: "11",
     orderId: "#SK2541",
+    truckNum: "3723",
+    trailerNum: "38923",
     driver: "Jamal Burnett",
     total: "Seattle, WA",
     pickupTime: "07/24 15:30",
@@ -497,6 +509,8 @@ const orders = [
   {
     id: "12",
     orderId: "#SK2542",
+    truckNum: "6389",
+    trailerNum: "27832",
     driver: "Alex Moskov",
     total: "Sacramento, CA",
     pickupTime: "07/25 07:30",
@@ -509,6 +523,8 @@ const orders = [
   {
     id: "13",
     orderId: "#SK2543",
+    truckNum: "7232",
+    trailerNum: "48342",
     driver: "Samuel Mikhalchuk",
     total: "Boise, ID",
     pickupTime: "07/26 10:00",
@@ -521,6 +537,8 @@ const orders = [
   {
     id: "14",
     orderId: "#SK2543",
+    truckNum: "9823",
+    trailerNum: "23231",
     driver: "Steve Madden",
     total: "Minneapolis, MN",
     pickupTime: "07/26 8:30",
@@ -533,6 +551,8 @@ const orders = [
   {
     id: "15",
     orderId: "#SK2543",
+    truckNum: "3982",
+    trailerNum: "89231",
     driver: "Michael Scott",
     total: "Billings, MT",
     pickupTime: "07/26 12:00",
@@ -544,6 +564,8 @@ const orders = [
   }, {
     id: "16",
     orderId: "#SK2543",
+    truckNum: "7923",
+    trailerNum: "79023",
     driver: "Steven Furtick",
     total: "Detroit, MI",
     pickupTime: "07/26 11:00",

@@ -9,6 +9,8 @@ import paginationFactory, { PaginationProvider, PaginationListStandalone, SizePe
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
 import BootstrapTable from "react-bootstrap-table-next"
 
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 import images from "assets/images"
 
 import { AvForm, AvField } from "availity-reactstrap-validation"
@@ -49,18 +51,23 @@ class Trucks extends Component {
         {
             text: "Age",
             dataField: "age",
+            filter: textFilter(),
+            
         },
         {
             text: "Carrier",
             dataField: "carrier",
+            filter: textFilter(),
         },
         {
             text: "Truck #",
             dataField: "truckNum",
+            filter: textFilter(),
         },
         {
           text: "Owner",
           dataField: "owner",
+          filter: textFilter(),
           formatter: (cellContent, truck) => (
             <>
               {truck.owner}
@@ -70,26 +77,32 @@ class Trucks extends Component {
         {
           text: "Make",  
           dataField: "make",
+          filter: textFilter(),
         },
         {
             text: "Plate #",  
             dataField: "plateNum",
+            filter: textFilter(),
         },
         {
             text: "State",  
             dataField: "state",
+            filter: textFilter(),
         }, 
         {
             text: "VIN #",  
             dataField: "vinNum",
+            filter: textFilter(),
         },  
         {
             text: "Year",  
             dataField: "year",
+            filter: textFilter(),
         }, 
         {
             text: "Location",  
             dataField: "location",
+            filter: textFilter(),
         }, 
         {
             text: "Actions",
@@ -297,6 +310,8 @@ class Trucks extends Component {
                                             "table align-middle table-nowrap table-hover "
                                           }
                                           bordered={false}
+                                          filter={ filterFactory() }
+                                          filterPosition="top"
                                           striped={false}
                                           responsive
                                         />

@@ -7,6 +7,7 @@ import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalB
 import paginationFactory, { PaginationProvider, PaginationListStandalone, SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next"
 
 import images from "assets/images"
@@ -73,6 +74,7 @@ class DriversList extends Component {
           text: "Full Name",
           dataField: "name",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, driver) => (
             <>
               <h5 className="font-size-14 mb-1">
@@ -87,10 +89,12 @@ class DriversList extends Component {
         {
           text: "Truck #",
           dataField: "truckNum",
+          filter: textFilter(),
         },
         {
           text: "Pull Notice",
           dataField: "pullNotice",
+          filter: textFilter(),
           formatter: (cellContent, driver) => (
             <>
               {driver.pullNotice}
@@ -100,10 +104,12 @@ class DriversList extends Component {
         {
           text: "Cell #",  
           dataField: "cellNum",
+          filter: textFilter(),
         },
         {
           text: "Trailer #",
           dataField: "trailerNum",
+          filter: textFilter(),
           editable: false,          
         },
         {
@@ -311,6 +317,8 @@ class DriversList extends Component {
                                             "table align-middle table-nowrap table-hover"
                                           }
                                           bordered={false}
+                                          filter={ filterFactory() }
+                                          filterPosition="top"
                                           striped={false}
                                           responsive
                                         />
