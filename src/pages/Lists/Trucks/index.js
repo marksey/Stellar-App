@@ -109,10 +109,10 @@ class Trucks extends Component {
             dataField: "actions",
             isDummyField: true,
             editable: false,
-            formatter: (cellContent, shipper) => (
+            formatter: (cellContent, truck) => (
               <div className="d-flex gap-3">
-                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
-                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
+                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
+                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(truck)}></i></Link>
               </div>
             ),
         }
@@ -157,23 +157,28 @@ class Trucks extends Component {
 
   /* Insert,Update Delete data */
 
-  handleDeleteUser = (shipper) => {
+  handleDeleteUser = (truck) => {
     const { onDeleteUser } = this.props
-    onDeleteUser(shipper)
+    onDeleteUser(truck)
   }
 
   handleUserClick = arg => {
-    const shipper = arg
+    const truck = arg
 
     this.setState({
         
       trucks: {
-        id: shipper.id,
-        name: shipper.name,
-        designation: shipper.designation,
-        email: shipper.email,
-        tags: shipper.tags,
-        projects: shipper.projects
+        id: truck.id,
+        age: truck.age,
+        carrier: truck.carrier,
+        truckNum: truck.truckNum,
+        owner: truck.owner,
+        make: truck.make,
+        plateNum: truck.plateNum,
+        state: truck.state,
+        vinNum: truck.vinNum,
+        year: truck.year,
+        location: truck.location
       },
       isEdit: true,
     })
@@ -182,7 +187,7 @@ class Trucks extends Component {
   }
 
   /**
-   * Handling submit shipper on shipper form
+   * Handling submit truck on truck form
    */
   handleValidUserSubmit = (e, values) => {
     const { onAddNewUser, onUpdateUser } = this.props
@@ -198,7 +203,7 @@ class Trucks extends Component {
         projects: values.projects
       }
 
-      // update shipper
+      // update truck
       onUpdateUser(updateUser)
     } else {
 
@@ -210,7 +215,7 @@ class Trucks extends Component {
         tags: values["tags"],
         projects: values["projects"]
       }
-      // save new shipper
+      // save new truck
       onAddNewUser(newUser)
     }
     this.setState({ selectedUser: null })
@@ -355,7 +360,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.designation || ""}
+                                                      value={this.state.trucks.carrier || ""}
                                                     />
                                                   </div>
                                                   <div className="mb-3">
@@ -367,7 +372,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.email || ""}
+                                                      value={this.state.trucks.truckNum || ""}
                                                     />
                                                   </div>
                                                   
@@ -380,7 +385,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.owner || ""}
                                                     />
                                                   </div>
 
@@ -393,7 +398,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.make || ""}
                                                     />
                                                   </div>
 
@@ -406,7 +411,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.plateNum || ""}
                                                     />
                                                   </div>
 
@@ -419,7 +424,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.state || ""}
                                                     />
                                                   </div>
 
@@ -432,7 +437,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.vinNum || ""}
                                                     />
                                                   </div>
 
@@ -445,7 +450,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.year || ""}
                                                     />
                                                   </div>
 
@@ -458,7 +463,7 @@ class Trucks extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.trucks.projects || ""}
+                                                      value={this.state.trucks.location || ""}
                                                     />
                                                   </div>
 

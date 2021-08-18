@@ -103,9 +103,14 @@ function* fetchDrivers() {
 
 function* fetchUsers() {
   try {
+    console.log("Trying to get users!!!!")
     const response = yield call(getUsers)
+    console.log(response)
+    console.log("Getting users!!!!")
     yield put(getUsersSuccess(response))
   } catch (error) {
+    console.log("error is: ")
+    console.log(error)
     yield put(getUsersFail(error))
   }
 }

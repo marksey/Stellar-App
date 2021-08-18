@@ -10,10 +10,12 @@ import paginationFactory, {
   SizePerPageDropdownStandalone,
 } from "react-bootstrap-table2-paginator"
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import { AvForm, AvField } from "availity-reactstrap-validation"
 import { Link } from "react-router-dom"
 import * as moment from 'moment';
 
-import { Button, Card, CardBody, Row, Col, Badge, Modal } from "reactstrap"
+import { Button, Card, CardBody, Row, Col, Badge, Modal, ModalHeader, ModalBody } from "reactstrap"
 
 //Import data
 import { discountData, productsData } from "common/data"
@@ -55,6 +57,7 @@ class LoadsList extends Component {
           dataField: "tripNum",
           text: "Trip #",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, row) => (
             <Link to="#" className="text-body fw-bold">
               {row.tripNum}
@@ -65,16 +68,19 @@ class LoadsList extends Component {
           dataField: "truckNum",
           text: "Truck #",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "trailerNum",
           text: "Trailer #",
-          sort: true,         
+          sort: true,    
+          filter: textFilter(),     
         },
         {
           dataField: "customer",
           text: "Customer",
           sort: true,
+          filter: textFilter(),
 
           //This can provide coloration to the cells. Maybe for warning or emphasis on pickup date.
           //formatter: (cellContent, row) => (
@@ -93,6 +99,7 @@ class LoadsList extends Component {
           isDummyField: true,
           text: "Pickup",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, row) => (
             <>
               {row.pickupLocation} <div></div> {row.pickupDateandTime}
@@ -115,6 +122,7 @@ class LoadsList extends Component {
           isDummyField: true,
           text: "Delivery",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, row) => (
             <>
               {row.deliveryLocation} <div></div> {row.deliveryDateandTime}
@@ -126,6 +134,7 @@ class LoadsList extends Component {
           isDummyField: true,
           text: "Rate",
           sort: true,
+          filter: textFilter(),
           formatter: (cellContent, row) => (
             <>
               <h6 class="mb-0 text-success">{row.loadRate}</h6>  
@@ -153,21 +162,19 @@ class LoadsList extends Component {
           isDummyField: true,
           text: "Actions",
           sort: true,
-          formatter: () => (
-            <Button
-              type="button"
-              color="secondary"
-              className="btn-sm btn-rounded"
-              onClick={this.toggleViewModal}
-            >
-              Actions
-            </Button>
+          editable: false,
+          formatter: (cellContent, loads) => (
+            <div className="d-flex gap-3">
+              <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(loads)}></i></Link>
+              <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(loads)}></i></Link>
+            </div>
           ),
         }
       ]
     }
     this.toggle = this.toggle.bind(this)
     this.toLowerCase1 = this.toLowerCase1.bind(this)
+    this.handleUserClick = this.handleUserClick.bind(this)
   }
 
   toLowerCase1(str) {
@@ -215,8 +222,29 @@ class LoadsList extends Component {
     return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
   }
 
+  handleUserClick = arg => {
+    const load = arg
+
+    this.setState({
+        
+      loads: {
+        tripNum: load.tripNum,
+        truckNum: load.truckNum,
+        trailerNum: load.trailerNum,
+        customer: load.customer,
+        pickupLocation: load.pickupLocation,
+        deliveryLocation: load.deliveryLocation,
+        loadRate: load.loadRate
+      },
+      isEdit: true,
+    })
+
+    this.toggle()
+  }
+
   render() {
     const { loads } = this.props
+    const { isEdit } = this.state
 
 
     //pagination customization
@@ -280,6 +308,8 @@ class LoadsList extends Component {
                           defaultSorted={defaultSorted}
                           bordered={true}
                           striped={true}
+                          filter={ filterFactory() }
+                          filterPosition="top"
                           selectRow={selectRow}
                           classes={
                             "table align-middle table-nowrap table-check"
@@ -287,6 +317,135 @@ class LoadsList extends Component {
                           headerWrapperClasses={"table-light"}
                         />
                       </div>
+
+                      <Modal
+                          isOpen={this.state.modal}
+                          className = 'modal-dialog modal-dialog-scrollable'
+                          //className={this.props.className}
+                        >
+                          <ModalHeader toggle={this.toggle} tag="h4">
+                            {!!isEdit ? "Edit load" : "Add Truck"}
+                          </ModalHeader>
+                          <ModalBody>
+                            <AvForm
+                              onValidSubmit={
+                                this.handleValidUserSubmit
+                              }
+                            >
+                              <Row form>
+                                <Col className="col-12">
+                                  <div className="mb-3">
+
+                                    <AvField
+                                      name="age"
+                                      label="Trip #"
+                                      type="text"
+                                      errorMessage="Invalid age"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.tripNum || ""}
+                                    />
+                                  </div>
+                                  <div className="mb-3">
+
+                                    <AvField
+                                      name="carrier"
+                                      label="Truck #"
+                                      type="text"
+                                      errorMessage="Invalid Truck #"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.truckNum || ""}
+                                    />
+                                  </div>
+
+                                  
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="owner"
+                                      label="Trailer #"
+                                      type="text"
+                                      errorMessage="Invalid Owner"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.trailerNum || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="make"
+                                      label="Customer"
+                                      type="text"
+                                      errorMessage="Invalid Make"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.customer || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="plateNum"
+                                      label="Pickup"
+                                      type="text"
+                                      errorMessage="Invalid Plate #"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.pickupLocation || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="state"
+                                      label="Delivery"
+                                      type="text"
+                                      errorMessage="Invalid Delivery"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.deliveryLocation || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="vinNum"
+                                      label=" Rate"
+                                      type="text"
+                                      errorMessage="Invalid Load Rate"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.loadRate || ""}
+                                    />
+                                  </div>
+
+                                </Col>
+
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div className="text-end">
+
+                                    <button
+                                      type="submit"
+                                      className="btn btn-success save-user"
+                                    >
+                                      Add Truck
+                                    </button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </AvForm>
+                          </ModalBody>
+                        </Modal>
 
                     
                   

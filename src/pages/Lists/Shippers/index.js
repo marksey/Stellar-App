@@ -142,10 +142,10 @@ class Shippers extends Component {
       shippers: {
         id: shipper.id,
         name: shipper.name,
-        designation: shipper.designation,
-        email: shipper.email,
-        tags: shipper.tags,
-        projects: shipper.projects
+        contactName: shipper.contactName,
+        city: shipper.city,
+        phone: shipper.phone,
+        fax: shipper.fax
       },
       isEdit: true,
     })
@@ -326,7 +326,7 @@ class Shippers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.shippers.designation || ""}
+                                                      value={this.state.shippers.contactName || ""}
                                                     />
                                                   </div>
                                                   <div className="mb-3">
@@ -338,7 +338,7 @@ class Shippers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.shippers.email || ""}
+                                                      value={this.state.shippers.city || ""}
                                                     />
                                                   </div>
                                                   
@@ -351,7 +351,7 @@ class Shippers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.shippers.projects || ""}
+                                                      value={this.state.shippers.phone || ""}
                                                     />
                                                   </div>
 
@@ -364,7 +364,7 @@ class Shippers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.shippers.projects || ""}
+                                                      value={this.state.shippers.fax || ""}
                                                     />
                                                   </div>
                                                 </Col>

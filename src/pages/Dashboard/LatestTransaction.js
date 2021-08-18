@@ -75,6 +75,7 @@ class LatestTransaction extends Component {
           dataField: "total",
           text: "Pickup",
           sort: true,
+          filter: textFilter(),
 
           formatter: (cellContent, row) => (
             <>
@@ -87,6 +88,7 @@ class LatestTransaction extends Component {
           dataField: "paymentStatus",
           text: "Delivery",
           sort: true,
+          filter: textFilter(),
 
           formatter: (cellContent, row) => (
             <>

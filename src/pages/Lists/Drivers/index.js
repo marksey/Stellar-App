@@ -35,6 +35,7 @@ class DriversList extends Component {
     this.state = {
       drivers: [],
       modal: false,
+      selectedFiles: [],
       driverListColumns: [
         {
           text: "id",
@@ -130,6 +131,7 @@ class DriversList extends Component {
     this.toggle = this.toggle.bind(this)
     this.handleValidUserSubmit = this.handleValidUserSubmit.bind(this)
     this.handleUserClicks = this.handleUserClicks.bind(this)
+    this.handleAcceptedFiles.bind(this)
   }
 
   componentDidMount() {
@@ -178,15 +180,18 @@ class DriversList extends Component {
         id: driver.id,
         name: driver.name,
         designation: driver.designation,
-        email: driver.email,
-        tags: driver.tags,
-        projects: driver.projects
+        truckNum: driver.truckNum,
+        cellNum: driver.cellNum,
+        trailerNum: driver.trailerNum,
+        pullNotice: driver.pullNotice        
       },
       isEdit: true,
     })
 
     this.toggle()
   }
+
+  
 
   /**
    * Handling submit driver on driver form
@@ -222,6 +227,30 @@ class DriversList extends Component {
     }
     this.setState({ selectedUser: null })
     this.toggle()
+  }
+
+  handleAcceptedFiles = files => {
+    files.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+        formattedSize: this.formatBytes(file.size),
+      })
+    )
+
+    this.setState({ selectedFiles: files })
+  }
+
+  /**
+   * Formats the size
+   */
+   formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes"
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
   }
 
   /* Insert,Update Delete data */
@@ -373,13 +402,52 @@ class DriversList extends Component {
                                                               {/*/Margin top makes the text fit in the DropZone. May need to code better*/}
                                                               <div className="mb-3" style={{marginTop: '-8%'}}>
                                                                 <i className="display-4 text-muted bx bxs-cloud-upload" />
-                                                                <h5>Drop driver image here or click to upload.</h5>
+                                                                <h5>Click or drop here to add file attachments.</h5>
                                                               </div>
                                                             
                                                           </div>
                                                         </div>
                                                       )}
                                                     </Dropzone>
+                                                  </div>
+
+                                                  <div
+                                                    className="dropzone-previews mt-3"
+                                                    id="file-previews"
+                                                  >
+                                                    {this.state.selectedFiles.map((f, i) => {
+                                                      return (
+                                                        <Card
+                                                          className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+                                                          key={i + "-file"}
+                                                        >
+                                                          <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                              <Col className="col-auto">
+                                                                <img
+                                                                  data-dz-thumbnail=""
+                                                                  height="80"
+                                                                  className="avatar-sm rounded bg-light"
+                                                                  alt={f.name}
+                                                                  src={f.preview}
+                                                                />
+                                                              </Col>
+                                                              <Col>
+                                                                <Link
+                                                                  to="#"
+                                                                  className="text-muted font-weight-bold"
+                                                                >
+                                                                  {f.name}
+                                                                </Link>
+                                                                <p className="mb-0">
+                                                                  <strong>{f.formattedSize}</strong>
+                                                                </p>
+                                                              </Col>
+                                                            </Row>
+                                                          </div>
+                                                        </Card>
+                                                      )
+                                                    })}
                                                   </div>
 
                                                   <div className="mb-3">
@@ -392,7 +460,7 @@ class DriversList extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.designation || ""}
+                                                      value={this.state.drivers.truckNum || ""}
                                                     />
                                                   </div>
                                                   <div className="mb-3">
@@ -404,7 +472,7 @@ class DriversList extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.email || ""}
+                                                      value={this.state.drivers.pullNotice || ""}
                                                     />
                                                   </div>
                                                   
@@ -417,7 +485,7 @@ class DriversList extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.drivers.cellNum || ""}
                                                     />
                                                   </div>
 
@@ -430,7 +498,7 @@ class DriversList extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.drivers.projects || ""}
+                                                      value={this.state.drivers.trailerNum || ""}
                                                     />
                                                   </div>
 

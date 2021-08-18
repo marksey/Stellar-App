@@ -258,6 +258,37 @@ const productsData = [
   },
 ]
 
+const users = [
+  {
+  id: 1,
+  img: "img2",
+  name: "Mark Kennedy",
+  designation: "Full Stack Developer",
+  email: "markkennedy@gmail.com",
+  tags: ["Photoshop", "illustrator", "Ruby"],
+  projects: 145
+  },
+  {
+    id: 2,
+    img: "img3",
+    name: "Ted Johnson",
+    designation: "Front End Developer",
+    email: "tedjohnson@gmail.com",
+    tags: ["Photoshop", "Adobe"],
+    projects: 99
+  },
+  {
+    id: 3,
+    img: "img4",
+    name: "Michael Stevenson",
+    designation: "UI Engineer",
+    email: "michaelstevenson@gmail.com",
+    tags: ["Php", "Html", "Python"],
+    projects: 35
+  }
+
+]
+
 const recentProducts = [
   {
     id: 1,
@@ -643,6 +674,7 @@ const cartData = {
   },
 }
 
+
 const customerData = [
   {
     id: 1,
@@ -861,4 +893,5 @@ export {
   shops,
   customerData,
   cartData,
+  users
 }

@@ -32,6 +32,7 @@ import {
   sentmails,
   trashmails,
   drivers,
+  users as members,
   wallet,
   yearData,
   monthData,
@@ -877,7 +878,7 @@ const fakeBackend = () => {
   })
 
   
-  /*
+ 
   mock.onGet(url.GET_USERS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -904,7 +905,7 @@ const fakeBackend = () => {
     })
   });
 
-  */
+  
 
   mock.onGet(url.GET_WEEKLY_DATA).reply(() => {
     return new Promise((resolve, reject) => {

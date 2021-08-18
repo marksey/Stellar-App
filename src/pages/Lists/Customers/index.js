@@ -97,10 +97,10 @@ class Customers extends Component {
           dataField: "actions",
           isDummyField: true,
           editable: false,
-          formatter: (cellContent, shipper) => (
+          formatter: (cellContent, customer) => (
             <div className="d-flex gap-3">
-              <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(shipper)}></i></Link>
-              <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(shipper)}></i></Link>
+              <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(customer)}></i></Link>
+              <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(customer)}></i></Link>
             </div>
           ),
         }
@@ -145,23 +145,25 @@ class Customers extends Component {
 
   /* Insert,Update Delete data */
 
-  handleDeleteUser = (shipper) => {
+  handleDeleteUser = (customer) => {
     const { onDeleteUser } = this.props
-    onDeleteUser(shipper)
+    onDeleteUser(customer)
   }
 
   handleUserClick = arg => {
-    const shipper = arg
+    const customer = arg
 
     this.setState({
         
-      customer: {
-        id: shipper.id,
-        name: shipper.name,
-        designation: shipper.designation,
-        email: shipper.email,
-        tags: shipper.tags,
-        projects: shipper.projects
+      customers: {
+        id: customer.id,
+        name: customer.name,
+        contactName: customer.contactName,
+        mcNum: customer.mcNum,
+        city: customer.city,
+        localPhone: customer.localPhone,
+        dispatchFax: customer.dispatchFax,
+        creditLimit: customer.creditLimit
       },
       isEdit: true,
     })
@@ -170,7 +172,7 @@ class Customers extends Component {
   }
 
   /**
-   * Handling submit shipper on shipper form
+   * Handling submit customer on customer form
    */
   handleValidUserSubmit = (e, values) => {
     const { onAddNewUser, onUpdateUser } = this.props
@@ -186,7 +188,7 @@ class Customers extends Component {
         projects: values.projects
       }
 
-      // update shipper
+      // update customer
       onUpdateUser(updateUser)
     } else {
 
@@ -198,7 +200,7 @@ class Customers extends Component {
         tags: values["tags"],
         projects: values["projects"]
       }
-      // save new shipper
+      // save new customer
       onAddNewUser(newUser)
     }
     this.setState({ selectedUser: null })
@@ -342,7 +344,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.designation || ""}
+                                                      value={this.state.customers.contactName || ""}
                                                     />
                                                   </div>
                                                   <div className="mb-3">
@@ -354,7 +356,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.email || ""}
+                                                      value={this.state.customers.mcNum || ""}
                                                     />
                                                   </div>
                                                   
@@ -367,7 +369,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.projects || ""}
+                                                      value={this.state.customers.city || ""}
                                                     />
                                                   </div>
 
@@ -380,7 +382,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.projects || ""}
+                                                      value={this.state.customers.localPhone || ""}
                                                     />
                                                   </div>
 
@@ -393,7 +395,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.projects || ""}
+                                                      value={this.state.customers.dispatchFax || ""}
                                                     />
                                                   </div>
 
@@ -406,7 +408,7 @@ class Customers extends Component {
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.customers.projects || ""}
+                                                      value={this.state.customers.creditLimit || ""}
                                                     />
                                                   </div>
                                                 </Col>

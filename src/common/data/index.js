@@ -13,6 +13,7 @@ import {
   productsData,
   recentProducts,
   shops,
+  users
 } from "./ecommerce";
 import { chats, contacts, groups, messages } from "./chat";
 import { inboxmails, starredmails, importantmails, draftmails, sentmails, trashmails } from "./mails";
@@ -51,6 +52,7 @@ export {
   cartData,
   customerData,
   shops,
+  users,
   recentProducts,
   comments,
   wallet,
