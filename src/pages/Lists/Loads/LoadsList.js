@@ -102,7 +102,7 @@ class LoadsList extends Component {
           filter: textFilter(),
           formatter: (cellContent, row) => (
             <>
-              {row.pickupLocation} <div></div> {row.pickupDateandTime}
+              {row.pickupCityAndState} <div></div> {row.pickupDateAndTime}
             </>
           ),
             /* 
@@ -125,7 +125,7 @@ class LoadsList extends Component {
           filter: textFilter(),
           formatter: (cellContent, row) => (
             <>
-              {row.deliveryLocation} <div></div> {row.deliveryDateandTime}
+              {row.deliveryCityAndState} <div></div> {row.deliveryDateAndTime}
             </>
           ),
         },
@@ -190,7 +190,9 @@ class LoadsList extends Component {
     }
 
     this.setState({ loads })
-    
+
+    console.log("Set state loads")
+    console.log(loads)
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -225,6 +227,9 @@ class LoadsList extends Component {
   handleUserClick = arg => {
     const load = arg
 
+    console.log("Here is the load in the loads list!")
+    console.log(load)
+
     this.setState({
         
       loads: {
@@ -232,8 +237,8 @@ class LoadsList extends Component {
         truckNum: load.truckNum,
         trailerNum: load.trailerNum,
         customer: load.customer,
-        pickupLocation: load.pickupLocation,
-        deliveryLocation: load.deliveryLocation,
+        pickupCityAndState: load.pickupCityAndState,
+        deliveryCityAndState: load.deliveryCityAndState,
         loadRate: load.loadRate
       },
       isEdit: true,
@@ -255,7 +260,7 @@ class LoadsList extends Component {
     }
 
     const defaultSorted = [{
-      dataField: 'orderId',
+      dataField: 'loadNum',
       order: 'desc'
     }];
 
@@ -397,7 +402,7 @@ class LoadsList extends Component {
                                       validate={{
                                         required: { value: true },
                                       }}
-                                      value={this.state.loads.pickupLocation || ""}
+                                      value={this.state.loads.pickupCityAndState || ""}
                                     />
                                   </div>
 
@@ -410,7 +415,7 @@ class LoadsList extends Component {
                                       validate={{
                                         required: { value: true },
                                       }}
-                                      value={this.state.loads.deliveryLocation || ""}
+                                      value={this.state.loads.deliveryCityAndState || ""}
                                     />
                                   </div>
 
@@ -438,7 +443,7 @@ class LoadsList extends Component {
                                       type="submit"
                                       className="btn btn-success save-user"
                                     >
-                                      Add Truck
+                                      Save changes
                                     </button>
                                   </div>
                                 </Col>
@@ -448,7 +453,7 @@ class LoadsList extends Component {
                         </Modal>
 
                     
-                  
+                      {/*
                       <Row className="align-items-md-center mt-30">
                         <Col className="inner-custom-pagination d-flex">
                             <div className="d-inline">
@@ -464,6 +469,7 @@ class LoadsList extends Component {
                             </div>
                         </Col>
                       </Row>
+                      */}
                       
                     </React.Fragment>
                   )}
