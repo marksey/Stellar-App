@@ -11,7 +11,7 @@ import {
 import img7 from "../../../assets/images/product/img-7.png"
 import img4 from "../../../assets/images/product/img-4.png"
 
-const EcommerceOrdersModal = props => {
+const CompleteLoadModal = props => {
   const { isOpen, toggle } = props
   return (
     <Modal
@@ -38,7 +38,7 @@ const EcommerceOrdersModal = props => {
             Close
           </Button>
           <Button type="button" color="success" onClick={toggle}>
-            Complete
+            Complete Load
           </Button>
         </ModalFooter>
       </div>
@@ -49,9 +49,9 @@ const EcommerceOrdersModal = props => {
   )
 }
 
-EcommerceOrdersModal.propTypes = {
+CompleteLoadModal.propTypes = {
   toggle: PropTypes.func,
   isOpen: PropTypes.bool,
 }
 
-export default EcommerceOrdersModal
+export default CompleteLoadModal

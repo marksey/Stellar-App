@@ -14,7 +14,6 @@ import {
   groups,
   invoiceList,
   messages,
-  orders,
   loads,
   shippers,
   truckingCustomers,
@@ -443,6 +442,7 @@ const fakeBackend = () => {
     })
   })
 
+  /*
   mock.onGet(url.GET_ORDERS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -455,6 +455,7 @@ const fakeBackend = () => {
       })
     })
   })
+  */
 
   mock.onPost(url.ADD_NEW_ORDER).reply(order => {
     return new Promise((resolve, reject) => {

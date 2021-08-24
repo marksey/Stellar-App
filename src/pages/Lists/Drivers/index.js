@@ -90,6 +90,7 @@ class DriversList extends Component {
         {
           text: "Truck #",
           dataField: "truckNum",
+          sort: true,
           filter: textFilter(),
         },
         {
@@ -120,6 +121,7 @@ class DriversList extends Component {
             editable: false,
             formatter: (cellContent, driver) => (
               <div className="d-flex gap-3">
+                <Link className="text-secondary" to="#"><i className="mdi mdi-cellphone-message font-size-18" id="edittooltip" onClick={() => this.handleUserClick(driver)}></i></Link>
                 <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(driver)}></i></Link>
                 <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(driver)}></i></Link>
               </div>
@@ -264,7 +266,7 @@ class DriversList extends Component {
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 7,
+      sizePerPage: drivers.length,
       totalSize: drivers.length, // replace later with size(drivers),
       custom: true,
     }
@@ -275,8 +277,9 @@ class DriversList extends Component {
     }];
 
     const selectRow = {
-      mode: 'checkbox'
-    };
+      mode: 'checkbox',
+      
+     };
 
     return (
       <React.Fragment>
@@ -312,12 +315,24 @@ class DriversList extends Component {
                             {
                               toolkitprops => (
                                 <React.Fragment>
+                                  
                                   <Row className="mb-2">
+                                    
                                     <Col sm="4">
                                       <div className="search-box ms-2 mb-2 d-inline-block">
                                         <div className="position-relative">
+                                          {/*
                                           <SearchBar {...toolkitprops.searchProps} />
                                           <i className="bx bx-search-alt search-icon" />
+                                          */}
+                                          <Button
+                                          color="primary"
+                                          className="font-16 btn-block btn btn-primary"
+                                          onClick={this.handleUserClicks}
+                                          >
+                                            <i className="bx bx-merge me-1" />
+                                            Send Text to Driver(s)
+                                          </Button>
                                         </div>
                                       </div>
                                     </Col>
@@ -334,6 +349,8 @@ class DriversList extends Component {
                                       </div>
                                     </Col>
                                   </Row>
+
+
                                   <Row>
                                     <Col xl="12">
                                       <div className="table-responsive">
@@ -402,7 +419,7 @@ class DriversList extends Component {
                                                               {/*/Margin top makes the text fit in the DropZone. May need to code better*/}
                                                               <div className="mb-3" style={{marginTop: '-8%'}}>
                                                                 <i className="display-4 text-muted bx bxs-cloud-upload" />
-                                                                <h5>Click or drop here to add file attachments.</h5>
+                                                                <h5>Click or drop files here to upload attachments.</h5>
                                                               </div>
                                                             
                                                           </div>
@@ -524,6 +541,8 @@ class DriversList extends Component {
                                       </div>
                                     </Col>
                                   </Row>
+
+                                  {/*
                                   <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
                                           <div className="d-inline">
@@ -539,6 +558,8 @@ class DriversList extends Component {
                                           </div>
                                       </Col>
                                   </Row>
+                                  */}
+
                                 </React.Fragment>
                               )}
                           </ToolkitProvider>

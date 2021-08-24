@@ -12,7 +12,7 @@ const trucks = [
         make: "Volvo",
         plateNum: 'LK9121',
         state: 'CA',
-        vinNum: 'KL1234824',
+        vinNum: 'KL1234892324',
         year: '2005',
         location: 'Stockton, CA'
     },
@@ -25,7 +25,7 @@ const trucks = [
         make: "Freightliner",
         plateNum: 'LK91231',
         state: 'CA',
-        vinNum: 'KL7312312',
+        vinNum: 'KL73123921912',
         year: '2015',
         location: 'Sacramento, CA'
 
@@ -39,7 +39,7 @@ const trucks = [
         make: "Kenworth",
         plateNum: 'LK24214',
         state: 'CA',
-        vinNum: 'LJ9343434',
+        vinNum: 'LJ934398123434',
         year: '2016',
         location: 'Baton Rouge, LA'
 
@@ -53,7 +53,7 @@ const trucks = [
         make: "Volvo",
         plateNum: 'LK9121',
         state: 'TX',
-        vinNum: 'LK912942',
+        vinNum: 'LK9129918239442',
         year: '2001',
         location: 'Stockton, CA'
 
@@ -67,7 +67,7 @@ const trucks = [
         make: "Western Star",
         plateNum: 'LI912342',
         state: 'GA',
-        vinNum: 'KL823231',
+        vinNum: 'KL8232391234321',
         year: '2015',
         location: 'Phoenix, AZ'
 
@@ -81,7 +81,7 @@ const trucks = [
         make: "Volvo",
         plateNum: 'LK23813',
         state: 'OR',
-        vinNum: 'LI572631',
+        vinNum: 'LI57263232323231',
         year: '2018',
         location: 'Riverside, CA'
 
@@ -89,13 +89,13 @@ const trucks = [
     {
         id: '7',
         age: '8',
-        carrier: 'Benny Carrier Inc',
+        carrier: 'Alex Trucking Inc',
         truckNum: '28323',
-        owner: 'Benny Hinn',
+        owner: 'Vasya Kishchenko',
         make: "International Trucks",
         plateNum: 'KI92323',
         state: 'CA',
-        vinNum: 'LK1433412',
+        vinNum: 'LK14334123232322',
         year: '2013',
         location: 'Dallas, TX'
 

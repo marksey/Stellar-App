@@ -6,7 +6,7 @@ import MetaTags from 'react-meta-tags';
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 
-import { Col, Container,Row  } from "reactstrap"
+import { Alert, Col, Container,Row  } from "reactstrap"
 
 // availity-reactstrap-validation
 import { AvField, AvForm } from "availity-reactstrap-validation"
@@ -32,7 +32,8 @@ class Login2 extends Component {
 
   // handleValidSubmit
   handleValidSubmit(event, values) {
-    {console.log("Trying to login user!!!!", values)}
+    {console.log("Trying to login2 user!!!!", values)}
+    localStorage.setItem("displayAdminPopup", true) //Makes welcome admin pop-up display once per login
     this.props.loginUser(values, this.props.history)
   }
 

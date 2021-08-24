@@ -391,7 +391,7 @@ class Shippers extends Component {
                                     </Col>
                                   </Row>
 
-
+                                {/*
                                 <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
                                         <div className="d-inline">
@@ -407,6 +407,7 @@ class Shippers extends Component {
                                         </div>
                                     </Col>
                                 </Row>
+                                */}
 
                                 </React.Fragment>
                               )}

@@ -434,7 +434,7 @@ class Customers extends Component {
                                     </Col>
                                   </Row>
 
-
+                                {/*
                                 <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
                                         <div className="d-inline">
@@ -450,6 +450,7 @@ class Customers extends Component {
                                         </div>
                                     </Col>
                                 </Row>
+                                */}
 
                                 </React.Fragment>
                               )}

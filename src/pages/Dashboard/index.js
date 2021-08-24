@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import PropTypes from 'prop-types'
+import PropTypes, { bool } from 'prop-types'
 import MetaTags from 'react-meta-tags';
 import {
   Container,
@@ -95,18 +95,24 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { onGetChartsData } = this.props
-    setTimeout(() => this.setState({ subscribemodal: true }), 2000);
+    const displayAdminPopup = localStorage.getItem("displayAdminPopup")
+    if (displayAdminPopup){
+      setTimeout(() => this.setState({ subscribemodal: true }), 2000);
+      localStorage.removeItem("displayAdminPopup") //No longer display admin pop-up
+    }
+    
     onGetChartsData("yearly");
   }
 
 
   togglemodal = () => {
+    console.log("Inside toggle modal!!!!")
     this.setState(prevState => ({
       modal: !prevState.modal,
     }))
   }
 
-  togglesubscribemodal = () => {
+  togglesubscribemodal = () => { 
     this.setState(prevState => ({
       subscribemodal: !prevState.subscribemodal,
     }))

@@ -41,6 +41,7 @@ function* loginUser({ payload: { user, history } }) {
         password: user.password,
       })
       localStorage.setItem("authUser", JSON.stringify(response))
+      localStorage.setItem("displayAdminPopup", true) //Makes welcome admin pop-up display once per login
       yield put(loginSuccess(response))
     }
     history.push("/dashboard")
@@ -57,7 +58,7 @@ function* logoutUser({ payload: { history } }) {
       const response = yield call(fireBaseBackend.logout)
       yield put(logoutUserSuccess(response))
     }
-    history.push("/login")
+    history.push("/pages-login-2")
   } catch (error) {
     yield put(apiError(error))
   }

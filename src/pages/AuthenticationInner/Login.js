@@ -4,7 +4,7 @@ import MetaTags from 'react-meta-tags';
 // Redux
 import { Link } from "react-router-dom"
 
-import { Row, Col, CardBody, Card, Container } from "reactstrap"
+import { Alert, Row, Col, CardBody, Card, Container } from "reactstrap"
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"

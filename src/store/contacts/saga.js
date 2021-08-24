@@ -93,8 +93,6 @@ function* fetchShippers() {
 function* fetchDrivers() {
   try {
     const response = yield call(getDrivers)
-    console.log("fetching drivers!!! ")
-    console.log(response)
     yield put(getDriversSuccess(response))
   } catch (error) {
     yield put(getDriversFail(error))

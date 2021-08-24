@@ -13,25 +13,33 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { Link } from "react-router-dom"
 import * as moment from 'moment';
 
-import { Button, Card, CardBody, Badge, Modal } from "reactstrap"
+import { Button, Card, CardTitle, CardBody, Badge, Modal, ModalBody,
+   ModalFooter, ModalHeader, Row, Col } from "reactstrap"
+
+import { AvForm, AvField } from "availity-reactstrap-validation"
+
 
 import {
+  getLoads,
   getOrders,
   addNewOrder,
   updateOrder,
   deleteOrder
 } from "store/actions"
 
-import EcommerceOrdersModal from "../Ecommerce/EcommerceOrders/EcommerceOrdersModal"
+import CompleteLoadModal from "../Ecommerce/EcommerceOrders/EcommerceOrdersModal"
+import LoadDetailsModal from "../Ecommerce/EcommerceOrders/LoadDetailsModal"
+
 import uiModal from "../Ui/UiModal"
 
 class LatestTransaction extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewmodal: false,
+      viewCompleteLoadModal: false,
+      viewLoadDetailsModal: false,
       modal: false,
-      orders: [],
+      loads: [],
       EcommerceOrderColumns: [
         {
           text: "id",
@@ -45,13 +53,13 @@ class LatestTransaction extends Component {
           ),
         },
         {
-          dataField: "orderId",
+          dataField: "loadNum",
           text: "Ref Number",
           sort: true,
           filter: textFilter(),
           formatter: (cellContent, row) => (
             <Link to="#" className="text-body fw-bold">
-              {row.orderId}
+              {row.loadNum}
             </Link>
           ),
         },
@@ -72,27 +80,27 @@ class LatestTransaction extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "total",
+          dataField: "pickupCityAndState",
           text: "Pickup",
           sort: true,
           filter: textFilter(),
 
           formatter: (cellContent, row) => (
             <>
-              {row.total} <div></div> {row.pickupTime}
+              {row.pickupCityAndState} <div></div> {row.pickupDateAndTime}
             </>
           ),
          
         },
         {
-          dataField: "paymentStatus",
+          dataField: "deliveryCityAndState",
           text: "Delivery",
           sort: true,
           filter: textFilter(),
 
           formatter: (cellContent, row) => (
             <>
-              {row.paymentStatus} <div></div> {row.deliveryTime}
+              {row.deliveryCityAndState} <div></div> {row.deliveryDateAndTime}
             </>
           ),
           //This can provide coloration to the cells. Maybe for warning or emphasis on pickup date.
@@ -102,7 +110,7 @@ class LatestTransaction extends Component {
            //   color={row.badgeclass}
            //   pill
            // >
-           //   {row.paymentStatus}
+           //   {row.deliveryCityAndState}
            // </Badge>
           //),
         },
@@ -120,7 +128,7 @@ class LatestTransaction extends Component {
               type="button"
               color="success"
               className="btn-sm btn-rounded"
-              onClick={this.toggleViewModal}
+              onClick={this.toggleViewCompleteLoadModal}
               data-toggle="modal"
               data-target="#myModalLabel"
             >
@@ -146,12 +154,14 @@ class LatestTransaction extends Component {
           sort: true,
           style: {textAlign: 'center'},
           headerStyle: {textAlign: 'center'},
-          formatter: () => (
+          formatter: (cellContent, row) => (
             <Button
               type="button"
               color="primary"
               className="btn-sm btn-rounded"
-              onClick={this.toggleViewModal}
+              onClick={() => this.handleUserClick(row)}
+              data-toggle="modal"
+              data-target="#myModalLabel"
             >
               View Details
             </Button>
@@ -159,7 +169,11 @@ class LatestTransaction extends Component {
         }
       ]
     }
+
+    this.handleUserClick = this.handleUserClick.bind(this)
     this.toggle = this.toggle.bind(this)
+    this.toggleViewCompleteLoadModal = this.toggleViewCompleteLoadModal.bind(this)
+    this.toggleViewLoadDetailsModal = this.toggleViewLoadDetailsModal.bind(this)
     this.toLowerCase1 = this.toLowerCase1.bind(this)
   }
 
@@ -168,20 +182,21 @@ class LatestTransaction extends Component {
   }
 
   componentDidMount() {
-    const { orders, onGetOrders } = this.props
-    if (orders && !orders.length) {
-      onGetOrders()
+    const { loads, onGetLoads } = this.props
+    if (loads && !loads.length) {
+      onGetLoads()
     }
-    this.setState({ orders })
+    this.setState({ loads })
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { orders } = this.props
-    if (!isEmpty(orders) && size(prevProps.orders) !== size(orders)) {
-      this.setState({ orders: {}, isEdit: false })
+    const { loads } = this.props
+    if (!isEmpty(loads) && size(prevProps.loads) !== size(loads)) {
+      this.setState({ loads: {}, isEdit: false })
     }
   }
+
 
   toggle() {
     this.setState(prevState => ({
@@ -190,30 +205,74 @@ class LatestTransaction extends Component {
   }
 
 
-  toggleViewModal = () => {
+  toggleViewCompleteLoadModal = () => {
     this.setState(prevState => ({
-      viewmodal: !prevState.viewmodal,
+      viewCompleteLoadModal: !prevState.viewCompleteLoadModal,
     }))
+  }
+
+  toggleViewLoadDetailsModal = (loads) => {
+    this.setState(prevState => ({
+      viewLoadDetailsModal: !prevState.viewLoadDetailsModal,
+    }))
+   
+  
+  
   }
 
   format(cell, row){
     return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
   }
 
+  handleUserClick = arg => {
+    const load = arg
+    
+    this.setState({
+        
+      loads: {
+        brokerName: load.brokerName,
+        pickupCompany: load.pickupCompany,
+        pickupStreetName: load.pickupStreetName,
+        pickupCityAndState: load.pickupCityAndState,
+        pickupPhone: load.pickupPhone,
+        pickupZipCode: load.pickupZipCode,
+        deliveryZipCode: load.deliveryZipCode,
+        rateConfirmation: load.rateConfirmation,
+        tripNum: load.tripNum,
+        truckNum: load.truckNum,
+        trailerNum: load.trailerNum,
+        customer: load.customer,
+        deliveryCityAndState: load.deliveryCityAndState,
+        deliveryLocation: load.deliveryLocation,
+        deliveryStreetName: load.deliveryStreetName,
+        deliveryDateAndTime: load.deliveryDateAndTime,
+        loadRate: load.loadRate,
+        loadNum: load.loadNum,
+        driver: load.driver,
+        pickupDateAndTime: load.pickupDateAndTime,
+        loadBooked: load.loadBooked
+      },
+      isEdit: true,
+    })
+
+    this.toggle()
+  }
   render() {
-    const { orders } = this.props
+
+  
+    const { loads } = this.props
 
     const { SearchBar } = Search;
 
     //pagination customization
     const pageOptions = {
-      sizePerPage: 7,
-      totalSize: orders.length, // replace later with size(Order),
+      sizePerPage: 100000,
+      totalSize: loads.length, // replace later with size(Order),
       custom: true,
     }
 
     const defaultSorted = [{
-      dataField: 'orderId',
+      dataField: 'loadNum',
       order: 'desc'
     }];
 
@@ -223,10 +282,274 @@ class LatestTransaction extends Component {
 
     return (
       <React.Fragment>
-        <EcommerceOrdersModal
-          isOpen={this.state.viewmodal}
-          toggle={this.toggleViewModal}
+        <CompleteLoadModal
+          isOpen={this.state.viewCompleteLoadModal}
+          toggle={this.toggleViewCompleteLoadModal}
         />
+        
+      <Modal
+        isOpen={this.state.modal}
+        role="dialog"
+        autoFocus={true}
+        centered={true}
+        className="exampleModal"
+        tabIndex="-1"
+      >
+
+        <div className="modal-content">
+
+          <ModalHeader toggle={this.toggle}>
+            <i class="bx bx-notepad"></i>&nbsp;
+            
+            View Load Details 
+          </ModalHeader>
+          
+          <ModalBody>
+
+          <div class="col d-flex justify-content-center">
+            <CardTitle className="h4 ">Customer Info</CardTitle>
+          </div>
+          
+          
+            <AvForm>
+              <Row form>
+                <Col className="col-12">
+                  <div className="mb-3">
+
+                    <AvField
+                      readOnly
+                      name="brokerName"
+                      label="Broker Name"
+                      type="text"
+                      errorMessage="Invalid broker"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.brokerName || ""}
+                    />
+                  </div>
+
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="carrier"
+                      label="Rate"
+                      type="text"
+                      errorMessage="Invalid Load Rate "
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.loadRate || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Load Info</CardTitle>
+                  </div>
+                  
+                 
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="owner"
+                      label="Ref #"
+                      type="text"
+                      errorMessage="Invalid Owner"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.trailerNum || ""}
+                    />
+                  </div>
+                  
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="owner"
+                      label="Driver"
+                      type="text"
+                      errorMessage="Invalid Driver"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.driver || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="make"
+                      label="Phone"
+                      type="text"
+                      errorMessage="Invalid Phone"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.pickupPhone || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="plateNum"
+                      label="Truck #"
+                      type="text"
+                      errorMessage="Invalid Truck #"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.truckNum || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="state"
+                      label="Trailer #"
+                      type="text"
+                      errorMessage="Invalid Trailer #"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.trailerNum || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Pickup Info</CardTitle>
+                  </div>
+                  
+                  
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Company"
+                      type="text"
+                      errorMessage="Invalid Company"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.pickupCompany || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Address"
+                      type="text"
+                      errorMessage="Invalid Company"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.pickupStreetName + ", " + this.state.loads.pickupCityAndState + " " + this.state.loads.pickupZipCode}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Phone"
+                      type="text"
+                      errorMessage="Invalid Phone"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.pickupPhone || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Date & Time"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.pickupDateAndTime || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Delivery Info</CardTitle>
+                  </div>
+                  
+                 
+                  
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Address"
+                      type="text"
+                      errorMessage="Invalid Address"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.deliveryStreetName + ", " + this.state.loads.deliveryCityAndState + " " + this.state.loads.deliveryZipCode}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Date & Time"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.deliveryDateAndTime || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Rate Confirmation"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.loads.rateConfirmation || ""}
+                    />
+                  </div>
+
+                </Col>
+
+              </Row>
+              
+            </AvForm>
+          
+            
+          </ModalBody>
+
+          <ModalFooter>
+            <Button type="button" color="secondary" onClick={this.toggle}>
+              Close
+            </Button>
+
+          </ModalFooter>
+
+        </div>
+      
+      </Modal>
+
         <Card>
           <CardBody>
 
@@ -246,13 +569,13 @@ class LatestTransaction extends Component {
               pagination={paginationFactory(pageOptions)}
               keyField='id'
               columns={this.state.EcommerceOrderColumns}
-              data={orders}
+              data={loads}
             >
               {({ paginationProps, paginationTableProps }) => (
 
                 <ToolkitProvider
                   keyField="id"
-                  data={orders}
+                  data={loads}
                   columns={this.state.EcommerceOrderColumns}
                   bootstrap4
                   search
@@ -276,11 +599,16 @@ class LatestTransaction extends Component {
                           headerWrapperClasses={"table-light"}
                         />
                       </div>
+
+                      {/*
                       <div className="pagination pagination-rounded justify-content-end">
+                        
                         <PaginationListStandalone
                           {...paginationProps}
                         />
                       </div>
+                      */}
+
                     </React.Fragment>
                   )}
                 </ToolkitProvider>
@@ -297,7 +625,7 @@ class LatestTransaction extends Component {
 }
 
 LatestTransaction.propTypes = {
-  orders: PropTypes.array,
+  loads: PropTypes.array,
   onGetOrders: PropTypes.func,
   onAddNewOrder: PropTypes.func,
   onDeleteOrder: PropTypes.func,
@@ -305,11 +633,11 @@ LatestTransaction.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  orders: state.ecommerce.orders,
+  loads: state.ecommerce.loads,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onGetOrders: () => dispatch(getOrders()),
+  onGetLoads: () => dispatch(getLoads()),
   onAddNewOrder: order => dispatch(addNewOrder(order)),
   onUpdateOrder: order => dispatch(updateOrder(order)),
   onDeleteOrder: order => dispatch(deleteOrder(order)),

@@ -77,6 +77,7 @@ class Trucks extends Component {
         {
           text: "Make",  
           dataField: "make",
+          headerTitle: () => "This is the full VIN here!",
           filter: textFilter(),
         },
         {
@@ -111,6 +112,8 @@ class Trucks extends Component {
             editable: false,
             formatter: (cellContent, truck) => (
               <div className="d-flex gap-3">
+                <Link className="text-info" to="#"><i style={{ marginTop: "20%" }} className="bx bx-notepad font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
+                {/*<Link className="text-warning" to="#"><i className="dripicons-warning font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>*/}
                 <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
                 <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(truck)}></i></Link>
               </div>
@@ -490,9 +493,11 @@ class Trucks extends Component {
                                     </Col>
                                   </Row>
 
-
+                                {/*                      
                                 <Row className="align-items-md-center mt-30">
                                     <Col className="inner-custom-pagination d-flex">
+
+                                      
                                         <div className="d-inline">
                                             <SizePerPageDropdownStandalone
                                                 {...paginationProps}
@@ -504,8 +509,11 @@ class Trucks extends Component {
                                                 {...paginationProps}
                                             />
                                         </div>
+                                      
+
                                     </Col>
                                 </Row>
+                                */}
 
                                 </React.Fragment>
                               )}
