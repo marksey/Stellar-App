@@ -502,6 +502,8 @@ const old_loads = [
 ]
 
 //This is actually the loads in the test app!
+//When you go live, remove all the company info besides pickupCompany and deliveryCompany
+//and put it into the company table ONLY. Since that info is already in that table
 const loads = [
   {
     id: "1",

@@ -211,6 +211,9 @@ export const getDrivers = () => get(url.GET_DRIVERS)
 // get shippers
 export const getShippers = () => get(url.GET_SHIPPERS)
 
+// get receivers
+export const getReceivers = () => get(url.GET_RECEIVERS)
+
 // get trucks
 export const getTrucks = () => get(url.GET_TRUCKS)
 
@@ -219,6 +222,9 @@ export const getTruckingCustomers = () => get(url.GET_TRUCKING_CUSTOMERS)
 
 // get contacts
 export const getUsers = () => get(url.GET_USERS)
+
+// add load
+export const addNewLoad = load => post(url.ADD_NEW_LOAD, load)
 
 // add user
 export const addNewUser = user => post(url.ADD_NEW_USER, user)

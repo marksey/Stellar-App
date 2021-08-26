@@ -18,6 +18,7 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
   getUsers,
+  addNewLoad,
   addNewUser,
   updateUser,
   deleteUser

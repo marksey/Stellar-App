@@ -3,16 +3,22 @@ import { call, put, takeEvery } from "redux-saga/effects"
 // Crypto Redux States
 import {
   GET_DRIVERS,
+  GET_RECEIVERS,
   GET_SHIPPERS,
   GET_TRUCKING_CUSTOMERS,
   GET_TRUCKS,
   GET_USERS,
   GET_USER_PROFILE,
+  ADD_NEW_LOAD,
   ADD_NEW_USER,
   DELETE_USER,
   UPDATE_USER
 } from "./actionTypes"
 
+
+//May not need getReceivers since a company is a company
+//May need to just have on function called getCompanies
+//Also remove up all the functions this app doesn't need
 import {
   getDriversSuccess,
   getDriversFail,
@@ -20,12 +26,16 @@ import {
   getTruckingCustomersFail,
   getTrucksSuccess,
   getTrucksFail,
+  getReceiversSuccess,
+  getReceiversFail,
   getShippersSuccess,
   getShippersFail,
   getUsersSuccess,
   getUsersFail,
   getUserProfileSuccess,
   getUserProfileFail,
+  addLoadFail,
+  addLoadSuccess,
   addUserFail,
   addUserSuccess,
   updateUserSuccess,
@@ -38,10 +48,12 @@ import {
 import {
   getDrivers,
   getShippers,
+  getReceivers,
   getTruckingCustomers,
   getTrucks,
   getUsers,
   getUserProfile,
+  addNewLoad,
   addNewUser,
   updateUser,
   deleteUser
@@ -72,6 +84,21 @@ function* fetchTruckingCustomers() {
     console.log("Here's the error: ")
     console.log(error)
     yield put(getTruckingCustomersFail(error))
+  }
+}
+
+
+function* fetchReceivers() {
+  try {
+    console.log("trying to fetch receivers")
+    const response = yield call(getReceivers)
+    console.log("fetching receivers!!! ")
+    console.log(response)
+    yield put(getReceiversSuccess(response))
+  } catch (error) {
+    console.log("Here's the error: ")
+    console.log(error)
+    yield put(getReceiversFail(error))
   }
 }
 
@@ -122,6 +149,16 @@ function* fetchUserProfile() {
   }
 }
 
+function* onAddNewLoad({ payload: load }) {
+  try {
+    const response = yield call(addNewLoad, load)
+    yield put(addLoadSuccess(response))
+  } catch (error) {
+
+    yield put(addLoadFail(error))
+  }
+}
+
 function* onAddNewUser({ payload: user }) {
   try {
     const response = yield call(addNewUser, user)
@@ -152,11 +189,13 @@ function* onDeleteUser({ payload: user }) {
 
 function* contactsSaga() {
   yield takeEvery(GET_DRIVERS, fetchDrivers)
+  yield takeEvery(GET_RECEIVERS, fetchReceivers)
   yield takeEvery(GET_SHIPPERS, fetchShippers)
   yield takeEvery(GET_TRUCKING_CUSTOMERS, fetchTruckingCustomers)
   yield takeEvery(GET_TRUCKS, fetchTrucks)
   yield takeEvery(GET_USERS, fetchUsers)
   yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
+  yield takeEvery(ADD_NEW_LOAD, onAddNewLoad)
   yield takeEvery(ADD_NEW_USER, onAddNewUser)
   yield takeEvery(UPDATE_USER, onUpdateUser)
   yield takeEvery(DELETE_USER, onDeleteUser)

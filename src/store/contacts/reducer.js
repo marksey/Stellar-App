@@ -7,6 +7,8 @@ import {
   GET_TRUCKING_CUSTOMERS_FAIL,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
+  ADD_LOAD_SUCCESS,
+  ADD_LOAD_FAIL,
   ADD_USER_SUCCESS,
   ADD_USER_FAIL,
   UPDATE_USER_SUCCESS,
@@ -90,6 +92,18 @@ const contacts = (state = INIT_STATE, action) => {
       }
 
     case GET_USERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case ADD_LOAD_SUCCESS:
+      return {
+        ...state,
+        loads: [...state.loads, action.payload],
+      }
+
+    case ADD_LOAD_FAIL:
       return {
         ...state,
         error: action.payload,

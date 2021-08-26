@@ -58,7 +58,7 @@ class Shippers extends Component {
         },
         {
           text: "City, State",
-          dataField: "city",
+          dataField: "cityStateZip",
           filter: textFilter(),
         },
         {
@@ -143,7 +143,7 @@ class Shippers extends Component {
         id: shipper.id,
         name: shipper.name,
         contactName: shipper.contactName,
-        city: shipper.city,
+        cityStateZip: shipper.cityStateZip,
         phone: shipper.phone,
         fax: shipper.fax
       },
@@ -332,13 +332,13 @@ class Shippers extends Component {
                                                   <div className="mb-3">
                                                     <AvField
                                                       name="email"
-                                                      label="City, State"
+                                                      label="City, State ZIP"
                                                       type="email"
-                                                      errorMessage="Invalid City, State"
+                                                      errorMessage="Invalid City, State, ZIP"
                                                       validate={{
                                                         required: { value: true },
                                                       }}
-                                                      value={this.state.shippers.city || ""}
+                                                      value={this.state.shippers.cityStateZip || ""}
                                                     />
                                                   </div>
                                                   

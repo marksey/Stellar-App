@@ -303,7 +303,6 @@ const fakeBackend = () => {
           // Passing fake JSON data as response
           console.log("Posting the load inside fakebackend.js!")
           console.log("load:" + load)
-          console.log("load data:" + load.)
           resolve([200, load.data])
         } else {
           console.log("Can't add load!")

@@ -20,6 +20,7 @@ import { inboxmails, starredmails, importantmails, draftmails, sentmails, trashm
 import { calenderDefaultCategories, events } from "./calender";
 import { drivers, userProfile } from "./contacts";
 import { shippers } from "./shippers";
+import { receivers } from "./receivers";
 import { truckingCustomers } from "./trucking-customers";
 import { trucks } from "./trucks";
 import { yearData, monthData, weekData } from './dashboard';
@@ -46,6 +47,7 @@ export {
   messages,
   loads,
   old_loads,
+  receivers,
   shippers,
   truckingCustomers,
   trucks,

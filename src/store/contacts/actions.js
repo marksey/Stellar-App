@@ -5,6 +5,9 @@ import {
   GET_DRIVERS,
   GET_DRIVERS_FAIL,
   GET_DRIVERS_SUCCESS,
+  GET_RECEIVERS,
+  GET_RECEIVERS_FAIL,
+  GET_RECEIVERS_SUCCESS,
   GET_SHIPPERS,
   GET_SHIPPERS_FAIL,
   GET_SHIPPERS_SUCCESS,
@@ -17,6 +20,9 @@ import {
   GET_USERS,
   GET_USERS_FAIL,
   GET_USERS_SUCCESS,
+  ADD_NEW_LOAD,
+  ADD_LOAD_SUCCESS,
+  ADD_LOAD_FAIL,
   ADD_NEW_USER,
   ADD_USER_SUCCESS,
   ADD_USER_FAIL,
@@ -27,6 +33,20 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
 } from "./actionTypes"
+
+export const getReceivers = () => ({
+  type: GET_RECEIVERS,
+})
+
+export const getReceiversSuccess = receivers => ({
+  type: GET_RECEIVERS_SUCCESS,
+  payload: receivers,
+})
+
+export const getReceiversFail = error => ({
+  type: GET_RECEIVERS_FAIL,
+  payload: error,
+})
 
 export const getShippers = () => ({
   type: GET_SHIPPERS,
@@ -109,6 +129,22 @@ export const getUserProfileSuccess = userProfile => ({
 
 export const getUserProfileFail = error => ({
   type: GET_USER_PROFILE_FAIL,
+  payload: error,
+})
+
+//ADD NEW LOADS
+export const addNewLoad = load => ({
+  type: ADD_NEW_LOAD,
+  payload: load,
+})
+
+export const addLoadSuccess = load => ({
+  type: ADD_LOAD_SUCCESS,
+  payload: load,
+})
+
+export const addLoadFail = error => ({
+  type: ADD_LOAD_FAIL,
   payload: error,
 })
 

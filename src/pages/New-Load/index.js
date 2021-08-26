@@ -27,9 +27,11 @@ import AddLoadForm from "../Forms/FormElements/TextualInputs"
 import SelectSearch from 'react-select-search';
 
 import {
+  addNewLoad,
   getLoads,
   getDrivers,
-  getCustomers
+  getTruckingCustomers,
+  getShippers,
 } from "store/actions"
 
 
@@ -40,73 +42,54 @@ class FormElements extends Component {
 
 
     this.state = {
+      selectedFiles: [],
       driversList: [],
       loadsList: [],
+      brokersList: [],
+      shippersList: [],
+      receiversList: [],
       newLoad: {
         loadNum: 0,
         loadNumGood: true
       },
-      brokerOptions: [
+      brokerOptions: [],
+      driverOptions: [],
+      shipperOptions: [], //Change shipper options to companyOptions. Combine shippers/receivers
+      companyOptions: [
         {
           type: "group",
           name: "Atlanta",
           items: [
-            { name: "Broker One", value: "Broker One" },
-            { name: "Broker Two", value: "Broker Two" }
+            { name: "Company One", value: "Company One" },
+            { name: "Company Two", value: "Company Two" }
           ]
         },
         {
           type: "group",
           name: "Charleston",
           items: [
-            { name: "Broker Three", value: "Broker Three" },
-            { name: "Broker Four", value: "Broker Four" },
-            { name: "Broker Five", value: "Broker Five" }
+            { name: "Company Three", value: "Company Three" },
+            { name: "Company Four", value: "Company Four" },
+            { name: "Company Five", value: "Company Five" }
           ]
         },
         {
           type: "group",
           name: "Inactive",
-          items: [{ name: "Inactive Broker", value: "Inactive Broker" }]
+          items: [{ name: "Inactive Company", value: "Inactive Company" }]
         }
       ],
-    driverOptions: [],
-     
-  companyOptions: [
-    {
-      type: "group",
-      name: "Atlanta",
-      items: [
-        { name: "Company One", value: "Company One" },
-        { name: "Company Two", value: "Company Two" }
-      ]
-    },
-    {
-      type: "group",
-      name: "Charleston",
-      items: [
-        { name: "Company Three", value: "Company Three" },
-        { name: "Company Four", value: "Company Four" },
-        { name: "Company Five", value: "Company Five" }
-      ]
-    },
-    {
-      type: "group",
-      name: "Inactive",
-      items: [{ name: "Inactive Company", value: "Inactive Company" }]
-    }
-  ],
-  
   }
 }
 
 
-
   //Form handlers
-
+  //Right now broker and customer are the same when adding a load!
+  //Look into this later! May need additional field on new load form (Is the broker the customer?)
   handleBrokerNameChanged(event) {
     var newLoad        = this.state.newLoad;
     newLoad.brokerName  = event;
+    newLoad.customer  = event;
     this.setState({ newLoad: newLoad });
   }
 
@@ -125,9 +108,85 @@ class FormElements extends Component {
 
   }
 
+  handleDeliveryCompanyChanged(event) {
+
+    const { shippersList } = this.props
+
+    var selectedCompany = event
+    
+    var newLoad        = this.state.newLoad;
+    newLoad.deliveryCompany  = selectedCompany;
+
+    let matchingReceiver = shippersList.find(shipper => shipper.name === selectedCompany);
+
+    console.log("Found a matching receiver! ")
+    console.log(matchingReceiver)
+
+    //Set the load state which will be passed during the POST submit
+    newLoad.deliveryStreetName = matchingReceiver.streetName
+    var cityAndState = matchingReceiver.cityStateZip.split(" ")[0] + 
+                       matchingReceiver.cityStateZip.split(" ")[1]
+    
+    var zipCode = matchingReceiver.cityStateZip.split(" ")[2]
+
+    newLoad.deliveryCityAndState = cityAndState;
+    newLoad.deliveryZipCode = zipCode;
+
+    //Set the load state which will be passed during the POST submit
+    this.setState({ newLoad: newLoad });
+
+    //Auto populate the company address and phone
+    //This will auto render on the input fields below company
+    this.setState({
+      receiversList: {
+        streetName: matchingReceiver.streetName,
+        cityStateZip: matchingReceiver.cityStateZip,
+        phone: matchingReceiver.phone,     
+      }
+    })
+  }
+
+  handlePickUpCompanyChanged(event) {
+
+    const { shippersList } = this.props
+
+    var selectedCompany = event
+    
+    var newLoad        = this.state.newLoad;
+    newLoad.pickupCompany  = selectedCompany;
+
+    let matchingShipper = shippersList.find(shipper => shipper.name === selectedCompany);
+
+    console.log("Found a matching shipper! ")
+    console.log(matchingShipper)
+
+    //Set the load state which will be passed during the POST submit
+    newLoad.pickupStreetName = matchingShipper.streetName
+    var cityAndState = matchingShipper.cityStateZip.split(" ")[0] + 
+                       matchingShipper.cityStateZip.split(" ")[1]
+    
+    var zipCode = matchingShipper.cityStateZip.split(" ")[2]
+
+    newLoad.pickupCityAndState = cityAndState;
+    newLoad.pickupZipCode = zipCode;
+    
+    this.setState({ newLoad: newLoad });
+
+    //Auto populate the company address and phone
+    //This will auto render on the input fields below company
+    this.setState({
+      shippersList: {
+        streetName: matchingShipper.streetName,
+        cityStateZip: matchingShipper.cityStateZip,
+        phone: matchingShipper.phone,     
+      }
+    })
+
+  }
+
   handleDriverChanged(event) {
 
-    const { driversList, loadsList } = this.props
+    const { driversList } = this.props
 
     var selectedDriver = event
 
@@ -141,12 +200,15 @@ class FormElements extends Component {
 
     var newLoad = this.state.newLoad;
     newLoad.driver  = selectedDriver;
-    newLoad.cellNum = matchingDriver.cellNum;
+    newLoad.driverCellNum = matchingDriver.cellNum;
     newLoad.truckNum = matchingDriver.truckNum;
     newLoad.trailerNum = matchingDriver.trailerNum;
 
+    //Set the load state which will be passed during the POST submit
     this.setState({ newLoad: newLoad });
 
+    //Auto populate the phone, truck and trailer #
+    //This will auto render on the input fields below driver
     this.setState({
       driversList: {
         phone: matchingDriver.cellNum,
@@ -154,7 +216,6 @@ class FormElements extends Component {
         trailerNum: matchingDriver.trailerNum,     
       }
     })
-
    
   }
 
@@ -172,20 +233,7 @@ class FormElements extends Component {
     this.setState({ newLoad: newLoad });
   }
 
-  handlePickUpCompanyChanged(event) {
-    var newLoad        = this.state.newLoad;
-    newLoad.pickupCompany  = event;
 
-    this.setState({ newLoad: newLoad });
-    console.log("Changed:" + newLoad.companyName)
-  }
-
-  handleDeliveryCompanyChanged(event) {
-    var newLoad        = this.state.newLoad;
-    newLoad.deliveryCompany  = event;
-
-    this.setState({ newLoad: newLoad });
-  }
 
   handlePickUpDateandTimeChanged(event) {
     var newLoad        = this.state.newLoad;
@@ -203,9 +251,12 @@ class FormElements extends Component {
   
 
   handleLoadSubmit(event) {
+    event.preventDefault();
     console.log("Ok here's the newLoad!")
     console.log(this.state.newLoad);
-    event.preventDefault();
+
+    const {onAddNewLoad} = this.props //Not sure what this does. Look into it
+    onAddNewLoad(this.state.newLoad)
   }
   
 
@@ -245,7 +296,24 @@ class FormElements extends Component {
     this.toggle()
   }
 
-  handleAcceptedFiles = files => {
+  //Only sets the file name. Doesn't add the actual file.
+  //Must fix this for production code
+  handleAcceptedFiles = (e) => {
+
+    // handle validations
+    const file = e.target.files[0];
+
+    this.setState({ selectedFiles: file })
+
+    //Add the rate conf to this new load
+    var newLoad = this.state.newLoad;
+    newLoad.rateConfirmation = file['name']
+
+    this.setState({ newLoad: newLoad })
+
+  };
+
+  handleAcceptedFilesDropZone = files => {
     files.map(file =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
@@ -253,7 +321,7 @@ class FormElements extends Component {
       })
     )
 
-    this.setState({ selectedFiles: files })
+    
   }
 
   /**
@@ -269,6 +337,7 @@ class FormElements extends Component {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
   }
 
+  //Handle Filters. Eventually just combine into one function!
   handleBrokerFilter = (items) => {
     return (searchValue) => {
       if (searchValue.length === 0) {
@@ -303,7 +372,7 @@ class FormElements extends Component {
   handleCompanyFilter = (items) => {
     return (searchValue) => {
       if (searchValue.length === 0) {
-        return this.state.companyOptions;
+        return this.state.shipperOptions;
       }
       const updatedItems = items.map((list) => {
         const newItems = list.items.filter((item) => {
@@ -340,8 +409,12 @@ class FormElements extends Component {
 
     const { driversList, 
             loadsList, 
+            brokersList,
+            shippersList,
             onGetDrivers, 
-            onGetLoads 
+            onGetLoads,
+            onGetBrokers,
+            onGetShippers
           } = this.props
     
     //Get drivers from DB!
@@ -353,9 +426,21 @@ class FormElements extends Component {
     if (loadsList && !loadsList.length) {
       onGetLoads()
     }
+
+    //Get brokers from DB!
+    if (brokersList && !brokersList.length) {
+      onGetBrokers()
+    }
+
+     //Get shippers from DB!
+     if (shippersList && !shippersList.length) {
+      onGetShippers()
+    }
   
     this.setState({ driversList })
     this.setState({ loadsList })
+    this.setState({ brokersList })
+    this.setState({ shippersList })
 
     {/*
     
@@ -370,26 +455,27 @@ class FormElements extends Component {
 
   }
 
-  //Sets the driver options list to the right format for SelectSearch to read data
-  setDriverOptionsList(driversList){
+  //Sets the options list to the right format for SelectSearch to read data
+  //Takes in the type (broker, driver, shipper or receiver) and the data (list)
+  setOptionsList(list, type){
 
-    const driverNames = [];
+    const namesList = [];
 
 
-    Object.entries(driversList).map(([key, value]) => {
+    Object.entries(list).map(([key, value]) => {
       // Pretty straightforward - use key for the key and value for the value.
       // Just to clarify: unlike object destructuring, the parameter names don't matter here.
-      driverNames.push(value['name'])
+      namesList.push(value['name'])
     })
 
     //Sort the drivers alphabetically
-    const driverNamesSorted = driverNames.sort(function(a, b) {
+    const namesListSorted = namesList.sort(function(a, b) {
       if(a.toLowerCase() < b.toLowerCase()) return -1;
       if(a.toLowerCase() > b.toLowerCase()) return 1;
       return 0;
     })
 
-  const driverOptionsListArr = [];
+  const optionsListArr = [];
   var previousLetter = ""
   
   let indexOfFirstLetter = -1
@@ -397,37 +483,79 @@ class FormElements extends Component {
   //This builds the driverOptions state in the right format
   //so that driver selectsearch can accept the correct driver data
   //see very bottom of code to see required driverOptions format
-  for (let key in driverNamesSorted){
-    var driverName = driverNamesSorted[key]
-    var firstLetterOfName = driverName[0].toUpperCase()
+  for (let key in namesListSorted){
+    var currentName = namesListSorted[key]
+    var firstLetterOfName = currentName[0].toUpperCase()
   if (firstLetterOfName !== previousLetter){
     indexOfFirstLetter = indexOfFirstLetter + 1
-    driverOptionsListArr.push({
+    optionsListArr.push({
       type: "group", 
       name : firstLetterOfName, 
-      items: [{ name: driverName, value: driverName}],
+      items: [{ name: currentName, value: currentName}],
       })
   } else {
-    driverOptionsListArr[indexOfFirstLetter].items.push({name: driverName, value: driverName})
+    optionsListArr[indexOfFirstLetter].items.push({name: currentName, value: currentName})
   }
     previousLetter = firstLetterOfName
   }      
 
+  console.log("Type: " + type)
+  console.log(optionsListArr)
+
+  switch(type) {
+    case 'brokers':
+      console.log("Inside switch:")
+      console.log("Chose brokers!!!")
+      this.setState({brokerOptions: optionsListArr})
+      return;
+    case 'drivers':
+      console.log("Inside switch:")
+      console.log("Chose drivers!!!")
+      this.setState({driverOptions: optionsListArr})
+      return;
+    case 'shippers':
+      console.log("Inside switch:")
+      console.log("Chose shipper!!!")
+      this.setState({shipperOptions: optionsListArr})
+      return;
+    case 'receivers':
+      console.log("Inside switch:")
+      console.log("Chose receiver!!!")
+      return;
+    default:
+      console.log("Inside switch:")
+      console.log("Different type")
+      return;
+  }
+
   //Got the right format. Now set the state
-  this.setState({driverOptions: driverOptionsListArr})
+  //
     
   }
+
 
   // eslint-disable-next-line no-unused-vars
   //called when component updates
   componentDidUpdate(prevProps, prevState, snapshot) {
 
-    const { driversList, loadsList } = this.props
+    const { driversList, loadsList, brokersList, shippersList } = this.props
 
     //Set the driversList state to the drivers now that the component updated
     if (!isEmpty(driversList) && size(prevProps.driversList) !== size(driversList)) {
       this.setState({ driversList: {}}) //Not sure how this actually sets the driversList. Look into it later
-      this.setDriverOptionsList(driversList)
+      this.setOptionsList(driversList, "drivers")
+    }
+
+    //Set the brokerList state to the drivers now that the component updated
+    if (!isEmpty(brokersList) && size(prevProps.brokersList) !== size(brokersList)) {
+      this.setState({ brokersList: {}}) //Not sure how this actually sets the brokersList. Look into it later
+      this.setOptionsList(brokersList, "brokers")
+    }
+
+    //Set the shippersList state to the drivers now that the component updated
+    if (!isEmpty(shippersList) && size(prevProps.shippersList) !== size(shippersList)) {
+      this.setState({ shippersList: {}}) //Not sure how this actually sets the shippersList. Look into it later
+      this.setOptionsList(shippersList, "shippers")
     }
 
     //Set the loadsList state to the loads now that the component updated
@@ -436,7 +564,7 @@ class FormElements extends Component {
       this.setState({ loadsList: {}}) //Not sure how this actually sets the loadsList. Look into it later
 
       var newLoad = this.state.newLoad;
-      var newLoadNum  = Math.floor(Math.random() * 13) + 1;
+      var newLoadNum  = Math.floor(Math.random() * 1000) + 1;
       this.loadNumExists(loadsList, newLoadNum)
 
 
@@ -454,7 +582,6 @@ class FormElements extends Component {
           loadNumGood = this.state.newLoad.loadNumGood
 
         }
-
       }
     }
   
@@ -478,9 +605,13 @@ class FormElements extends Component {
 
                   <form> 
                     <CardTitle className="h4">Customer Info</CardTitle>
+                    
                       <p className="card-title-desc">
                         Please enter the customer info below.
                       </p>
+                    
+
+                      
 
                       <div className="mb-3 row">
                         <label
@@ -490,6 +621,12 @@ class FormElements extends Component {
                           Broker Name
                         </label>
                         <div className="col-md-10">
+                        <div style={{float: 'right'}}>
+                          <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                          <i className="mdi mdi-plus-circle-outline me-1" />
+                          Add Broker
+                          </button>
+                        </div>
                         <SelectSearch 
                           options={this.state.brokerOptions} 
                           filterOptions={this.handleBrokerFilter}
@@ -512,6 +649,7 @@ class FormElements extends Component {
                         </div>
                       </div>
 
+                      
                       <div className="mb-3 row">
                         <label
                           htmlFor="example-text-input"
@@ -537,6 +675,7 @@ class FormElements extends Component {
                       </p>
 
                       
+                      
 
                       <div className="mb-3 row">
                         <label
@@ -558,6 +697,12 @@ class FormElements extends Component {
                       <div className="mb-3 row">
                         <label htmlFor="exampleDataList" className="col-md-2 col-form-label">Driver</label>
                         <div className="col-md-10">
+                          <div style={{float: 'right'}}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <i className="mdi mdi-plus-circle-outline me-1" />
+                            Add Driver
+                            </button>
+                          </div>
                           <SelectSearch 
                             options={this.state.driverOptions} 
                             filterOptions={this.handleDriverFilter}
@@ -567,18 +712,6 @@ class FormElements extends Component {
                             placeholder="Search for a driver" 
                             onChange={this.handleDriverChanged.bind(this)}
                           />
-                        {/*
-                          <input className="form-control" onChange={this.handleDriverChanged.bind(this)} list="datalistOptions" id="exampleDataList" placeholder="Type to search..." />
-                          <datalist id="datalistOptions">
-                            <option value="Vasya Kishchenko" />
-                            <option value="Steve Madden" />
-                            <option value="Justin Moser" />
-                            <option value="Samuel Mikhalchuk" />
-                            <option value="Alex Moskov" />
-                            <option value="Jamal Burnett" />
-                            <option value="Oleg Sivorsky" />
-                          </datalist>
-                           */}
                         </div>
                       </div>
 
@@ -655,7 +788,6 @@ class FormElements extends Component {
                       <p className="card-title-desc">
                         Please enter the pickup info below.
                       </p>
-                    
                       
                       <div className="mb-3 row">
                         <label
@@ -665,8 +797,14 @@ class FormElements extends Component {
                           Company 
                         </label>
                         <div className="col-md-10">
+                          <div style={{float: 'right'}}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <i className="mdi mdi-plus-circle-outline me-1" />
+                            Add Shipper
+                            </button>
+                          </div>
                           <SelectSearch 
-                              options={this.state.companyOptions} 
+                              options={this.state.shipperOptions} 
                               filterOptions={this.handleCompanyFilter}
                               search 
                               value="" 
@@ -674,16 +812,6 @@ class FormElements extends Component {
                               placeholder="Search for a company" 
                               onChange={this.handlePickUpCompanyChanged.bind(this)}
                             />
-                            {/* 
-                            <input className="form-control" onChange={this.handlePickUpCompanyChanged.bind(this)} list="companyListOptions" id="exampleDataList" placeholder="Type to search..." />
-                            <datalist id="companyListOptions">
-                              <option value="A Limited Inc" />
-                              <option value="B Limited Ltd" />
-                              <option value="C Limited Company" />
-                              <option value="D Shippers Firm" />
-                              <option value="E Truckers Inc" />
-                            </datalist>
-                            */}
                         </div>
                       </div>
                       
@@ -700,6 +828,7 @@ class FormElements extends Component {
                             type="text"
                             defaultValue=""
                             placeholder="Street Name"
+                            value={this.state.shippersList.streetName || ""}
                           />
                         </div>
                       </div>
@@ -718,6 +847,7 @@ class FormElements extends Component {
                             type="text"
                             defaultValue=""
                             placeholder="City, State ZIP"
+                            value={this.state.shippersList.cityStateZip || ""}
                           />
                         </div>
                       </div>
@@ -735,7 +865,7 @@ class FormElements extends Component {
                             className="form-control"
                             type="tel"
                             placeholder="1-(555)-555-5555"
-                            value=""
+                            value={this.state.shippersList.phone || ""}
                           />
                         </div>
                       </div>
@@ -752,7 +882,7 @@ class FormElements extends Component {
                             onChange={this.handlePickUpDateandTimeChanged.bind(this)}
                             className="form-control"
                             type="datetime-local"
-                            defaultValue="2019-08-19T13:45:00"
+                            defaultValue={Date().toLocaleString()}
                             id="example-datetime-local-input"
                           />
                         </div>
@@ -775,8 +905,14 @@ class FormElements extends Component {
                           Company
                         </label>
                         <div className="col-md-10">
+                          <div style={{float: 'right'}}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <i className="mdi mdi-plus-circle-outline me-1" />
+                            Add Receiver
+                            </button>
+                          </div>
                         <SelectSearch 
-                              options={this.state.companyOptions} 
+                              options={this.state.shipperOptions} 
                               filterOptions={this.handleCompanyFilter}
                               search 
                               value="" 
@@ -784,14 +920,6 @@ class FormElements extends Component {
                               placeholder="Search for a company" 
                               onChange={this.handleDeliveryCompanyChanged.bind(this)}
                             />
-                            {/* 
-                            <input
-                              className="form-control"
-                              type="text"
-                              defaultValue=""
-                              placeholder="Company Name"
-                            />
-                            */}
                         </div>
                       </div>
                       
@@ -808,6 +936,7 @@ class FormElements extends Component {
                             type="text"
                             defaultValue=""
                             placeholder="Street Name"
+                            value={this.state.receiversList.streetName || ""}
                           />
                         </div>
                       </div>
@@ -825,6 +954,7 @@ class FormElements extends Component {
                             type="text"
                             defaultValue=""
                             placeholder="City, State ZIP"
+                            value={this.state.receiversList.cityStateZip || ""}
                           />
                         </div>
                       </div>
@@ -841,8 +971,9 @@ class FormElements extends Component {
                           <input
                             className="form-control"
                             type="datetime-local"
-                            defaultValue="2019-08-19T13:45:00"
+                            defaultValue={Date().toLocaleString()}
                             id="example-datetime-local-input"
+                            onChange={this.handleDeliveryDateandTimeChanged.bind(this)}
                           />
                         </div>
                       </div>
@@ -852,7 +983,7 @@ class FormElements extends Component {
                       <div>
                         <Label className="form-label">Attach Rate Confirmation</Label>
                         <div className="input-group mb-3">
-                          <Input className="form-control" type="file" id="formFile" />
+                          <Input className="form-control" type="file" id="formFile" onChange = {this.handleAcceptedFiles} />
                         </div>
                       </div>
 
@@ -882,57 +1013,24 @@ class FormElements extends Component {
 FormElements.propTypes = {
   driversList: PropTypes.array,
   loadsList: PropTypes.array,
+  brokersList: PropTypes.array,
+  shippersList: PropTypes.array,
   onGetLoads: PropTypes.func,
-  onGetDrivers: PropTypes.func
+  onGetDrivers: PropTypes.func,
+  onGetBrokers: PropTypes.func,
+  onGetShippers: PropTypes.func,
+  onAddNewLoad: PropTypes.func,
 }
 
  
 
 function mapStateToProps(state) {
 
-
-  {/*
-  var driverOptionsList = []
-  var previousLetter = ""
-  var previousKey = 0
-  
-  console.log("Init state: ")
-  console.log(driverOptionsList)
-
-  
-  for (let key in driverNamesSorted){
-    console.log(driverNamesSorted[key])
-    var driverName = driverNamesSorted[key]
-    var firstLetterOfName = driverName[0]
-    console.log(firstLetterOfName)
-
-  
-  if (firstLetterOfName !== previousLetter){
-    console.log("prevLetter: " + previousLetter + " firstLetter: " + firstLetterOfName)
-    driverOptionsList.push({
-      type: "group", 
-      name : firstLetterOfName, 
-      items: { name: driverName, value: driverName },
-      })
-      console.log("pushing array: ")
-      console.log(driverOptionsList)
-  } else {
-    console.log("Same letters!: " + "key: " + parseInt(key) + "prev key: " + previousKey + " array:" + driverOptionsList[0])
-    //driverOptionsListArray[key].items.push({name: driverName, value: driverName})
-    previousKey = previousKey + 1
-    console.log("whole array:")
-    console.log(driverOptionsList)
-  }
-    previousLetter = firstLetterOfName
-  }      
-  */}                
-
-
-
   const props = { 
     driversList: state.contacts.drivers,
     loadsList: state.ecommerce.loads,
-
+    brokersList: state.contacts.truckingCustomers,
+    shippersList: state.contacts.shippers,
   };
 
   return props;
@@ -941,7 +1039,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => ({
   onGetDrivers: () => dispatch(getDrivers()),
   onGetLoads: () => dispatch(getLoads()),
-  
+  onGetBrokers: () => dispatch(getTruckingCustomers()),
+  onGetShippers: () => dispatch(getShippers()),
+  onAddNewLoad: load => dispatch(addNewLoad(load)),
 })
 
 //export default FormElements

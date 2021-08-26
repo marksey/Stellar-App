@@ -281,7 +281,8 @@ class LoadsList extends Component {
               Current Loads
               <a href="new-load">
                 <button class="btn btn-success" style={{float:'right'}}>
-                  Add New Load
+                  <i className="mdi mdi-plus-circle-outline me-1" />
+                  Add Load
                   </button>
               </a>
             </div>

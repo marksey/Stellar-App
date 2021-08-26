@@ -1,4 +1,4 @@
-//This is where the customers are stored for the tables. This may end up a JSON 
+//This is where the customers/brokers are stored for the tables. This may end up a JSON 
 //file during production. We will pull from the DB tables into this customers
 //array so the front end can grab the data.
 
