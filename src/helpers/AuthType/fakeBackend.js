@@ -295,6 +295,24 @@ const fakeBackend = () => {
     })
   })
 
+  //Add a new load
+  mock.onPost(url.ADD_NEW_LOAD).reply(load => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (load && load.data) {
+          // Passing fake JSON data as response
+          console.log("Posting the load inside fakebackend.js!")
+          console.log("load:" + load)
+          console.log("load data:" + load.)
+          resolve([200, load.data])
+        } else {
+          console.log("Can't add load!")
+          reject([400, "Cannot add load"])
+        }
+      })
+    })
+  })
+
   mock.onPost(url.ADD_NEW_USER).reply(user => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
