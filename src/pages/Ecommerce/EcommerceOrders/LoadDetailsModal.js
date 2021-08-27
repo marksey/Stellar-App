@@ -37,6 +37,19 @@ const LoadDetailsModal = props => {
           <AvForm>
             <Row form>
               <Col className="col-12">
+
+                <div className="mb-3">
+                <AvField
+                  name="driver"
+                  label="Driver"
+                  type="text"
+                  errorMessage="Invalid driver"
+                  validate={{
+                    required: { value: true },
+                  }}
+                  value={loads.driver || ""}
+                />
+                </div>
                 <div className="mb-3">
 
                   <AvField
@@ -50,6 +63,7 @@ const LoadDetailsModal = props => {
                     value={loads.tripNum || ""}
                   />
                 </div>
+
                 <div className="mb-3">
 
                   <AvField

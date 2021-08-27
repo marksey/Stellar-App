@@ -1,9 +1,23 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import MetaTags from 'react-meta-tags';
 import { withRouter, Link } from "react-router-dom"
-import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalBody } from "reactstrap"
+import { 
+  Card, 
+  CardBody, 
+  Col, 
+  Container, 
+  Row, 
+  Modal, 
+  Button, 
+  ModalHeader, 
+  ModalBody, 
+} from "reactstrap"
+
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Popover from 'react-bootstrap/Popover';
+
 import paginationFactory, { PaginationProvider, PaginationListStandalone, SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
@@ -110,33 +124,74 @@ class Trucks extends Component {
             dataField: "actions",
             isDummyField: true,
             editable: false,
-            formatter: (cellContent, truck) => (
-              <div className="d-flex gap-3">
-                <Link className="text-info" to="#"><i style={{ marginTop: "20%" }} className="bx bx-notepad font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
-                {/*<Link className="text-warning" to="#"><i className="dripicons-warning font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>*/}
-                <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
-                <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(truck)}></i></Link>
-              </div>
+            formatter: (cellContent, truck) => ( 
+              <>
+                <div className="d-flex gap-3">
+                  <OverlayTrigger
+                    trigger="click"
+                    key={truck.id}
+                    placement="left"
+                    overlay={
+                      <Popover id={"popover" + truck.id}>
+                        <Popover.Header as="h3">
+                          <span style={{ cursor: "pointer"}} onClick={() => this.handleUserClick(truck)}>
+                            <i className="bx bx-pencil text-primary font-size-18"></i>
+                          </span>
+                          &nbsp;
+                          {truck.notes == "" ? 'No notes' : 'Important note' }
+                          </Popover.Header>
+                        <Popover.Body>
+                          {truck.notes == "" ? 'No notes yet.' : <strong>Holy guacamole!</strong> }
+                          <br></br>
+                          <br></br>
+                          {truck.notes}
+                          {/*
+                          <br></br>
+                          <br></br>
+                          <Button id={"SaveBtn" + truck.id} style={{ float: "right"}} className="btn-sm btn-rounded" color="success">Save</Button>
+                          */}
+                        </Popover.Body>
+                      </Popover>
+                    }
+                  >
+                    {/* Conditional rendering. If has truck notes, display yellow notepad.*/}
+                    <Link className={truck.notes == "" ? 'text-info disabledCursor' : 'text-warning'} to="#"><i style={{ marginTop: "20%" }} className="bx bx-notepad font-size-18"></i></Link>
+                  </OverlayTrigger>
+                  {/*<Link className="text-warning" to="#"><i className="dripicons-warning font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>*/}
+                  <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(truck)}></i></Link>
+                  <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(truck)}></i></Link>
+                </div>
+              </>
+              
             ),
         }
       ]
     }
+
     this.handleUserClick = this.handleUserClick.bind(this)
     this.toggle = this.toggle.bind(this)
     this.handleValidUserSubmit = this.handleValidUserSubmit.bind(this)
     this.handleUserClicks = this.handleUserClicks.bind(this)
   }
 
+
+  
+  btnClicked(id){
+    console.log("Clicked button with id " + id)
+  }
+
+  
   componentDidMount() {
 
     const { trucks, onGetTrucks } = this.props
+
+
     if (trucks && !trucks.length) {
-      console.log('getting trucks!!!!!!')
       onGetTrucks(); 
     }
 
     this.setState({ trucks })
-
+    
   }
 
   toggle() {
@@ -152,10 +207,15 @@ class Trucks extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
+
+
     const { trucks } = this.props
-    if (!isEmpty(trucks) && size(prevProps.trucks) !== size(trucks)) {
-      this.setState({ trucks: {}, isEdit: false })
-    }
+  
+    if (!isEmpty(trucks) && (size(prevProps.trucks) !== size(trucks)) ) {
+      this.setState({ trucks: {}, isEdit: false})
+    } 
+
+
   }
 
   /* Insert,Update Delete data */
@@ -181,7 +241,8 @@ class Trucks extends Component {
         state: truck.state,
         vinNum: truck.vinNum,
         year: truck.year,
-        location: truck.location
+        location: truck.location,
+        notes: truck.notes
       },
       isEdit: true,
     })
@@ -249,6 +310,7 @@ class Trucks extends Component {
     const selectRow = {
       mode: 'checkbox'
     };
+    
 
     return (
       <React.Fragment>
@@ -263,7 +325,6 @@ class Trucks extends Component {
               <Col lg="12">
                 <Card>
                   <CardBody>
-
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField='id'
@@ -308,7 +369,11 @@ class Trucks extends Component {
                                   </Row>
                                   <Row>
                                     <Col xl="12">
+                                      
+
                                       <div className="table-responsive">
+
+
                                         <BootstrapTable
                                           {...toolkitprops.baseProps}
                                           {...paginationTableProps}
@@ -324,13 +389,19 @@ class Trucks extends Component {
                                           responsive
                                         />
 
+                                       {/*
+                                        This is where the tooltips for trucks are generated
+                                        We link them to the notepad link under actions
+                                      */}
+
+
                                         <Modal
                                           isOpen={this.state.modal}
                                           className = 'modal-dialog modal-dialog-scrollable'
                                           //className={this.props.className}
                                         >
                                           <ModalHeader toggle={this.toggle} tag="h4">
-                                            {!!isEdit ? "Edit truck" : "Add Truck"}
+                                            {!!isEdit ? "Edit truck" : "Save Truck"}
                                           </ModalHeader>
                                           <ModalBody>
                                             <AvForm
@@ -341,7 +412,19 @@ class Trucks extends Component {
                                               <Row form>
                                                 <Col className="col-12">
                                                   <div className="mb-3">
-
+                                                    <AvField
+                                                      name="notes"
+                                                      label="Notes"
+                                                      type="text"
+                                                      errorMessage="Invalid Notes"
+                                                      validate={{
+                                                        required: { value: true },
+                                                      }}
+                                                      value={this.state.trucks.notes || ""}
+                                                    />
+                                                  </div>
+                                                  
+                                                  <div className="mb-3">
                                                     <AvField
                                                       name="age"
                                                       label="Age"
@@ -481,7 +564,7 @@ class Trucks extends Component {
                                                       type="submit"
                                                       className="btn btn-success save-user"
                                                     >
-                                                      Add Truck
+                                                      Save Truck
                                                     </button>
                                                   </div>
                                                 </Col>

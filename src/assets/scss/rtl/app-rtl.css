@@ -3686,3 +3686,8 @@ div.dataTables_wrapper div.dataTables_filter {
   right: 0;
   left: auto !important;
 }
+
+/* Mark added */
+.disabledCursor { 
+  cursor: default;
+}

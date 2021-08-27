@@ -14,7 +14,8 @@ const trucks = [
         state: 'CA',
         vinNum: 'KL1234892324',
         year: '2005',
-        location: 'Stockton, CA'
+        location: 'Stockton, CA',
+        notes: ""
     },
     {
         id: '2',
@@ -27,8 +28,8 @@ const trucks = [
         state: 'CA',
         vinNum: 'KL73123921912',
         year: '2015',
-        location: 'Sacramento, CA'
-
+        location: 'Sacramento, CA',
+        notes: "On vacation for a while. Be back 09/01/21"
     },
     {
         id: '3',
@@ -41,8 +42,8 @@ const trucks = [
         state: 'CA',
         vinNum: 'LJ934398123434',
         year: '2016',
-        location: 'Baton Rouge, LA'
-
+        location: 'Baton Rouge, LA',
+        notes: ""
     },
     {
         id: '4',
@@ -55,8 +56,8 @@ const trucks = [
         state: 'TX',
         vinNum: 'LK9129918239442',
         year: '2001',
-        location: 'Stockton, CA'
-
+        location: 'Stockton, CA',
+        notes: ""
     },
     {
         id: '5',
@@ -69,8 +70,8 @@ const trucks = [
         state: 'GA',
         vinNum: 'KL8232391234321',
         year: '2015',
-        location: 'Phoenix, AZ'
-
+        location: 'Phoenix, AZ',
+        notes: ""
     },
     {
         id: '6',
@@ -83,8 +84,8 @@ const trucks = [
         state: 'OR',
         vinNum: 'LI57263232323231',
         year: '2018',
-        location: 'Riverside, CA'
-
+        location: 'Riverside, CA',
+        notes: "On vacation for a while. Be back 09/01/21"
     },
     {
         id: '7',
@@ -97,8 +98,8 @@ const trucks = [
         state: 'CA',
         vinNum: 'LK14334123232322',
         year: '2013',
-        location: 'Dallas, TX'
-
+        location: 'Dallas, TX',
+        notes: "On vacation for a while. Be back 09/01/21"
     },
 ]
 

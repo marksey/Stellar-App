@@ -385,7 +385,7 @@ class UiGeneral extends Component {
                           this.setState({ ttbottom: !this.state.ttbottom })
                         }
                       >
-                        Hello world!
+                        This is the details of the bottom tooltip!
                       </Tooltip>
                       <Tooltip
                         placement="left"
@@ -417,7 +417,7 @@ class UiGeneral extends Component {
                         className="btn btn-primary"
                         id="TooltipBottom"
                       >
-                        Tooltip on bottom
+                        Tooltip on bottom, Mark
                       </button>{" "}
                       <button
                         type="button"

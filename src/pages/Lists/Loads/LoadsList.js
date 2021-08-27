@@ -54,14 +54,25 @@ class LoadsList extends Component {
           ),
         },
         {
+          dataField: "driver",
+          text: "Driver",
+          sort: true,
+          filter: textFilter(),
+          formatter: (cellContent, row) => (
+            <>
+              {row.driver}
+            </>
+          ),
+        },
+        {
           dataField: "tripNum",
           text: "Trip #",
           sort: true,
           filter: textFilter(),
           formatter: (cellContent, row) => (
-            <Link to="#" className="text-body fw-bold">
+            <>
               {row.tripNum}
-            </Link>
+            </>
           ),
         },
         {
@@ -233,6 +244,7 @@ class LoadsList extends Component {
     this.setState({
         
       loads: {
+        driver: load.driver,
         tripNum: load.tripNum,
         truckNum: load.truckNum,
         trailerNum: load.trailerNum,
@@ -340,8 +352,21 @@ class LoadsList extends Component {
                             >
                               <Row form>
                                 <Col className="col-12">
-                                  <div className="mb-3">
 
+                                  <div className="mb-3">
+                                    <AvField
+                                      name="driver"
+                                      label="Driver"
+                                      type="text"
+                                      errorMessage="Invalid driver"
+                                      validate={{
+                                        required: { value: true },
+                                      }}
+                                      value={this.state.loads.driver || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mb-3">
                                     <AvField
                                       name="age"
                                       label="Trip #"
@@ -353,6 +378,7 @@ class LoadsList extends Component {
                                       value={this.state.loads.tripNum || ""}
                                     />
                                   </div>
+
                                   <div className="mb-3">
 
                                     <AvField
