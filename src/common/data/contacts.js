@@ -81,7 +81,7 @@ const drivers = [
     tags: ["Photoshop", "illustrator"],
   },
   {
-    id: 6,
+    id: 7,
     name: "Andrey Shapoval",
     img: "avatar5",
     designation: "Owner/Op",
@@ -94,7 +94,7 @@ const drivers = [
     tags: ["Photoshop", "illustrator"],
   },
   {
-    id: 7,
+    id: 8,
     name: "Samuel Mikhalchuk",
     img: "avatar6",
     designation: "Owner/Op",
@@ -107,7 +107,7 @@ const drivers = [
     tags: ["Photoshop", "illustrator"],
   },
   {
-    id: 8,
+    id: 9,
     name: "Steve Madden",
     img: "avatar7",
     designation: "Owner/Op",
@@ -120,7 +120,7 @@ const drivers = [
     tags: ["Photoshop", "illustrator"],
   },
   {
-    id: 9,
+    id: 10,
     name: "Michael Scott",
     img: "avatar8",
     designation: "Owner/Op",
@@ -133,7 +133,7 @@ const drivers = [
     tags: ["Photoshop", "illustrator"],
   },
   {
-    id: 10,
+    id: 11,
     name: "Steven Furtick",
     img: "avatar1",
     designation: "Owner/Op",

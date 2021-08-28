@@ -21,12 +21,12 @@ import megamenuImg from "../../assets/images/megamenu-img.png"
 
 
 // import images
-import github from "../../assets/images/brands/github.png"
-import bitbucket from "../../assets/images/brands/bitbucket.png"
-import dribbble from "../../assets/images/brands/dribbble.png"
-import dropbox from "../../assets/images/brands/dropbox.png"
-import mail_chimp from "../../assets/images/brands/mail_chimp.png"
-import slack from "../../assets/images/brands/slack.png"
+const github = "../../assets/images/users/avatar-1.png"
+const bitbucket = "../../assets/images/users/avatar-2.png"
+const dribbble = "../../assets/images/users/avatar-3.png"
+const dropbox = "../../assets/images/users/avatar-4.png"
+const mail_chimp = "../../assets/images/users/avatar-5.png"
+const slack = "../../assets/images/users/avatar-6.png"
 
 //i18n
 import { withTranslation } from "react-i18next"

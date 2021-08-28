@@ -24,14 +24,14 @@ import "react-select-search/style.css"
 // Import fackbackend Configuration file
 import fakeBackend from "./helpers/AuthType/fakeBackend"
 
-console.log("Before backend firing!");
+console.log("Before backend firing!")
 
 // Activating fake backend
 fakeBackend()
 
 
 //This is a new comment
-console.log("After backend firing!");
+console.log("After backend firing!")
 
 // Activating fake firebase
 // const firebaseConfig = {
@@ -118,6 +118,6 @@ App.propTypes = {
   layout: PropTypes.object,
 }
 
-console.log("Should be done!");
+console.log("Should be done!")
 
 export default connect(mapStateToProps, null)(App)

@@ -22,24 +22,10 @@ import {
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 
-// availity-reactstrap-validation
-import { AvField, AvForm } from "availity-reactstrap-validation"
 
-//import Charts
-import StackedColumnChart from "./StackedColumnChart"
-
-import modalimage1 from "../../assets/images/product/img-7.png"
-import modalimage2 from "../../assets/images/product/img-4.png"
-
-//import action
-import { getChartsData } from "../../store/actions"
 
 // Pages Components
 import WelcomeComp from "./WelcomeComp"
-import MonthlyEarning from "./MonthlyEarning"
-import SocialSource from "./SocialSource"
-import ActivityComp from "./ActivityComp"
-import TopCities from "./TopCities"
 import LatestTransaction from "./LatestTransaction"
 
 //Import Breadcrumb
@@ -94,14 +80,14 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { onGetChartsData } = this.props
+    //const { onGetChartsData } = this.props
     const displayAdminPopup = localStorage.getItem("displayAdminPopup")
     if (displayAdminPopup){
       setTimeout(() => this.setState({ subscribemodal: true }), 2000);
       localStorage.removeItem("displayAdminPopup") //No longer display admin pop-up
     }
     
-    onGetChartsData("yearly");
+    //onGetChartsData("yearly");
   }
 
 
@@ -120,7 +106,7 @@ class Dashboard extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      this.setState({ ...this.state, chartSeries: this.props.chartsData })
+      //this.setState({ ...this.state, chartSeries: this.props.chartsData })
     }
   }
 
@@ -183,9 +169,6 @@ class Dashboard extends Component {
                 
               </Col>
             </Row>
-
-            
-           
             
             <Row>
               <Col lg="12">
@@ -344,101 +327,7 @@ class Dashboard extends Component {
           </div>
         </Modal>
 
-        <Modal
-          isOpen={this.state.modal}
-          role="dialog"
-          autoFocus={true}
-          centered={true}
-          className="exampleModal"
-          tabindex="-1"
-          toggle={this.togglemodal}
-        >
-          <div className="modal-content">
-            <ModalHeader toggle={this.togglemodal}>Order Details</ModalHeader>
-            <ModalBody>
-              <p className="mb-2">
-                Product id: <span className="text-primary">#SK2540</span>
-              </p>
-              <p className="mb-4">
-                Billing Name:{" "}
-                <span className="text-primary">Neal Matthews</span>
-              </p>
-
-              <div className="table-responsive">
-                <Table className="table align-middle table-nowrap">
-                  <thead>
-                    <tr>
-                      <th scope="col">Product</th>
-                      <th scope="col">Product Name</th>
-                      <th scope="col">Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">
-                        <div>
-                          <img src={modalimage1} alt="" className="avatar-sm" />
-                        </div>
-                      </th>
-                      <td>
-                        <div>
-                          <h5 className="text-truncate font-size-14">
-                            Wireless Headphone (Black)
-                          </h5>
-                          <p className="text-muted mb-0">$ 225 x 1</p>
-                        </div>
-                      </td>
-                      <td>$ 255</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <div>
-                          <img src={modalimage2} alt="" className="avatar-sm" />
-                        </div>
-                      </th>
-                      <td>
-                        <div>
-                          <h5 className="text-truncate font-size-14">
-                            Hoodie (Blue)
-                          </h5>
-                          <p className="text-muted mb-0">$ 145 x 1</p>
-                        </div>
-                      </td>
-                      <td>$ 145</td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2">
-                        <h6 className="m-0 text-right">Sub Total:</h6>
-                      </td>
-                      <td>$ 400</td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2">
-                        <h6 className="m-0 text-right">Shipping:</h6>
-                      </td>
-                      <td>Free</td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2">
-                        <h6 className="m-0 text-right">Total:</h6>
-                      </td>
-                      <td>$ 400</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                type="button"
-                color="secondary"
-                onClick={this.togglemodal}
-              >
-                Close
-              </Button>
-            </ModalFooter>
-          </div>
-        </Modal>
+        
       </React.Fragment >
     )
   }
@@ -446,16 +335,14 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   t: PropTypes.any,
-  chartsData: PropTypes.any,
-  onGetChartsData: PropTypes.func
 }
 
 const mapStateToProps = ({ Dashboard }) => ({
-  chartsData: Dashboard.chartsData,
+ // chartsData: Dashboard.chartsData,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onGetChartsData: (periodType) => dispatch(getChartsData(periodType)),
+ // onGetChartsData: (periodType) => dispatch(getChartsData(periodType)),
 })
 
 export default connect(

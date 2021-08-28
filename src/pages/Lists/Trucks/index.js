@@ -36,9 +36,6 @@ import {
   getDrivers,
   getShippers,
   getTrucks,
-  addNewUser,
-  updateUser,
-  deleteUser
 } from "store/contacts/actions"
 
 import { isEmpty, size, map } from "lodash"
@@ -254,7 +251,7 @@ class Trucks extends Component {
    * Handling submit truck on truck form
    */
   handleValidUserSubmit = (e, values) => {
-    const { onAddNewUser, onUpdateUser } = this.props
+    //const { onAddNewUser, onUpdateUser } = this.props
     const { isEdit, trucks, selectedUser } = this.state
 
     if (isEdit) {
@@ -280,7 +277,7 @@ class Trucks extends Component {
         projects: values["projects"]
       }
       // save new truck
-      onAddNewUser(newUser)
+      //addNewTruck(newUser)
     }
     this.setState({ selectedUser: null })
     this.toggle()
@@ -620,9 +617,6 @@ class Trucks extends Component {
 Trucks.propTypes = {
   trucks: PropTypes.array,
   onGetTrucks: PropTypes.func,
-  onAddNewUser: PropTypes.func,
-  onDeleteUser: PropTypes.func,
-  onUpdateUser: PropTypes.func
 }
 
 function mapStateToProps(state) {
@@ -638,9 +632,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetTrucks: () => dispatch(getTrucks()),
-  onAddNewUser: driver => dispatch(addNewUser(driver)),
-  onUpdateUser: driver => dispatch(updateUser(driver)),
-  onDeleteUser: driver => dispatch(deleteUser(driver)),
 })
 
 export default connect(

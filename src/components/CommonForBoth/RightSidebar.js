@@ -32,10 +32,10 @@ import { Link } from "react-router-dom"
 import "./rightbar.scss"
 
 //Import images
-import bgimg1 from "../../assets/images/sidebar/img1.jpg";
-import bgimg2 from "../../assets/images/sidebar/img2.jpg";
-import bgimg3 from "../../assets/images/sidebar/img3.jpg";
-import bgimg4 from "../../assets/images/sidebar/img4.jpg";
+import bgimg1 from "../../assets/images/sidebar/img1.jpg"
+import bgimg2 from "../../assets/images/sidebar/img2.jpg"
+import bgimg3 from "../../assets/images/sidebar/img3.jpg"
+import bgimg4 from "../../assets/images/sidebar/img4.jpg"
 
 import layout4 from "../../assets/images/layouts/layout-1.jpg"
 import layout5 from "../../assets/images/layouts/layout-2.jpg"
@@ -60,7 +60,7 @@ class RightSidebar extends Component {
     this.changeLeftSidebarType = this.changeLeftSidebarType.bind(this)
     this.changeTopbarTheme = this.changeTopbarTheme.bind(this)
     this.changeThemePreloader = this.changeThemePreloader.bind(this)
-    this.onCloseRightBar = this.onCloseRightBar.bind(this);
+    this.onCloseRightBar = this.onCloseRightBar.bind(this)
   }
 
   /**
@@ -144,7 +144,7 @@ class RightSidebar extends Component {
     }
   }
   onCloseRightBar = () => {
-    this.props.onClose();
+    this.props.onClose()
   }
 
   render() {

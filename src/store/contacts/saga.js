@@ -2,17 +2,12 @@ import { call, put, takeEvery } from "redux-saga/effects"
 
 // Crypto Redux States
 import {
+  ADD_NEW_LOAD,
   GET_DRIVERS,
   GET_RECEIVERS,
   GET_SHIPPERS,
   GET_TRUCKING_CUSTOMERS,
   GET_TRUCKS,
-  GET_USERS,
-  GET_USER_PROFILE,
-  ADD_NEW_LOAD,
-  ADD_NEW_USER,
-  DELETE_USER,
-  UPDATE_USER
 } from "./actionTypes"
 
 
@@ -30,18 +25,8 @@ import {
   getReceiversFail,
   getShippersSuccess,
   getShippersFail,
-  getUsersSuccess,
-  getUsersFail,
-  getUserProfileSuccess,
-  getUserProfileFail,
   addLoadFail,
   addLoadSuccess,
-  addUserFail,
-  addUserSuccess,
-  updateUserSuccess,
-  updateUserFail,
-  deleteUserSuccess,
-  deleteUserFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -51,12 +36,7 @@ import {
   getReceivers,
   getTruckingCustomers,
   getTrucks,
-  getUsers,
-  getUserProfile,
   addNewLoad,
-  addNewUser,
-  updateUser,
-  deleteUser
 } from "../../helpers/fakebackend_helper"
 
 function* fetchTrucks() {
@@ -126,28 +106,7 @@ function* fetchDrivers() {
   }
 }
 
-function* fetchUsers() {
-  try {
-    console.log("Trying to get users!!!!")
-    const response = yield call(getUsers)
-    console.log(response)
-    console.log("Getting users!!!!")
-    yield put(getUsersSuccess(response))
-  } catch (error) {
-    console.log("error is: ")
-    console.log(error)
-    yield put(getUsersFail(error))
-  }
-}
 
-function* fetchUserProfile() {
-  try {
-    const response = yield call(getUserProfile)
-    yield put(getUserProfileSuccess(response))
-  } catch (error) {
-    yield put(getUserProfileFail(error))
-  }
-}
 
 function* onAddNewLoad({ payload: load }) {
   try {
@@ -159,33 +118,6 @@ function* onAddNewLoad({ payload: load }) {
   }
 }
 
-function* onAddNewUser({ payload: user }) {
-  try {
-    const response = yield call(addNewUser, user)
-    yield put(addUserSuccess(response))
-  } catch (error) {
-
-    yield put(addUserFail(error))
-  }
-}
-
-function* onUpdateUser({ payload: user }) {
-  try {
-    const response = yield call(updateUser, user)
-    yield put(updateUserSuccess(response))
-  } catch (error) {
-    yield put(updateUserFail(error))
-  }
-}
-
-function* onDeleteUser({ payload: user }) {
-  try {
-    const response = yield call(deleteUser, user)
-    yield put(deleteUserSuccess(response))
-  } catch (error) {
-    yield put(deleteUserFail(error))
-  }
-}
 
 function* contactsSaga() {
   yield takeEvery(GET_DRIVERS, fetchDrivers)
@@ -193,12 +125,7 @@ function* contactsSaga() {
   yield takeEvery(GET_SHIPPERS, fetchShippers)
   yield takeEvery(GET_TRUCKING_CUSTOMERS, fetchTruckingCustomers)
   yield takeEvery(GET_TRUCKS, fetchTrucks)
-  yield takeEvery(GET_USERS, fetchUsers)
-  yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
   yield takeEvery(ADD_NEW_LOAD, onAddNewLoad)
-  yield takeEvery(ADD_NEW_USER, onAddNewUser)
-  yield takeEvery(UPDATE_USER, onUpdateUser)
-  yield takeEvery(DELETE_USER, onDeleteUser)
 }
 
 export default contactsSaga

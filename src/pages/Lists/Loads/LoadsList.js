@@ -17,21 +17,12 @@ import * as moment from 'moment';
 
 import { Button, Card, CardBody, Row, Col, Badge, Modal, ModalHeader, ModalBody } from "reactstrap"
 
-//Import data
-import { discountData, productsData } from "common/data"
 
 import {
-  getCartData,
-  getCustomers,
   getLoads,
-  getOrders,
-  addNewOrder,
-  updateOrder,
-  deleteOrder
 } from "store/actions"
 
 import EcommerceOrdersModal from "../../Ecommerce/EcommerceOrders/EcommerceOrdersModal"
-import uiModal from "../../Ui/UiModal"
 
 
 class LoadsList extends Component {
@@ -516,9 +507,6 @@ class LoadsList extends Component {
 LoadsList.propTypes = {
   loads: PropTypes.array,
   onGetLoads: PropTypes.func,
-  onAddNewOrder: PropTypes.func,
-  onDeleteOrder: PropTypes.func,
-  onUpdateOrder: PropTypes.func
 }
 
 function mapStateToProps(state) {
@@ -535,9 +523,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetLoads: () => dispatch(getLoads()),
-  onAddNewOrder: order => dispatch(addNewOrder(order)),
-  onUpdateOrder: order => dispatch(updateOrder(order)),
-  onDeleteOrder: order => dispatch(deleteOrder(order)),
 })
 
 export default connect(

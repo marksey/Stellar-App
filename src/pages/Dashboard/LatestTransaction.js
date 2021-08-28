@@ -21,16 +21,10 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 
 import {
   getLoads,
-  getOrders,
-  addNewOrder,
-  updateOrder,
-  deleteOrder
 } from "store/actions"
 
 import CompleteLoadModal from "../Ecommerce/EcommerceOrders/EcommerceOrdersModal"
-import LoadDetailsModal from "../Ecommerce/EcommerceOrders/LoadDetailsModal"
 
-import uiModal from "../Ui/UiModal"
 
 class LatestTransaction extends Component {
   constructor(props) {
@@ -626,10 +620,6 @@ class LatestTransaction extends Component {
 
 LatestTransaction.propTypes = {
   loads: PropTypes.array,
-  onGetOrders: PropTypes.func,
-  onAddNewOrder: PropTypes.func,
-  onDeleteOrder: PropTypes.func,
-  onUpdateOrder: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -638,9 +628,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetLoads: () => dispatch(getLoads()),
-  onAddNewOrder: order => dispatch(addNewOrder(order)),
-  onUpdateOrder: order => dispatch(updateOrder(order)),
-  onDeleteOrder: order => dispatch(deleteOrder(order)),
 })
 
 export default connect(

@@ -18,11 +18,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
-  getDrivers,
   getShippers,
-  addNewUser,
-  updateUser,
-  deleteUser
 } from "store/contacts/actions"
 
 import { isEmpty, size, map } from "lodash"
@@ -449,9 +445,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetShippers: () => dispatch(getShippers()),
-  onAddNewUser: driver => dispatch(addNewUser(driver)),
-  onUpdateUser: driver => dispatch(updateUser(driver)),
-  onDeleteUser: driver => dispatch(deleteUser(driver)),
 })
 
 export default connect(

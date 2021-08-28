@@ -20,9 +20,6 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-//common
-import AddLoadForm from "../Forms/FormElements/TextualInputs"
-
 //Driver and Company search
 import SelectSearch from 'react-select-search';
 

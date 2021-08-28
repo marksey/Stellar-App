@@ -21,9 +21,6 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
   getDrivers,
-  addNewUser,
-  updateUser,
-  deleteUser
 } from "store/contacts/actions"
 
 import { isEmpty, size, map } from "lodash"
@@ -199,7 +196,7 @@ class DriversList extends Component {
    * Handling submit driver on driver form
    */
   handleValidUserSubmit = (e, values) => {
-    const { onAddNewUser, onUpdateUser } = this.props
+    //const { onAddNewUser, onUpdateUser } = this.props
     const { isEdit, drivers, selectedUser } = this.state
 
     if (isEdit) {
@@ -225,7 +222,7 @@ class DriversList extends Component {
         projects: values["projects"]
       }
       // save new driver
-      onAddNewUser(newUser)
+      //onAddNewDriver(newUser)
     }
     this.setState({ selectedUser: null })
     this.toggle()
@@ -579,9 +576,6 @@ class DriversList extends Component {
 DriversList.propTypes = {
   drivers: PropTypes.array,
   onGetDrivers: PropTypes.func,
-  onAddNewUser: PropTypes.func,
-  onDeleteUser: PropTypes.func,
-  onUpdateUser: PropTypes.func
 }
 
 function mapStateToProps(state) {
@@ -597,9 +591,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetDrivers: () => dispatch(getDrivers()),
-  onAddNewUser: driver => dispatch(addNewUser(driver)),
-  onUpdateUser: driver => dispatch(updateUser(driver)),
-  onDeleteUser: driver => dispatch(deleteUser(driver)),
 })
 
 export default connect(
