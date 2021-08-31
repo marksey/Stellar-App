@@ -1,8 +1,7 @@
 // import React from "react"
 import { invoiceList } from "./invoices"
+import {loads} from "./loads"
 import {
-  loads,
-  old_loads,
   users
 } from "./ecommerce"
 
@@ -20,7 +19,6 @@ export {
   contacts,
   messages,
   loads,
-  old_loads,
   receivers,
   shippers,
   truckingCustomers,

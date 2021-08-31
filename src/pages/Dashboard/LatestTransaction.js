@@ -30,6 +30,7 @@ class LatestTransaction extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      showGreenBar:false,
       viewCompleteLoadModal: false,
       viewLoadDetailsModal: false,
       modal: false,
@@ -40,9 +41,20 @@ class LatestTransaction extends Component {
           dataField: "id",
           sort: true,
           hidden: true,
+          formatter: (cellContent, row) => (
+            <>
+              {row.id}
+            </>
+          ),
+        },
+        {
+          text: "deliveryDateAndTime",
+          dataField: "deliveryDateAndTime",
+          sort: true,
+          hidden: true,
           formatter: (cellContent, user) => (
             <>
-              {order.id}
+              {row.deliveryDateAndTime}
             </>
           ),
         },
@@ -166,6 +178,8 @@ class LatestTransaction extends Component {
 
     this.handleUserClick = this.handleUserClick.bind(this)
     this.toggle = this.toggle.bind(this)
+    this.rowClassesSuccess = this.rowClassesSuccess.bind(this)
+    this.rowClassesNone = this.rowClassesNone.bind(this)
     this.toggleViewCompleteLoadModal = this.toggleViewCompleteLoadModal.bind(this)
     this.toggleViewLoadDetailsModal = this.toggleViewLoadDetailsModal.bind(this)
     this.toLowerCase1 = this.toLowerCase1.bind(this)
@@ -177,20 +191,59 @@ class LatestTransaction extends Component {
 
   componentDidMount() {
     const { loads, onGetLoads } = this.props
-    if (loads && !loads.length) {
-      onGetLoads()
+  
+    try{
+      if(this.props.location.state.showGreenBar == true){
+
+        console.log("Showing green bar!")
+        this.setState({ showGreenBar: true })
+
+        //Turn off show green bar after 6 seconds
+        setTimeout(() => {
+
+          this.setState({ showGreenBar: false })
+
+          console.log("Green bar turned off")
+        }, 6000)
+
+        //Remove history state
+        window.history.replaceState({}, document.title)
+
+      }
+    } catch {
+      //do nothing
     }
+
+    onGetLoads()
+    
     this.setState({ loads })
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { loads } = this.props
+
     if (!isEmpty(loads) && size(prevProps.loads) !== size(loads)) {
       this.setState({ loads: {}, isEdit: false })
     }
+
   }
 
+
+  rowClassesSuccess = (row, rowIndex) => {
+
+    //Setting the first row to green
+    if(row.id == this.props.location.state.rowId){
+      console.log("Got the matching row!")
+      console.log(row)
+      return "table-success"
+    }
+    
+  }
+
+  rowClassesNone = (row, rowIndex) => {
+    return ""
+  }
 
   toggle() {
     this.setState(prevState => ({
@@ -229,6 +282,7 @@ class LatestTransaction extends Component {
         pickupStreetName: load.pickupStreetName,
         pickupCityAndState: load.pickupCityAndState,
         pickupPhone: load.pickupPhone,
+        driverCellNum: load.driverCellNum,
         pickupZipCode: load.pickupZipCode,
         deliveryZipCode: load.deliveryZipCode,
         rateConfirmation: load.rateConfirmation,
@@ -251,13 +305,15 @@ class LatestTransaction extends Component {
 
     this.toggle()
   }
+
+ 
   render() {
 
-  
+    
     const { loads } = this.props
 
     const { SearchBar } = Search;
-
+    
     //pagination customization
     const pageOptions = {
       sizePerPage: 100000,
@@ -266,7 +322,7 @@ class LatestTransaction extends Component {
     }
 
     const defaultSorted = [{
-      dataField: 'loadNum',
+      dataField: 'deliveryDateAndTime',
       order: 'desc'
     }];
 
@@ -382,7 +438,7 @@ class LatestTransaction extends Component {
                       validate={{
                         required: { value: true },
                       }}
-                      value={this.state.loads.pickupPhone || ""}
+                      value={this.state.loads.driverCellNum || ""}
                     />
                   </div>
 
@@ -587,6 +643,10 @@ class LatestTransaction extends Component {
                           filterPosition="top"
                           striped={true}
                           selectRow={selectRow}
+                          rowClasses= {
+                            this.state.showGreenBar ? (
+                              this.rowClassesSuccess
+                            ) : this.rowClassesNone}
                           classes={
                             "table align-middle table-nowrap table-check"
                           }
@@ -621,6 +681,7 @@ class LatestTransaction extends Component {
 LatestTransaction.propTypes = {
   loads: PropTypes.array,
 }
+
 
 const mapStateToProps = state => ({
   loads: state.ecommerce.loads,

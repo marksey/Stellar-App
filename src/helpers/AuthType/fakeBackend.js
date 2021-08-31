@@ -16,7 +16,6 @@ import {
   users as members,
 } from "../../common/data"
 
-
 let users = [
   {
     uid: 1,
@@ -29,6 +28,7 @@ let users = [
 
 const fakeBackend = () => {
   // This sets the mock adapter on the default instance
+ 
   const mock = new MockAdapter(axios)
 
   mock.onPost("/post-fake-register").reply(config => {
@@ -184,6 +184,7 @@ const fakeBackend = () => {
     })
   })
 
+  {/*
   //Add a new load
   mock.onPost(url.ADD_NEW_LOAD).reply(load => {
     return new Promise((resolve, reject) => {
@@ -200,6 +201,7 @@ const fakeBackend = () => {
       })
     })
   })
+  */}
 
  
   mock.onGet(url.GET_CHATS).reply(() => {
@@ -246,12 +248,12 @@ const fakeBackend = () => {
     })
   })
 
-
   mock.onGet(url.GET_LOADS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (loads) {
           // Passing fake JSON data as response
+          console.log("inside mock request" + loads)
           resolve([200, loads])
         } else {
           reject([400, "Cannot get load data"])
@@ -259,6 +261,7 @@ const fakeBackend = () => {
       })
     })
   })
+
 
   mock.onGet(url.GET_INVOICES).reply(() => {
     return new Promise((resolve, reject) => {

@@ -187,9 +187,9 @@ class LoadsList extends Component {
 
     const { loads, onGetLoads } = this.props
     
-    if (loads && !loads.length) {
-      onGetLoads()
-    }
+   
+    onGetLoads()
+    
 
     this.setState({ loads })
 
@@ -257,13 +257,13 @@ class LoadsList extends Component {
 
     //pagination customization
     const pageOptions = {
-      sizePerPage: 7,
+      sizePerPage: 1000,
       totalSize: loads.length, // replace later with size(Order),
       custom: true,
     }
 
     const defaultSorted = [{
-      dataField: 'loadNum',
+      dataField: 'deliveryDateAndTime',
       order: 'desc'
     }];
 

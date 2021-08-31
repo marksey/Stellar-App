@@ -16,6 +16,7 @@ const INIT_STATE = {
   userProfile: {},
   error: {},
   drivers: [],
+  loads: [],
   shippers: [],
   truckingCustomers: [],
   trucks: [],

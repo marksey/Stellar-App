@@ -107,8 +107,32 @@ export const getMessages = (roomId = "") =>
 // post messages
 export const addMessage = message => post(url.ADD_MESSAGE, message)
 
-// get loads
-export const getLoads = () => get(url.GET_LOADS)
+//export const getLoads = () => get(url.GET_LOADS)
+
+//Get loads to REAL Node JS server
+//Returns a promise
+export const getLoads = () => {
+
+  return new Promise((resolve, reject) => {
+
+    fetch('http://localhost:3001/server/get/loads')
+    .then(async response => {
+  
+      const data = await response.json()
+      const fetchedLoads = []
+  
+      //Grab actual loads from response data
+      Object.keys(data.loads).map(key => 
+        fetchedLoads.push(data.loads[key])
+      )
+  
+      //Send loads back to requester /fetchLoads() 
+      resolve(fetchedLoads)
+
+    }).catch(err => reject(err))
+    
+  })
+}
 
 
 // get invoices
@@ -134,9 +158,43 @@ export const getTrucks = () => get(url.GET_TRUCKS)
 // get trucking customers
 export const getTruckingCustomers = () => get(url.GET_TRUCKING_CUSTOMERS)
 
-
+{/*
 // add load
-export const addNewLoad = load => post(url.ADD_NEW_LOAD, load)
+export const addNewLoad = load => get(url.ADD_NEW_LOAD)
+*/}
+
+
+//Here's what's left to do:
+//Retrieve loads from a JSON file
+//Create a get method to retrieve loads which will set the state
+//Real POST load to Node JS server
+export const addNewLoad = (load) => {
+
+    console.log("Got the load in react")
+    console.log(load)
+
+    //Post load to Node JS express server
+    fetch('http://localhost:3001/server/add/load', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(load),  
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Done posting in react")
+      console.log("Data: ") + data
+      return (
+        <Redirect
+          to={{ pathname: "/login", state: { from: props.location } }}
+        />
+      )
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+
+}
+
 
 export {
   getLoggedInUser,

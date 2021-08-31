@@ -41,28 +41,19 @@ import {
 
 function* fetchTrucks() {
   try {
-    console.log("trying to fetch trucks")
     const response = yield call(getTrucks)
-    console.log("fetching trucks!!! ")
-    console.log(response)
     yield put(getTrucksSuccess(response))
   } catch (error) {
-    console.log("Here's the error: ")
-    console.log(error)
+  
     yield put(getTrucksFail(error))
   }
 }
 
 function* fetchTruckingCustomers() {
   try {
-    console.log("trying to fetch trucking customers")
     const response = yield call(getTruckingCustomers)
-    console.log("fetching customers!!! ")
-    console.log(response)
     yield put(getTruckingCustomersSuccess(response))
   } catch (error) {
-    console.log("Here's the error: ")
-    console.log(error)
     yield put(getTruckingCustomersFail(error))
   }
 }
@@ -70,28 +61,18 @@ function* fetchTruckingCustomers() {
 
 function* fetchReceivers() {
   try {
-    console.log("trying to fetch receivers")
     const response = yield call(getReceivers)
-    console.log("fetching receivers!!! ")
-    console.log(response)
     yield put(getReceiversSuccess(response))
   } catch (error) {
-    console.log("Here's the error: ")
-    console.log(error)
     yield put(getReceiversFail(error))
   }
 }
 
 function* fetchShippers() {
   try {
-    console.log("trying to fetch shippers")
     const response = yield call(getShippers)
-    console.log("fetching shippers!!! ")
-    console.log(response)
     yield put(getShippersSuccess(response))
   } catch (error) {
-    console.log("Here's the error: ")
-    console.log(error)
     yield put(getShippersFail(error))
   }
 }

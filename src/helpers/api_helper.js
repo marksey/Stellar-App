@@ -11,12 +11,6 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 })
 
-axiosApi.defaults.headers.common["Authorization"] = token
-
-axiosApi.interceptors.response.use(
-  response => response,
-  error => Promise.reject(error)
-)
 
 export async function get(url, config = {}) {
   return await axiosApi.get(url, { ...config }).then(response => response.data)

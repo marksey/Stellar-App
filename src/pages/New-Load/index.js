@@ -4,6 +4,10 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { isEmpty, size } from "lodash"
+
+//SweetAlert
+import SweetAlert from "react-bootstrap-sweetalert"
+
 import {
   Card,
   CardBody,
@@ -39,6 +43,8 @@ class FormElements extends Component {
 
 
     this.state = {
+      sweetTimerLength: 3000, //3 seconds
+      sweet_timer: false,
       selectedFiles: [],
       driversList: [],
       loadsList: [],
@@ -121,7 +127,7 @@ class FormElements extends Component {
 
     //Set the load state which will be passed during the POST submit
     newLoad.deliveryStreetName = matchingReceiver.streetName
-    var cityAndState = matchingReceiver.cityStateZip.split(" ")[0] + 
+    var cityAndState = matchingReceiver.cityStateZip.split(" ")[0] + " " +
                        matchingReceiver.cityStateZip.split(" ")[1]
     
     var zipCode = matchingReceiver.cityStateZip.split(" ")[2]
@@ -159,13 +165,15 @@ class FormElements extends Component {
 
     //Set the load state which will be passed during the POST submit
     newLoad.pickupStreetName = matchingShipper.streetName
-    var cityAndState = matchingShipper.cityStateZip.split(" ")[0] + 
+    var cityAndState = matchingShipper.cityStateZip.split(" ")[0] + " " + 
                        matchingShipper.cityStateZip.split(" ")[1]
     
     var zipCode = matchingShipper.cityStateZip.split(" ")[2]
 
-    newLoad.pickupCityAndState = cityAndState;
-    newLoad.pickupZipCode = zipCode;
+    newLoad.pickupCityAndState = cityAndState
+    newLoad.pickupZipCode = zipCode
+
+    newLoad.pickupPhone = matchingShipper.phone
     
     this.setState({ newLoad: newLoad });
 
@@ -234,14 +242,14 @@ class FormElements extends Component {
 
   handlePickUpDateandTimeChanged(event) {
     var newLoad        = this.state.newLoad;
-    newLoad.pickUpDateandTime  = event.target.value;
+    newLoad.pickupDateAndTime  = event.target.value;
 
     this.setState({ newLoad: newLoad });
   }
 
   handleDeliveryDateandTimeChanged(event) {
     var newLoad        = this.state.newLoad;
-    newLoad.deliveryDateandTime  = event.target.value;
+    newLoad.deliveryDateAndTime  = event.target.value;
 
     this.setState({ newLoad: newLoad });
   }
@@ -252,9 +260,23 @@ class FormElements extends Component {
     console.log("Ok here's the newLoad!")
     console.log(this.state.newLoad);
 
+    this.setState({ sweet_timer: true })
+
     const {onAddNewLoad} = this.props //Not sure what this does. Look into it
     onAddNewLoad(this.state.newLoad)
-  }
+
+    //Redirect user back to dashboard after submitting load 
+    //and after sweet alert closes
+    //Pass in showGreenBar and new load ID to figure out which
+    //row will be set rowClass "table-success" in dashboard load table
+    setTimeout(() => {
+      this.props.history.push({
+        pathname: '/dashboard',
+        state: { showGreenBar: true, rowId: this.state.newLoad.id }
+      })
+    }, this.state.sweetTimerLength)
+
+   }
   
 
   /**
@@ -398,6 +420,7 @@ class FormElements extends Component {
       var newLoad = this.state.newLoad;
       newLoad.loadNum = val
       newLoad.loadNumGood  = true
+      newLoad.id = val
       this.setState({ newLoad: newLoad });
     
   }
@@ -593,6 +616,18 @@ class FormElements extends Component {
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Add New Load" />
+
+            {this.state.sweet_timer ? (
+              <SweetAlert
+                title="Nice job!"
+                success
+                timeout={this.state.sweetTimerLength}//auto close in 4 sec
+                showConfirm={false}
+                onConfirm={() => this.setState({ sweet_timer: false })}
+              >
+                Load successfully added!
+              </SweetAlert>
+            ) : null}
 
             <Row>
               <Col>
