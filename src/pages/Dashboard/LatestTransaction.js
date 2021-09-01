@@ -302,7 +302,7 @@ class LatestTransaction extends Component {
       },
       isEdit: true,
     })
-
+    
     this.toggle()
   }
 
