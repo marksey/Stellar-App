@@ -60,7 +60,7 @@ class LatestTransaction extends Component {
         },
         {
           dataField: "loadNum",
-          text: "Ref Number",
+          text: "Ref #",
           sort: true,
           filter: textFilter(),
           formatter: (cellContent, row) => (
@@ -316,7 +316,7 @@ class LatestTransaction extends Component {
     
     //pagination customization
     const pageOptions = {
-      sizePerPage: 100000,
+      sizePerPage: loads.length,
       totalSize: loads.length, // replace later with size(Order),
       custom: true,
     }
@@ -410,7 +410,7 @@ class LatestTransaction extends Component {
                       validate={{
                         required: { value: true },
                       }}
-                      value={this.state.loads.trailerNum || ""}
+                      value={this.state.loads.loadNum || ""}
                     />
                   </div>
                   
@@ -606,7 +606,7 @@ class LatestTransaction extends Component {
             <div className="mb-4 h4 card-title">
               Delivering Today
               <a href="new-load">
-                <button class="btn btn-success" style={{float:'right'}}>
+                <button class="btn btn-success" style={{float: "right", marginTop: "-0.5%"}}>
                   <i className="mdi mdi-plus-circle-outline me-1" />
                   Add Load
                   </button>
@@ -682,10 +682,45 @@ LatestTransaction.propTypes = {
   loads: PropTypes.array,
 }
 
+function mapStateToProps(state) {
+  
+  var loads = state.ecommerce.loads
 
+  var deliveringToday = []
+  
+  let todaysDate = moment(new Date()).format("MM/DD")
+  console.log("Today's date!")
+  console.log(todaysDate)
+
+  //When you receive the loads from getLoads()
+  //remove the ones that have a driver assigned
+  //Eventually this will have its own endpoint
+  //in Node Js and be removed from here
+  if(loads.length > 0){
+
+    for (var i=0; i <loads.length;i++){
+
+      //No driver found. Add to available freight
+      if(loads[i]['driver'] !== undefined){
+        console.log("Driver found")
+        console.log("Delivery date: " + loads[i]['deliveryDateAndTime'].substr(0, 5))
+        if(loads[i]['deliveryDateAndTime'].substr(0, 5) == todaysDate){
+          deliveringToday.push(loads[i])
+        }
+      } 
+    }
+  }
+  
+
+  const props = { loads: deliveringToday };
+  return props;
+}
+{/*
 const mapStateToProps = state => ({
+  
   loads: state.ecommerce.loads,
 })
+*/}
 
 const mapDispatchToProps = dispatch => ({
   onGetLoads: () => dispatch(getLoads()),

@@ -213,7 +213,7 @@ class Customers extends Component {
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: customers.length,
       totalSize: customers.length, // replace later with size(customers),
       custom: true,
     }

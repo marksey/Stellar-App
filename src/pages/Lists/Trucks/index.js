@@ -29,6 +29,9 @@ import images from "assets/images"
 
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
+// Import css
+import "assets/css/trucks.css"
+
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
@@ -105,6 +108,13 @@ class Trucks extends Component {
             text: "VIN #",  
             dataField: "vinNum",
             filter: textFilter(),
+            formatter: (cellContent, row) => (
+              <>
+                <div class="vinNum">
+                  {row.vinNum}
+                </div>
+              </>
+            ),
         },  
         {
             text: "Year",  
@@ -294,7 +304,7 @@ class Trucks extends Component {
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: trucks.length,
       totalSize: trucks.length, // replace later with size(trucks),
       custom: true,
     }

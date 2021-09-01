@@ -16,6 +16,9 @@ class SidebarContent extends Component {
   constructor(props) {
     super(props)
     this.refDiv = React.createRef()
+    this.state = {
+      menuClass: "sub-menu mm-active mm-show",
+    }
   }
 
   componentDidMount() {
@@ -24,17 +27,26 @@ class SidebarContent extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, ss) {
+
     if (this.props.type !== prevProps.type) {
       this.initMenu()
     }
+    
   }
 
   initMenu() {
-    new MetisMenu("#side-menu")
+    
+    //Not using a metis menu!
+    //new MetisMenu("#side-menu")
+
+    //Open the load Menu navigation
+    //const menu = document.getElementById("loadMenu")
+    //menu.classList.add("mm-show")
 
     let matchingMenuItem = null
     const ul = document.getElementById("side-menu")
     const items = ul.getElementsByTagName("a")
+
     for (let i = 0; i < items.length; ++i) {
       if (this.props.location.pathname === items[i].pathname) {
         matchingMenuItem = items[i]
@@ -44,6 +56,7 @@ class SidebarContent extends Component {
     if (matchingMenuItem) {
       this.activateParentDropdown(matchingMenuItem)
     }
+
   }
 
   // componentDidUpdate() {}
@@ -64,7 +77,10 @@ class SidebarContent extends Component {
   }
 
   activateParentDropdown = item => {
+
+    console.log("Item: " + item)
     item.classList.add("active")
+
     const parent = item.parentElement
 
     const parent2El = parent.childNodes[1]
@@ -110,8 +126,8 @@ class SidebarContent extends Component {
 
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu">
-              <li className="menu-title">{this.props.t("Menu")}</li>
 
+              <li className="menu-title">{this.props.t("Menu")}</li>
               <li>
                 <Link to="/#">
                   <i className="bx bx-home-circle" />
@@ -124,11 +140,29 @@ class SidebarContent extends Component {
 
               <li className="menu-title">{this.props.t("Apps")}</li>
 
+              
               <li>
-                <Link to="/loads" className="">
-                  <i className="bx bx-package" />
+                <Link to="/#" className="">
+                  <i className="bx bx-package" /> 
                   <span>{this.props.t("Loads")}</span>
                 </Link>
+                <ul id="loadMenu" className={this.state.menuClass} aria-expanded="true">
+                <li>
+                    <Link to="/loads">{this.props.t("All Loads")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/available-freight">{this.props.t("Available Freight")}</Link>
+                  </li>
+                  <li>
+                    <Link to="load-history">{this.props.t("Load History")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/in-transit">{this.props.t("In Transit")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/completed-loads">{this.props.t("Completed")}</Link>
+                  </li>
+                </ul>
               </li>
 
               <li>
@@ -158,6 +192,7 @@ class SidebarContent extends Component {
                   <span>{this.props.t("Customers")}</span>
                 </Link>
               </li>
+
 
             </ul>
           </div>

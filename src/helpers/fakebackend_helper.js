@@ -183,11 +183,6 @@ export const addNewLoad = (load) => {
     .then(data => {
       console.log("Done posting in react")
       console.log("Data: ") + data
-      return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
-      )
     })
     .catch((error) => {
       console.error('Error:', error);

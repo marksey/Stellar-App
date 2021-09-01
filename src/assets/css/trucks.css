@@ -1,0 +1,13 @@
+.vinNum {
+    width: 50px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+ }
+
+ .vinNum:hover {
+    overflow: visible; 
+    white-space: normal;
+}
+
+  

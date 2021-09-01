@@ -385,3 +385,8 @@ span.flatpickr-weekday {
 .tui-chart .tui-chart-chartExportMenu-area {
   z-index: 1 !important;
 }
+
+tr:hover .vinNum {
+  overflow: visible; 
+  white-space: normal;
+}

@@ -127,16 +127,21 @@ class FormElements extends Component {
 
     //Set the load state which will be passed during the POST submit
     newLoad.deliveryStreetName = matchingReceiver.streetName
-    var cityAndState = matchingReceiver.cityStateZip.split(" ")[0] + " " +
-                       matchingReceiver.cityStateZip.split(" ")[1]
-    
-    var zipCode = matchingReceiver.cityStateZip.split(" ")[2]
+
+    var City = matchingReceiver.cityStateZip.split(", ")[0]
+    var State = matchingReceiver.cityStateZip.split(", ")[1].split(" ")[0]
+    var Zip = matchingReceiver.cityStateZip.split(", ")[1].split(" ")[1]
+
+    var cityAndState = City + ", " + State
 
     newLoad.deliveryCityAndState = cityAndState;
-    newLoad.deliveryZipCode = zipCode;
+    newLoad.deliveryZipCode = Zip;
 
+    console.log("Setting new load state in delivery company!")
+    console.log(newLoad)
     //Set the load state which will be passed during the POST submit
     this.setState({ newLoad: newLoad });
+
 
     //Auto populate the company address and phone
     //This will auto render on the input fields below company
@@ -165,17 +170,22 @@ class FormElements extends Component {
 
     //Set the load state which will be passed during the POST submit
     newLoad.pickupStreetName = matchingShipper.streetName
-    var cityAndState = matchingShipper.cityStateZip.split(" ")[0] + " " + 
-                       matchingShipper.cityStateZip.split(" ")[1]
-    
-    var zipCode = matchingShipper.cityStateZip.split(" ")[2]
+
+    var City = matchingShipper.cityStateZip.split(", ")[0]
+    var State = matchingShipper.cityStateZip.split(", ")[1].split(" ")[0]
+    var Zip = matchingShipper.cityStateZip.split(", ")[1].split(" ")[1]
+
+    var cityAndState = City + ", " + State
+
 
     newLoad.pickupCityAndState = cityAndState
-    newLoad.pickupZipCode = zipCode
+    newLoad.pickupZipCode = Zip
 
     newLoad.pickupPhone = matchingShipper.phone
     
     this.setState({ newLoad: newLoad });
+    console.log("Load state after pickup company set")
+    console.log(this.state.newLoad)
 
     //Auto populate the company address and phone
     //This will auto render on the input fields below company
@@ -263,8 +273,11 @@ class FormElements extends Component {
     this.setState({ sweet_timer: true })
 
     const {onAddNewLoad} = this.props //Not sure what this does. Look into it
+
+    
     onAddNewLoad(this.state.newLoad)
 
+    
     //Redirect user back to dashboard after submitting load 
     //and after sweet alert closes
     //Pass in showGreenBar and new load ID to figure out which
@@ -275,6 +288,7 @@ class FormElements extends Component {
         state: { showGreenBar: true, rowId: this.state.newLoad.id }
       })
     }, this.state.sweetTimerLength)
+    
 
    }
   
@@ -477,6 +491,7 @@ class FormElements extends Component {
 
   //Sets the options list to the right format for SelectSearch to read data
   //Takes in the type (broker, driver, shipper or receiver) and the data (list)
+  //Eventually pull this into its own file and import for reusability
   setOptionsList(list, type){
 
     const namesList = [];
@@ -654,7 +669,7 @@ class FormElements extends Component {
                         </label>
                         <div className="col-md-10">
                         <div style={{float: 'right'}}>
-                          <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                          <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={null}>
                           <i className="mdi mdi-plus-circle-outline me-1" />
                           Add Broker
                           </button>
@@ -730,7 +745,7 @@ class FormElements extends Component {
                         <label htmlFor="exampleDataList" className="col-md-2 col-form-label">Driver</label>
                         <div className="col-md-10">
                           <div style={{float: 'right'}}>
-                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={null}>
                             <i className="mdi mdi-plus-circle-outline me-1" />
                             Add Driver
                             </button>
@@ -830,7 +845,7 @@ class FormElements extends Component {
                         </label>
                         <div className="col-md-10">
                           <div style={{float: 'right'}}>
-                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={null}>
                             <i className="mdi mdi-plus-circle-outline me-1" />
                             Add Shipper
                             </button>
@@ -938,7 +953,7 @@ class FormElements extends Component {
                         </label>
                         <div className="col-md-10">
                           <div style={{float: 'right'}}>
-                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={this.handleLoadSubmit.bind(this)}>
+                            <button style={{marginTop: '5%'}} class="btn btn-info btn-sm" onClick={null}>
                             <i className="mdi mdi-plus-circle-outline me-1" />
                             Add Receiver
                             </button>
@@ -1057,6 +1072,9 @@ FormElements.propTypes = {
  
 
 function mapStateToProps(state) {
+
+  console.log("inside new load. Got the drivers!")
+  console.log(state.contacts.drivers)
 
   const props = { 
     driversList: state.contacts.drivers,

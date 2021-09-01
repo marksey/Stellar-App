@@ -32,6 +32,7 @@ import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-veri
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2"
 
 //List pages
+import AvailableFreight from "../pages/Lists/AvailableFreight/index"
 import Loads from "../pages/Lists/Loads/index"
 import DriversList from "../pages/Lists/Drivers/index"
 import Shippers from "../pages/Lists/Shippers/index"
@@ -68,6 +69,7 @@ const authProtectedRoutes = [
 
   { path: "/drivers", component: DriversList},
   { path: "/loads", component: Loads},
+  { path: "/available-freight", component: AvailableFreight},
   { path: "/shippers", component: Shippers},
   { path: "/trucks", component: Trucks},
   { path: "/customers", component: Customers},

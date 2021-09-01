@@ -196,7 +196,7 @@ class Shippers extends Component {
     const { isEdit } = this.state
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: shippers.length,
       totalSize: shippers.length, // replace later with size(shippers),
       custom: true,
     }
