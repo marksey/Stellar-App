@@ -17,6 +17,9 @@ import {
   ADD_NEW_LOAD,
   ADD_LOAD_SUCCESS,
   ADD_LOAD_FAIL,
+  ASSIGN_LOAD_TO_DRIVER,
+  ASSIGN_LOAD_TO_DRIVER_SUCCESS,
+  ASSIGN_LOAD_TO_DRIVER_FAIL
 } from "./actionTypes"
 
 export const getReceivers = () => ({
@@ -89,7 +92,21 @@ export const getDriversFail = error => ({
   payload: error,
 })
 
+//ASSIGN LOAD TO DRIVER
+export const assignDriverToLoad = (load, driver) => ({
+  type: ASSIGN_LOAD_TO_DRIVER,
+  payload: { load: load, driver: driver }
+})
 
+export const assignDriverToLoadSuccess = (load, driver) => ({
+  type: ASSIGN_LOAD_TO_DRIVER_SUCCESS,
+  payload: { load: load, driver: driver }
+})
+
+export const assignDriverToLoadFail = error => ({
+  type: ASSIGN_LOAD_TO_DRIVER_FAIL,
+  payload: error,
+})
 
 //ADD NEW LOADS
 export const addNewLoad = load => ({

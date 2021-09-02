@@ -45,3 +45,4 @@ export const GET_DRIVERS = "/drivers"
 //LOADS
 export const GET_LOADS = "/loads"
 export const ADD_NEW_LOAD = "/add/load"
+export const ASSIGN_LOAD_TO_DRIVER = "/assign/load"

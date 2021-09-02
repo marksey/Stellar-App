@@ -15,18 +15,23 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 import { Link } from "react-router-dom"
 import * as moment from 'moment';
 
-import { Button, Card, CardBody, Row, Col, Badge, Modal, ModalHeader, ModalBody } from "reactstrap"
+import { Button, Card, CardBody, CardTitle, Row, Col, Badge, 
+  Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap"
 
 
 import {
   getLoads,
-  getDrivers
+  getDrivers,
+  assignDriverToLoad
 } from "store/actions"
 
 import EcommerceOrdersModal from "../../Ecommerce/EcommerceOrders/EcommerceOrdersModal"
 
 //Driver search
 import SelectSearch from 'react-select-search';
+
+//SweetAlert
+import SweetAlert from "react-bootstrap-sweetalert"
 
 
 class AvailableFreightList extends Component {
@@ -35,8 +40,15 @@ class AvailableFreightList extends Component {
     this.state = {
       viewmodal: false,
       modal: false,
+      viewLoadDetailsModal: false,
+      showGreenBar:false,
+      sweet_timer: false,
+      sweetTimerLength: 4000,
+      viewDetailsLoad: [],
       loads: [],
-      newLoad: [],
+      selectedLoad: [],
+      newDriver: [],
+      updateDriverOptions : false,
       viewAssignDriverModal: false,
       driversList: [],
       driverOptions: [],
@@ -53,6 +65,17 @@ class AvailableFreightList extends Component {
           ),
         },
         {
+          text: "deliveryDateAndTime",
+          dataField: "deliveryDateAndTime",
+          sort: true,
+          hidden: true,
+          formatter: (cellContent, row) => (
+            <>
+              {row.deliveryDateAndTime}
+            </>
+          ),
+        },
+        {
           dataField: "driver",
           text: "Driver",
           sort: true,
@@ -64,7 +87,7 @@ class AvailableFreightList extends Component {
           ),
         },
         {
-          dataField: "tripNum",
+          dataField: "loadNum",
           text: "Ref #",
           sort: true,
           filter: textFilter(),
@@ -105,7 +128,7 @@ class AvailableFreightList extends Component {
         },
         
         {
-          dataField: "pickupDateandTime",
+          dataField: "pickupCityAndState",
           isDummyField: true,
           text: "Pickup",
           sort: true,
@@ -128,7 +151,7 @@ class AvailableFreightList extends Component {
           */
         },
         {
-          dataField: "deliveryDateandTime",
+          dataField: "deliveryCityAndState",
           isDummyField: true,
           text: "Delivery",
           sort: true,
@@ -175,8 +198,15 @@ class AvailableFreightList extends Component {
           editable: false,
           formatter: (cellContent, load) => (
             <div className="d-flex gap-3">
-              <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(load)}></i></Link>
-              <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(load)}></i></Link>
+              <Link className="text-info" to="#">
+                <i class="mdi mdi-magnify font-size-18" id="edittooltip" onClick={() => this.handleClickLoadDetails(load)}></i>
+              </Link>
+              <Link className="text-success" to="#">
+                <i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => this.handleUserClick(load)}></i>
+              </Link>
+              <Link className="text-danger" to="#">
+                <i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => this.handleDeleteUser(load)}></i>
+                </Link>
             </div>
           ),
         }
@@ -184,8 +214,12 @@ class AvailableFreightList extends Component {
     }
 
     this.toggle = this.toggle.bind(this)
+    this.toggleViewLoadDetails = this.toggleViewLoadDetails.bind(this)
+    this.handleClickLoadDetails = this.handleClickLoadDetails.bind(this)
     this.toggleCloseAssignDriver = this.toggleCloseAssignDriver.bind(this)
     this.toggleAssignDriverModal = this.toggleAssignDriverModal.bind(this)
+    this.rowClassesSuccess = this.rowClassesSuccess.bind(this)
+    this.rowClassesNone = this.rowClassesNone.bind(this)
     this.toLowerCase1 = this.toLowerCase1.bind(this)
     this.handleUserClick = this.handleUserClick.bind(this)
   }
@@ -194,28 +228,73 @@ class AvailableFreightList extends Component {
     return str.toLowerCase();
   }
 
+  toggleViewLoadDetails() {
+    this.setState(prevState => ({
+      viewLoadDetailsModal: !this.state.viewLoadDetailsModal,
+    }))
+  }
+
+  handleClickLoadDetails = arg => {
+    const load = arg
+    
+    console.log("Clicked load!")
+    console.log(load)
+
+    console.log(load.brokerName)
+
+    this.setState({
+        
+      viewDetailsLoad: {
+        brokerName: load.brokerName,
+        pickupCompany: load.pickupCompany,
+        pickupStreetName: load.pickupStreetName,
+        pickupCityAndState: load.pickupCityAndState,
+        pickupPhone: load.pickupPhone,
+        driverCellNum: load.driverCellNum,
+        pickupZipCode: load.pickupZipCode,
+        deliveryZipCode: load.deliveryZipCode,
+        rateConfirmation: load.rateConfirmation,
+        driver: "Not Yet Assigned",
+        tripNum: "-",
+        truckNum: "-",
+        trailerNum: "-",
+        driverCellNum: "-",
+        customer: load.customer,
+        deliveryCityAndState: load.deliveryCityAndState,
+        deliveryLocation: load.deliveryLocation,
+        deliveryStreetName: load.deliveryStreetName,
+        deliveryDateAndTime: load.deliveryDateAndTime,
+        loadRate: load.loadRate,
+        loadNum: load.loadNum,
+        pickupDateAndTime: load.pickupDateAndTime,
+      }
+    })
+
+    this.toggleViewLoadDetails()
+
+  
+    console.log("View details load")
+    console.log(this.state.viewDetailsLoad)
+  }
+
   handleDriverChanged(event) {
 
     const { driversList } = this.props
 
     var selectedDriver = event
 
-
     console.log("Chose: " + selectedDriver)
 
     let matchingDriver = driversList.find(driver => driver.name === selectedDriver);
 
-    console.log("Found a matching driver! ")
-    console.log(matchingDriver)
-
-    var newLoad = this.state.newLoad;
-    newLoad.driver  = selectedDriver;
-    newLoad.driverCellNum = matchingDriver.cellNum;
-    newLoad.truckNum = matchingDriver.truckNum;
-    newLoad.trailerNum = matchingDriver.trailerNum;
+    var newDriver = this.state.newDriver;
+    newDriver.driver  = selectedDriver;
+    newDriver.driverCellNum = matchingDriver.cellNum;
+    newDriver.truckNum = matchingDriver.truckNum;
+    newDriver.trailerNum = matchingDriver.trailerNum;
 
     //Set the load state which will be passed during the POST submit
-    this.setState({ newLoad: newLoad });
+    this.setState({ newDriver: newDriver });
 
     //Auto populate the phone, truck and trailer #
     //This will auto render on the input fields below driver
@@ -251,18 +330,40 @@ class AvailableFreightList extends Component {
             onGetLoads, 
             onGetDrivers 
           } = this.props
+
+    try{
+      if(this.props.location.state.showGreenBar == true){
+
+        console.log("Showing green bar!")
+        this.setState({ showGreenBar: true })
+
+        //Turn off show green bar after 6 seconds
+        setTimeout(() => {
+
+          this.setState({ showGreenBar: false })
+
+          console.log("Green bar turned off")
+        }, 6000)
+
+        //Remove history state
+        window.history.replaceState({}, document.title)
+
+      }
+    } catch {
+      //do nothing
+    }
     
    
     //Get drivers from DB!
-    if (driversList && !driversList.length) {
-      onGetDrivers(); 
-    }
+    onGetDrivers(); 
 
-   
+    //Get loads from DB
     onGetLoads()
 
-    
-    
+    console.log("Set update driver options state")
+
+    this.setState({updateDriverOptions : true})
+
     
     this.setState({ loads })
     this.setState({ driversList })
@@ -314,8 +415,6 @@ class AvailableFreightList extends Component {
     previousLetter = firstLetterOfName
   }      
 
-  console.log("Type: " + type)
-  console.log(optionsListArr)
 
   switch(type) {
     case 'brokers':
@@ -324,8 +423,6 @@ class AvailableFreightList extends Component {
       this.setState({brokerOptions: optionsListArr})
       return;
     case 'drivers':
-      console.log("Inside switch:")
-      console.log("Chose drivers!!!")
       this.setState({driverOptions: optionsListArr})
       return;
     case 'shippers':
@@ -352,22 +449,88 @@ class AvailableFreightList extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
 
     const { loads, driversList } = this.props
+
    
     if (!isEmpty(loads) && size(prevProps.loads) !== size(loads)) {
       this.setState({ loads: {}, isEdit: false })
     }
 
-    //Set the driversList state to the drivers now that the component updated
-    if (!isEmpty(driversList) && size(prevProps.driversList) !== size(driversList)) {
-      console.log("Setting the options list!")
-      this.setState({ driversList: {}}) //Not sure how this actually sets the driversList. Look into it later
+    //Not efficient to update driver options on 
+    //every componentdidmount. Later on use
+    //prevProps to compare. Sometimes the driverList
+    //didn't change, so no need to set the driver 
+    //options all over again
+    if(!isEmpty(driversList) && this.state.updateDriverOptions){
+      this.setState({updateDriverOptions : false})
+      this.setState({ driversList: []}) //Not sure how this actually sets the driversList. Look into it later
       this.setOptionsList(driversList, "drivers")
     }
+    
+    
+    {/*
+    //Set the driversList state to the drivers now that the component updated
+    //Compare the current driversList to the prevProp driversList
+    //If the sizes are different, that means we got a new
+    if (!isEmpty(driversList) && size(prevProps.driversList) !== size(driversList)) {
+      this.setState({ driversList: []}) //Not sure how this actually sets the driversList. Look into it later
+      this.setOptionsList(driversList, "drivers")
+    }   
+    */}
 
-    console.log("Setting the options list again")
+
+   
   
   }
 
+  submitAssignDriver(){
+
+    if(this.state.newDriver.driver == undefined){
+      console.log("Error. Driver not selected!")
+    } else {
+      console.log("New driver:")
+      console.log(this.state.newDriver)
+  
+      console.log("Current load:")
+      console.log(this.state.selectedLoad)
+
+      const {onAssignDriverToLoad} = this.props //Not sure what this does. Look into it
+
+      console.log("onAssignDriverToLoad function")
+      console.log(onAssignDriverToLoad)
+
+      this.setState({ sweet_timer: true })
+
+      onAssignDriverToLoad(this.state.selectedLoad, this.state.newDriver)
+
+    //Redirect user back to dashboard after submitting load 
+    //and after sweet alert closes
+    //Pass in showGreenBar and new load ID to figure out which
+    //row will be set rowClass "table-success" in dashboard load table
+    setTimeout(() => {
+      this.props.history.push({
+        pathname: '/loads',
+        state: { showGreenBar: true, rowId: this.state.selectedLoad.loadNum }
+      })
+    }, this.state.sweetTimerLength)
+    }
+
+  }
+
+  rowClassesSuccess = (row, rowIndex) => {
+
+    //Setting the first row to green
+    if(row.id == this.props.location.state.rowId){
+      console.log("Got the matching row!")
+      console.log(row)
+      return "table-success"
+    }
+    
+  }
+
+  rowClassesNone = (row, rowIndex) => {
+    return ""
+  }
+  
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -378,6 +541,9 @@ class AvailableFreightList extends Component {
 
     //Clear driversList on close
     this.setState({ driversList: []})
+
+    //Clear newDriver on close
+    this.setState({ newDriver: []}) 
 
     this.setState({viewAssignDriverModal: !this.state.viewAssignDriverModal})
   }
@@ -391,7 +557,7 @@ class AvailableFreightList extends Component {
 
     this.setState({
         
-      loads: {
+      selectedLoad: {
         driver: load.driver,
         tripNum: load.tripNum,
         truckNum: load.truckNum,
@@ -403,6 +569,7 @@ class AvailableFreightList extends Component {
         loadNum: load.loadNum,
       }
     })
+
 
     this.setState({viewAssignDriverModal: !this.state.viewAssignDriverModal})
   }
@@ -470,11 +637,295 @@ class AvailableFreightList extends Component {
           isOpen={this.state.viewmodal}
           toggle={this.toggleViewModal}
         />
+
+      {/*
+        Eventually put this modal in its own component 
+        just like EcommerceOrdersModal above
+      */}
+      <Modal
+        isOpen={this.state.viewLoadDetailsModal}
+        role="dialog"
+        autoFocus={true}
+        centered={true}
+        className="exampleModal"
+        tabIndex="-1"
+      >
+
+        <div className="modal-content">
+
+          <ModalHeader toggle={this.toggleViewLoadDetails}>
+            <i class="bx bx-notepad"></i>&nbsp;
+            
+            View Load Details 
+          </ModalHeader>
+          
+          <ModalBody>
+
+          <div class="col d-flex justify-content-center">
+            <CardTitle className="h4 ">Customer Info</CardTitle>
+          </div>
+          
+          
+            <AvForm>
+              <Row form>
+                <Col className="col-12">
+                  <div className="mb-3">
+
+                    <AvField
+                      readOnly
+                      name="brokerName"
+                      label="Broker Name"
+                      type="text"
+                      errorMessage="Invalid broker"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.brokerName || ""}
+                    />
+                  </div>
+
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="carrier"
+                      label="Rate"
+                      type="text"
+                      errorMessage="Invalid Load Rate "
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.loadRate || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Load Info</CardTitle>
+                  </div>
+                  
+                 
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="owner"
+                      label="Ref #"
+                      type="text"
+                      errorMessage="Invalid Owner"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.loadNum || ""}
+                    />
+                  </div>
+                  
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="owner"
+                      label="Driver"
+                      type="text"
+                      errorMessage="Invalid Driver"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.driver || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="make"
+                      label="Phone"
+                      type="text"
+                      errorMessage="Invalid Phone"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.driverCellNum || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="plateNum"
+                      label="Truck #"
+                      type="text"
+                      errorMessage="Invalid Truck #"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.truckNum || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="state"
+                      label="Trailer #"
+                      type="text"
+                      errorMessage="Invalid Trailer #"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.trailerNum || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Pickup Info</CardTitle>
+                  </div>
+                  
+                  
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Company"
+                      type="text"
+                      errorMessage="Invalid Company"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.pickupCompany || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Address"
+                      type="text"
+                      errorMessage="Invalid Company"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.pickupStreetName + ", " +
+                       this.state.viewDetailsLoad.pickupCityAndState + " " + 
+                       this.state.viewDetailsLoad.pickupZipCode}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Phone"
+                      type="text"
+                      errorMessage="Invalid Phone"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.pickupPhone || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Date & Time"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.pickupDateAndTime || ""}
+                    />
+                  </div>
+                  
+                  <div class="col d-flex justify-content-center">
+                    <CardTitle className="h4 ">Delivery Info</CardTitle>
+                  </div>
+                  
+                 
+                  
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Address"
+                      type="text"
+                      errorMessage="Invalid Address"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.deliveryStreetName + ", " + 
+                      this.state.viewDetailsLoad.deliveryCityAndState + " " + 
+                      this.state.viewDetailsLoad.deliveryZipCode}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Date & Time"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.deliveryDateAndTime || ""}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <AvField
+                      readOnly
+                      name="vinNum"
+                      label="Rate Confirmation"
+                      type="text"
+                      errorMessage="Invalid Date/Time"
+                      validate={{
+                        required: { value: true },
+                      }}
+                      value={this.state.viewDetailsLoad.rateConfirmation || ""}
+                    />
+                  </div>
+
+                </Col>
+
+              </Row>
+              
+            </AvForm>
+          
+            
+          </ModalBody>
+
+          <ModalFooter>
+            <Button type="button" color="secondary" onClick={this.toggleViewLoadDetails}>
+              Close
+            </Button>
+
+          </ModalFooter>
+
+        </div>
+      
+      </Modal>
+
+        {this.state.sweet_timer ? (
+          <SweetAlert
+            title="Nice job!"
+            success
+            timeout={this.state.sweetTimerLength}//auto close in 4 sec
+            showConfirm={false}
+            onConfirm={() => this.setState({ sweet_timer: false })}
+          >
+            Driver successfully added!
+          </SweetAlert>
+        ) : null}
+
         <Card>
           <CardBody>
 
             <div className="mb-4 h4 card-title">
-              Not Yet Assigned A Driver
+              Need Driver Assigned
               <a href="new-load">
                 <button class="btn btn-success" style={{float: "right", marginTop: "-0.5%"}}>
                   <i className="mdi mdi-plus-circle-outline me-1" />
@@ -513,6 +964,10 @@ class AvailableFreightList extends Component {
                           filter={ filterFactory() }
                           filterPosition="top"
                           selectRow={selectRow}
+                          rowClasses= {
+                            this.state.showGreenBar ? (
+                              this.rowClassesSuccess
+                            ) : this.rowClassesNone}
                           classes={
                             "table align-middle table-nowrap table-check"
                           }
@@ -526,7 +981,7 @@ class AvailableFreightList extends Component {
                           //className={this.props.className}
                         >
                           <ModalHeader toggle={this.toggleCloseAssignDriver} tag="h4">
-                            Assign Driver to Ref # {this.state.loads.loadNum}
+                            Assign Driver to Ref # {this.state.selectedLoad.loadNum}
                           </ModalHeader>
                           <ModalBody>
                             <AvForm
@@ -603,8 +1058,9 @@ class AvailableFreightList extends Component {
                                     <button
                                       type="submit"
                                       className="btn btn-success save-user"
+                                      onClick={() => this.submitAssignDriver()}
                                     >
-                                      Save changes
+                                      Add driver
                                     </button>
                                   </div>
                                 </Col>
@@ -792,8 +1248,9 @@ class AvailableFreightList extends Component {
 
 AvailableFreightList.propTypes = {
   loads: PropTypes.array,
+  driversList: PropTypes.array,
   onGetLoads: PropTypes.func,
-  driversList: PropTypes.array
+  onAssignDriverToLoad: PropTypes.func,
 }
 
 function mapStateToProps(state) {
@@ -832,7 +1289,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetLoads: () => dispatch(getLoads()),
-  onGetDrivers: () => dispatch(getDrivers())
+  onGetDrivers: () => dispatch(getDrivers()),
+  onAssignDriverToLoad: (load, driver) => dispatch(assignDriverToLoad(load, driver)),
 })
 
 export default connect(

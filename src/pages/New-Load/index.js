@@ -284,10 +284,11 @@ class FormElements extends Component {
     //row will be set rowClass "table-success" in dashboard load table
     setTimeout(() => {
       this.props.history.push({
-        pathname: '/dashboard',
+        pathname: '/available-freight',
         state: { showGreenBar: true, rowId: this.state.newLoad.id }
       })
     }, this.state.sweetTimerLength)
+    
     
 
    }

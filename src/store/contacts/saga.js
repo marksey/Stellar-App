@@ -1,8 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-// Crypto Redux States
+// Redux States
 import {
   ADD_NEW_LOAD,
+  ASSIGN_LOAD_TO_DRIVER,
   GET_DRIVERS,
   GET_RECEIVERS,
   GET_SHIPPERS,
@@ -27,6 +28,8 @@ import {
   getShippersFail,
   addLoadFail,
   addLoadSuccess,
+  assignDriverToLoadFail,
+  assignDriverToLoadSuccess,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -37,6 +40,7 @@ import {
   getTruckingCustomers,
   getTrucks,
   addNewLoad,
+  assignDriverToLoad
 } from "../../helpers/fakebackend_helper"
 
 function* fetchTrucks() {
@@ -80,6 +84,7 @@ function* fetchShippers() {
 
 function* fetchDrivers() {
   try {
+    console.log("Fetching drivers!!!!")
     const response = yield call(getDrivers)
     yield put(getDriversSuccess(response))
   } catch (error) {
@@ -88,16 +93,28 @@ function* fetchDrivers() {
 }
 
 
-
 function* onAddNewLoad({ payload: load }) {
   try {
+    console.log("onAddNewLoad generator!!!")
+    console.log("load:" + load)
     const response = yield call(addNewLoad, load)
+    console.log(response)
     yield put(addLoadSuccess(response))
   } catch (error) {
 
     yield put(addLoadFail(error))
   }
 }
+
+function* onAssignDriverToLoad({ payload: load }) {
+  try {
+    const response = yield call(assignDriverToLoad, load.load, load.driver)
+    yield put(assignDriverToLoadSuccess(response))
+  } catch (error) {
+    yield put(assignDriverToLoadFail(error))
+  }
+}
+
 
 
 function* contactsSaga() {
@@ -107,6 +124,7 @@ function* contactsSaga() {
   yield takeEvery(GET_TRUCKING_CUSTOMERS, fetchTruckingCustomers)
   yield takeEvery(GET_TRUCKS, fetchTrucks)
   yield takeEvery(ADD_NEW_LOAD, onAddNewLoad)
+  yield takeEvery(ASSIGN_LOAD_TO_DRIVER, onAssignDriverToLoad)
 }
 
 export default contactsSaga

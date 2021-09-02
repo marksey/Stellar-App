@@ -32,6 +32,7 @@ class LoadsList extends Component {
       viewmodal: false,
       modal: false,
       loads: [],
+      showGreenBar:false,
       EcommerceOrderColumns: [
         {
           text: "id",
@@ -41,6 +42,17 @@ class LoadsList extends Component {
           formatter: (cellContent, row) => (
             <>
               {row.id}
+            </>
+          ),
+        },
+        {
+          text: "deliveryDateAndTime",
+          dataField: "deliveryDateAndTime",
+          sort: true,
+          hidden: true,
+          formatter: (cellContent, row) => (
+            <>
+              {row.deliveryDateAndTime}
             </>
           ),
         },
@@ -56,7 +68,7 @@ class LoadsList extends Component {
           ),
         },
         {
-          dataField: "tripNum",
+          dataField: "loadNum",
           text: "Ref #",
           sort: true,
           filter: textFilter(),
@@ -97,7 +109,7 @@ class LoadsList extends Component {
         },
         
         {
-          dataField: "pickupDateandTime",
+          dataField: "pickupCityAndState",
           isDummyField: true,
           text: "Pickup",
           sort: true,
@@ -120,7 +132,7 @@ class LoadsList extends Component {
           */
         },
         {
-          dataField: "deliveryDateandTime",
+          dataField: "deliveryCityAndState",
           isDummyField: true,
           text: "Delivery",
           sort: true,
@@ -174,6 +186,9 @@ class LoadsList extends Component {
         }
       ]
     }
+
+    this.rowClassesSuccess = this.rowClassesSuccess.bind(this)
+    this.rowClassesNone = this.rowClassesNone.bind(this)
     this.toggle = this.toggle.bind(this)
     this.toLowerCase1 = this.toLowerCase1.bind(this)
     this.handleUserClick = this.handleUserClick.bind(this)
@@ -187,6 +202,27 @@ class LoadsList extends Component {
 
     const { loads, onGetLoads } = this.props
     
+    try{
+      if(this.props.location.state.showGreenBar == true){
+
+        console.log("Showing green bar!")
+        this.setState({ showGreenBar: true })
+
+        //Turn off show green bar after 6 seconds
+        setTimeout(() => {
+
+          this.setState({ showGreenBar: false })
+
+          console.log("Green bar turned off")
+        }, 6000)
+
+        //Remove history state
+        window.history.replaceState({}, document.title)
+
+      }
+    } catch {
+      //do nothing
+    }
    
     onGetLoads()
     
@@ -207,6 +243,21 @@ class LoadsList extends Component {
      
     }
   
+  }
+
+  rowClassesSuccess = (row, rowIndex) => {
+
+    //Setting the first row to green
+    if(row.id == this.props.location.state.rowId){
+      console.log("Got the matching row!")
+      console.log(row)
+      return "table-success"
+    }
+    
+  }
+
+  rowClassesNone = (row, rowIndex) => {
+    return ""
   }
 
   toggle() {
@@ -242,7 +293,8 @@ class LoadsList extends Component {
         customer: load.customer,
         pickupCityAndState: load.pickupCityAndState,
         deliveryCityAndState: load.deliveryCityAndState,
-        loadRate: load.loadRate
+        loadRate: load.loadRate,
+        loadNum: load.loadNum
       },
       isEdit: true,
     })
@@ -281,7 +333,7 @@ class LoadsList extends Component {
           <CardBody>
 
             <div className="mb-4 h4 card-title">
-              Current Loads
+              Loads Assigned a Driver
               <a href="new-load">
                 <button class="btn btn-success" style={{float: "right", marginTop: "-0.5%"}}>
                   <i className="mdi mdi-plus-circle-outline me-1" />
@@ -320,6 +372,10 @@ class LoadsList extends Component {
                           filter={ filterFactory() }
                           filterPosition="top"
                           selectRow={selectRow}
+                          rowClasses= {
+                            this.state.showGreenBar ? (
+                              this.rowClassesSuccess
+                            ) : this.rowClassesNone}
                           classes={
                             "table align-middle table-nowrap table-check"
                           }
@@ -510,7 +566,25 @@ LoadsList.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const props = { loads: state.ecommerce.loads };
+
+  var loads = state.ecommerce.loads
+
+  var loadsWithDriver = []
+  
+  //When you receive the loads from getLoads()
+  //remove the ones that don't a driver assigned
+  if(loads.length > 0){
+
+    for (var i=0; i <loads.length;i++){
+
+      //No driver found. Add to available freight
+      if(loads[i]['driver'] !== undefined){
+        loadsWithDriver.push(loads[i])
+      } 
+    }
+  }
+
+  const props = { loads: loadsWithDriver };
   return props;
 }
 

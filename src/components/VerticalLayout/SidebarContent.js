@@ -78,7 +78,6 @@ class SidebarContent extends Component {
 
   activateParentDropdown = item => {
 
-    console.log("Item: " + item)
     item.classList.add("active")
 
     const parent = item.parentElement

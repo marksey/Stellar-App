@@ -163,15 +163,37 @@ export const getTruckingCustomers = () => get(url.GET_TRUCKING_CUSTOMERS)
 export const addNewLoad = load => get(url.ADD_NEW_LOAD)
 */}
 
+//Real POST load to Node JS server
+export const assignDriverToLoad = (load, driver) => {
 
-//Here's what's left to do:
-//Retrieve loads from a JSON file
-//Create a get method to retrieve loads which will set the state
+  var body = {
+              driver: driver.driver, 
+              driverCellNum: driver.driverCellNum,
+              trailerNum: driver.trailerNum,
+              truckNum: driver.truckNum,
+              loadNum: load.loadNum,
+  }
+  
+  //Post load to Node JS express server
+  fetch('http://localhost:3001/server/assign/load', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body),  
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Done posting in react")
+    console.log("Data: ") + data
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  })
+  
+
+}
+
 //Real POST load to Node JS server
 export const addNewLoad = (load) => {
-
-    console.log("Got the load in react")
-    console.log(load)
 
     //Post load to Node JS express server
     fetch('http://localhost:3001/server/add/load', {
@@ -187,6 +209,7 @@ export const addNewLoad = (load) => {
     .catch((error) => {
       console.error('Error:', error);
     })
+    
 
 }
 
