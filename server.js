@@ -15,6 +15,29 @@ const client = require('twilio')(
 )
 
 
+
+//Show PDF
+app.get('/server/show_file/', (req, res) => {
+
+    const path = './files/RateConfirmation_Acme.pdf'
+
+    var fs = require('fs')
+
+    if (fs.existsSync(path)) {
+        console.log("File exists!!!")
+        res.contentType("application/pdf");
+        fs.createReadStream(path).pipe(res)
+    } else {
+        res.status(500)
+        console.log('File not found')
+        res.send('File not found')
+    }  
+
+})
+
+ 
+
+
 //For fun. Practie sending texts api
 app.post('/server/sendtext', (req, res) => {
 
