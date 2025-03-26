@@ -8,7 +8,7 @@ import { connect } from "react-redux"
 import { authProtectedRoutes, publicRoutes } from "./routes/"
 import AppRoute from "./routes/route"
 
-// layouts
+// Layouts
 import VerticalLayout from "./components/VerticalLayout/"
 import HorizontalLayout from "./components/HorizontalLayout/"
 import NonAuthLayout from "./components/NonAuthLayout"
